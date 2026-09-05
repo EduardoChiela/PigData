@@ -25,7 +25,8 @@
 | [agenda-calendario.md](./docs/agenda-calendario.md) | Disponibilidade e calendário compartilhado |
 | [mapa-busca.md](./docs/mapa-busca.md) | Mapa, busca, camadas ACIT vs Google |
 | [parceiros-rede.md](./docs/parceiros-rede.md) | Parceria e destaque verificado ACIT |
-| [reservas.md](./docs/reservas.md) | Pedido, confirmação |
+| [reservas.md](./docs/reservas.md) | Solicitação → aprovação → pagamento → confirmação |
+| [fluxo-telas.md](./docs/fluxo-telas.md) | Wireframe base do fluxo do cliente (não definitivo) |
 | [pagamento-demo.md](./docs/pagamento-demo.md) | Checkout simulado para apresentações |
 | [pagamentos-confianca.md](./docs/pagamentos-confianca.md) | Monetização e pagamento real |
 | [metricas-impacto.md](./docs/metricas-impacto.md) | KPIs e impacto |

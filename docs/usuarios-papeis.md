@@ -12,16 +12,18 @@
 ## Responsabilidades (produto)
 
 ### Cliente final
-- Buscar por cidade, data/período/horário, filtros (área, pets, comodidades…)
+- Buscar por cidade, data/período/horário, filtros
 - Favoritar espaços
-- Solicitar/reservar (com cotação de comodidades)
+- Enviar solicitação (com cotação de comodidades) e acompanhar status
+- Pagar somente após aprovação, para confirmar a reserva
 - Receber alternativas da rede se o preferido estiver ocupado
 
 ### Espaço / núcleo
 - Cadastrar o local (assistido via Google Places ou manual) — [cadastro-assistido-google.md](./cadastro-assistido-google.md)
 - Completar dados de locação: área, modalidades dia/hora, janelas, tomadas, pets, comodidades, fotos
 - Manter agenda confiável
-- Responder pedidos e confirmar reservas
+- Analisar solicitações (aprovar/recusar) dentro do prazo
+- Confirmar reservas após pagamento do cliente
 
 ### Organizador parceiro
 - Vincular-se a espaços da rede

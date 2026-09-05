@@ -16,6 +16,13 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-05 — Wireframe / fluxo de telas (base)
+- **Contexto:** Incorporar wireframe de fluxo do cliente (busca → solicitação → aprovação → pagamento → confirmação), marcado como base não definitiva.
+- **Áreas:** `fluxo-telas.md` (novo), `reservas.md`, `visao-geral.md`, `usuarios-papeis.md`, `README.md`
+- **O que mudou:** documentação de UX/produto; sem código de telas ainda.
+- **Como funciona agora:** solicitação ≠ reserva; pagar após aprovação; fila de interesse por espaço+data+período; sem visitação.
+- **Status:** feito (base; sujeito a validação)
+
 ### 2026-09-05 — Busca/locação e pagamento demo
 - **Contexto:** Incorporar defs de favoritos, filtros (cidade, m², pets…), locação dia/hora, atributos do espaço, seguro e checkout simulado; esclarecer nomenclatura (PigData = codinome).
 - **Áreas:** `busca-locacao.md`, `pagamento-demo.md`, `nomenclatura.md` (novos); `mapa-busca.md`, `agenda-calendario.md`, `espacos.md`, `reservas.md`, `pagamentos-confianca.md`, `usuarios-papeis.md`, `visao-geral.md`, `README.md`

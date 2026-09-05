@@ -35,22 +35,24 @@ Plataforma estilo Airbnb/PeerSpace para **espaços de eventos**, com:
 
 ## Fluxo ponta a ponta (produto)
 
+Base de telas: [fluxo-telas.md](./fluxo-telas.md) (não definitivo).
+
 1. Cliente escolhe cidade e quando (dia/período ou horário)
-2. Aplica filtros (área, capacidade, pets, comodidades…)
-3. Vê mapa/lista com ACIT em destaque; pode favoritar
-4. Compara (preço base + comodidades + atributos do espaço)
-5. Solicita/reserva (cotação; em demo, checkout simulado)
+2. Aplica filtros; vê mapa/lista com ACIT em destaque; pode favoritar
+3. Vê detalhes; define data/evento; monta comodidades (cotação)
+4. Envia **solicitação** (sem pagar) → estabelecimento analisa
+5. Aprovado → paga no prazo → **reserva confirmada**; ou recusa/fila/outras opções
 6. Se indisponível, alternativas de parceiros verificados
-7. (Opcional) outros locais da cidade via Google, sem reserva na plataforma
+7. (Opcional) outros locais via Google, sem reserva na plataforma
 
 ## Fases (mapa de produto)
 
 | Fase | Foco |
 |------|------|
 | 0 | Descoberta, piloto, regras ACIT; nome comercial a definir ([nomenclatura.md](./nomenclatura.md)) |
-| 1 | Cadastro, agenda, busca (cidade/m²/favoritos/atributos), comodidades, pedido; pagamento demo se necessário |
-| 2 | Rede de parceria, calendário compartilhado, locação por horário madura |
-| 3 | Pagamento real, seguro com parceiro, avaliações, Instant Book |
+| 1 | Cadastro, agenda, busca, comodidades, **solicitação + acompanhamento** (wireframe base); pagamento demo se necessário |
+| 2 | Rede de parceria, fila de interesse madura, calendário compartilhado, locação por horário |
+| 3 | Pagamento real pós-aprovação, seguro com parceiro, avaliações, Instant Book (se houver) |
 | 4 | Escala, métricas, outras cidades |
 
 ## Resumo para conversa com clientes
