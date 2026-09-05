@@ -23,29 +23,32 @@ Plataforma estilo Airbnb/PeerSpace para **espaços de eventos**, com:
 
 ## Diferenciais deste projeto
 
-- **Disponibilidade-first:** entrada pela data → mapa só com locais livres
+- **Disponibilidade-first:** entrada pela data → mapa prioriza locais livres
+- **Comodidades na busca:** filtros de estrutura + add-ons vendáveis com preço
 - **Calendário de parceria:** “não tenho → a rede tem”
+- **Destaque ACIT verificado:** selo e prioridade no mapa/lista
+- **Mapa híbrido:** parceiros em primeiro plano; Google Places só como cobertura limitada (sem reserva)
 - **Organizador como nó da rede**, não só cliente final
-- **Âncora ACIT:** confiança institucional e métricas de impacto
 - **Brasil-first:** WhatsApp, eventos locais, operação real dos núcleos
 
 ## Fluxo ponta a ponta (produto)
 
-1. Cliente escolhe a data (e opcionalmente tipo/capacidade)
-2. Vê no mapa espaços livres da rede
-3. Compara opções
-4. Solicita ou reserva
-5. Se indisponível, recebe alternativas de parceiros livres
+1. Cliente escolhe a data (e opcionalmente tipo/capacidade e comodidades)
+2. Vê no mapa espaços livres da rede, com ACIT em destaque
+3. Compara opções (preço base + incluso vs extras)
+4. Solicita ou reserva (com add-ons desejados)
+5. Se indisponível, recebe alternativas de parceiros verificados livres
+6. (Opcional) vê outros locais da cidade via Google, sem agenda/reserva na plataforma
 
 ## Fases (mapa de produto)
 
 | Fase | Foco |
 |------|------|
 | 0 | Descoberta, piloto, regras de parceria ACIT |
-| 1 | MVP: cadastro, agenda, mapa/busca por data, pedido |
-| 2 | Rede de parceria e calendário compartilhado |
-| 3 | Conversão: confirmação, pagamento, avaliações, Instant Book |
-| 4 | Escala: serviços/add-ons, métricas públicas, outras cidades |
+| 1 | MVP: cadastro, agenda, mapa/busca por data, comodidades básicas, pedido |
+| 2 | Rede de parceria, calendário compartilhado, destaque ACIT maduro |
+| 3 | Conversão: confirmação, pagamento (espaço + add-ons), avaliações, Instant Book |
+| 4 | Escala: catálogo de serviços, camada Google limitada se fizer sentido, métricas, outras cidades |
 
 ## Resumo para conversa com clientes
 

@@ -8,13 +8,14 @@ alwaysApply: true
 
 Antes de qualquer implementação neste repositório:
 
-1. Ler `docs/README.md` para identificar as áreas envolvidas.
+1. Ler `README.md` (raiz) para identificar as áreas envolvidas.
 2. Ler os arquivos em `docs/` referentes às partes do sistema tocadas pela tarefa.
 3. Ler as entradas recentes em `docs/IMPLEMENTACAO.md` para contexto e histórico.
 
 Depois de implementar:
 
 1. Atualizar o(s) arquivo(s) da área em `docs/` (estado da implementação, regras, decisões).
-2. Adicionar uma entrada nova no topo da seção **Registros** de `docs/IMPLEMENTACAO.md` usando o template do próprio arquivo.
+2. Se o índice mudar, atualizar `README.md` na raiz.
+3. Adicionar uma entrada nova no topo da seção **Registros** de `docs/IMPLEMENTACAO.md` usando o template do próprio arquivo.
 
 Não inventar comportamento de produto que contradiga `docs/` sem atualizar a documentação na mesma mudança.
