@@ -16,6 +16,13 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-05 — Busca/locação e pagamento demo
+- **Contexto:** Incorporar defs de favoritos, filtros (cidade, m², pets…), locação dia/hora, atributos do espaço, seguro e checkout simulado; esclarecer nomenclatura (PigData = codinome).
+- **Áreas:** `busca-locacao.md`, `pagamento-demo.md`, `nomenclatura.md` (novos); `mapa-busca.md`, `agenda-calendario.md`, `espacos.md`, `reservas.md`, `pagamentos-confianca.md`, `usuarios-papeis.md`, `visao-geral.md`, `README.md`
+- **O que mudou:** docs de produto; nomes estáveis sem sufixo “novas-funcionalidades-…-pigdata”; sem código ainda.
+- **Como funciona agora:** busca rica documentada; pagamento demo isolado do real; seguro só demo até parceiro; README deixa claro que o nome do app mudará.
+- **Status:** feito (decisão de produto)
+
 ### 2026-09-05 — Comodidades formalizadas (catálogo + carrinho)
 - **Contexto:** Promover o rascunho de comodidades a documentação oficial e alinhar nomenclatura (só “comodidade”, sem add-on paralelo).
 - **Áreas:** `comodidades.md` (novo), `espacos.md`, `reservas.md`, `mapa-busca.md`, `pagamentos-confianca.md`, `visao-geral.md`, `README.md`, `rascunhos/`

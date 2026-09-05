@@ -23,33 +23,35 @@ Plataforma estilo Airbnb/PeerSpace para **espaços de eventos**, com:
 
 ## Diferenciais deste projeto
 
-- **Disponibilidade-first:** entrada pela data → mapa prioriza locais livres
+- **Disponibilidade-first:** entrada por cidade + data/período/horário → mapa prioriza livres
 - **Comodidades na busca e no pedido:** catálogo único + carrinho de cotação ([comodidades.md](./comodidades.md))
-- **Cadastro assistido (Places):** dono encontra o espaço no Google e completa locação no PigData ([cadastro-assistido-google.md](./cadastro-assistido-google.md))
+- **Busca rica:** favoritos, m², pets, atributos elétricos/janelas ([busca-locacao.md](./busca-locacao.md))
+- **Cadastro assistido (Places):** identificação no Google + locação na plataforma ([cadastro-assistido-google.md](./cadastro-assistido-google.md))
 - **Calendário de parceria:** “não tenho → a rede tem”
 - **Destaque ACIT verificado:** selo e prioridade no mapa/lista
-- **Mapa híbrido:** parceiros em primeiro plano; Google Places na busca só como cobertura limitada (sem reserva)
+- **Mapa híbrido:** parceiros em primeiro plano; Google na busca só como cobertura limitada
 - **Organizador como nó da rede**, não só cliente final
 - **Brasil-first:** WhatsApp, eventos locais, operação real dos núcleos
 
 ## Fluxo ponta a ponta (produto)
 
-1. Cliente escolhe a data (e opcionalmente tipo/capacidade e comodidades)
-2. Vê no mapa espaços livres da rede, com ACIT em destaque
-3. Compara opções (preço base + comodidades inclusas/opcionais)
-4. Solicita ou reserva (com comodidades no carrinho de cotação)
-5. Se indisponível, recebe alternativas de parceiros verificados livres
-6. (Opcional) vê outros locais da cidade via Google, sem agenda/reserva na plataforma
+1. Cliente escolhe cidade e quando (dia/período ou horário)
+2. Aplica filtros (área, capacidade, pets, comodidades…)
+3. Vê mapa/lista com ACIT em destaque; pode favoritar
+4. Compara (preço base + comodidades + atributos do espaço)
+5. Solicita/reserva (cotação; em demo, checkout simulado)
+6. Se indisponível, alternativas de parceiros verificados
+7. (Opcional) outros locais da cidade via Google, sem reserva na plataforma
 
 ## Fases (mapa de produto)
 
 | Fase | Foco |
 |------|------|
-| 0 | Descoberta, piloto, regras de parceria ACIT |
-| 1 | MVP: cadastro (Places ou manual), agenda, mapa/busca, comodidades (catálogo + carrinho cotação), pedido |
-| 2 | Rede de parceria, calendário compartilhado, destaque ACIT maduro |
-| 3 | Conversão: confirmação, pagamento (espaço + comodidades), avaliações, Instant Book |
-| 4 | Escala: catálogo refinado, camada Google limitada se fizer sentido, métricas, outras cidades |
+| 0 | Descoberta, piloto, regras ACIT; nome comercial a definir ([nomenclatura.md](./nomenclatura.md)) |
+| 1 | Cadastro, agenda, busca (cidade/m²/favoritos/atributos), comodidades, pedido; pagamento demo se necessário |
+| 2 | Rede de parceria, calendário compartilhado, locação por horário madura |
+| 3 | Pagamento real, seguro com parceiro, avaliações, Instant Book |
+| 4 | Escala, métricas, outras cidades |
 
 ## Resumo para conversa com clientes
 

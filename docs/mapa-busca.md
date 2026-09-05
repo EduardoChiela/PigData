@@ -2,24 +2,35 @@
 
 ## Objetivo
 
-Descoberta **disponibilidade-first**: o usuário entra pela data e vê no mapa, com prioridade, o que está livre — enriquecido por comodidades e com **parceiros ACIT em destaque**. Cobertura extra da cidade pode vir de uma camada Google (limitada).
+Descoberta **disponibilidade-first**: o usuário entra pela data (ou período/horário) e vê no mapa, com prioridade, o que está livre — enriquecido por comodidades e com **parceiros ACIT em destaque**. Cobertura extra da cidade pode vir de uma camada Google (limitada).
+
+Funcionalidades novas de filtro, favoritos e modalidades de locação: [busca-locacao.md](./busca-locacao.md).
 
 ## Fluxo de pesquisa desejado
 
-1. Entrada principal: “Quando você precisa?” (data)
-2. Capacidade / tipo de evento (opcional)
-3. Filtros de comodidades (chips): o que o espaço oferece no catálogo
+1. Escolhe **cidade** (uma por vez no MVP)
+2. Define **quando**: dia/período ou horário (se o espaço permitir)
+3. Capacidade / tipo de evento / área (m²) / pets / comodidades (opcional)
 4. Mapa + lista com indicadores de disponibilidade
-5. Clique no pin → card resumido (preço base, comodidades pedidas, selo ACIT) → pedido/reserva
+5. Favoritar; abrir detalhes → pedido/reserva
 6. Se indisponível → alternativas da rede parceira ([parceiros-rede.md](./parceiros-rede.md))
 
 ## Filtros
 
-- Capacidade, bairro/região, **classe de espaço**, tipo de evento, preço
-- Comodidades do catálogo que o espaço oferece — ver [comodidades.md](./comodidades.md)
-- Atributos básicos de infraestrutura (checklist do espaço), se expostos na UI — separados do catálogo de comodidades
+- **Cidade** (troca atualiza lista + viewport do mapa)
+- Data / período / horário + modalidade de locação — [busca-locacao.md](./busca-locacao.md), [agenda-calendario.md](./agenda-calendario.md)
+- Área mínima/máxima (m²), capacidade, classe de espaço, tipo de evento, preço
+- Aceita pets
+- Comodidades do catálogo — [comodidades.md](./comodidades.md)
+- Atributos de infra no anúncio (janelas, tomadas/tensão) — filtro de janelas não obrigatório no MVP
 - Toggle: “Só verificados ACIT”
 - Toggle (opcional, off por padrão): “Mostrar outros locais da cidade” (camada Google)
+
+Filtros aplicados no **backend**, não só no frontend.
+
+## Favoritos
+
+Ver [busca-locacao.md](./busca-locacao.md#1-favoritos). Disponível em cards, mapa, detalhes e lista; persistência para autenticados.
 
 ## Hierarquia visual no mapa e na lista
 
@@ -35,9 +46,9 @@ Na indisponibilidade, priorizar alternativas da rede ACIT antes de qualquer suge
 
 ## Provedores Google (decisão)
 
-- **Google Maps JavaScript API** — mapa interativo do PigData
+- **Google Maps JavaScript API** — mapa interativo da plataforma
 - **Places API (New)** — dois usos distintos:
-  1. **Onboarding do proprietário** (cadastro assistido) — ver [cadastro-assistido-google.md](./cadastro-assistido-google.md)
+  1. **Onboarding do proprietário** (cadastro assistido) — [cadastro-assistido-google.md](./cadastro-assistido-google.md)
   2. **Camada C de descoberta** (pins limitados na busca do cliente) — abaixo
 
 Não confundir: ajudar o dono a cadastrar ≠ exibir locais não cadastrados no mapa de busca.
@@ -54,47 +65,47 @@ Nome, endereço, localização, avaliação geral, fotos (com regras), tipos de 
 
 ### O que a API **não** entrega (limitação de produto)
 
-- Disponibilidade por data de evento
-- Capacidade real para evento
-- Comodidades/add-ons com preço
+- Disponibilidade por data/horário de evento
+- Capacidade, área locável, pets, tomadas
+- Comodidades com preço
 - Pedido/reserva na plataforma
 - Selo ACIT / parceria
-- Preço confiável de aluguel de salão
+- Preço confiável de aluguel
 
 ### Limitações de custo e uso
 
-- Cobrança por chamada (Nearby/Text Search, detalhes, fotos); crédito mensal Google ajuda no início, mas escala com tráfego
-- Atribuição obrigatória ao Google e regras de cache/armazenamento de dados Places (ToS)
-- Qualidade irregular para “espaço de evento” (resultados genéricos)
+- Cobrança por chamada; crédito mensal Google ajuda no início
+- Atribuição e regras de cache/ToS
+- Qualidade irregular para “espaço de evento”
 - Risco de poluir o mapa e diluir o destaque ACIT
-- Risco de o usuário sair da plataforma sem conversão
 
-### Limitações que **nós** impomos de propósito (obrigatórias)
+### Limitações que **nós** impomos (obrigatórias)
 
-1. Sem indicador livre/ocupado no pin Google (não inventar disponibilidade)
-2. Sem filtro fino de comodidades de evento nessa camada
-3. Sem botão de reserva — só “Abrir no Google” / “Quero que este espaço entre na rede”
-4. Quantidade limitada (ex.: poucos resultados perto / só com zoom alto)
-5. Toggle desligado por padrão: “Mostrar outros locais da cidade”
-6. CTA claro: espaços ACIT têm agenda e comodidades verificáveis
+1. Sem indicador livre/ocupado no pin Google
+2. Sem filtro fino de comodidades nessa camada
+3. Sem reserva — só “Abrir no Google” / “Sugerir cadastro”
+4. Quantidade limitada
+5. Toggle desligado por padrão
+6. CTA: espaços ACIT têm agenda e comodidades verificáveis
 
 ### Decisão de abordagem
 
 | Abordagem | Veredito |
 |-----------|----------|
-| Só cadastrados no mapa | Mais limpo e conversível; pior percepção de “poucos lugares” no início |
-| **Cadastrados + Google limitado** | **Escolhida:** cobertura + destaque ACIT |
-| Google com a mesma UI dos parceiros | Evitar — dilui confiança e monetização |
+| Só cadastrados no mapa | Mais limpo; pior percepção de cobertura no início |
+| **Cadastrados + Google limitado** | **Escolhida** |
+| Google com a mesma UI dos parceiros | Evitar |
 
 ## Relação com outras áreas
 
-- Consome agenda de [agenda-calendario.md](./agenda-calendario.md)
-- Lista, classes e comodidades: [espacos.md](./espacos.md), [comodidades.md](./comodidades.md)
-- Cadastro assistido Places: [cadastro-assistido-google.md](./cadastro-assistido-google.md)
-- Destaque e alternativas de [parceiros-rede.md](./parceiros-rede.md)
-- Monetização de add-ons em [pagamentos-confianca.md](./pagamentos-confianca.md)
+- [busca-locacao.md](./busca-locacao.md) — favoritos, cidade, m², horário, pets, etc.
+- [agenda-calendario.md](./agenda-calendario.md)
+- [espacos.md](./espacos.md), [comodidades.md](./comodidades.md)
+- [cadastro-assistido-google.md](./cadastro-assistido-google.md)
+- [parceiros-rede.md](./parceiros-rede.md)
+- [pagamentos-confianca.md](./pagamentos-confianca.md)
 
 ## Estado da implementação
 
-- Decisões de produto documentadas (Maps JS + Places New; camada C limitada; cadastro assistido separado); ainda sem mapa/código de busca.
-- Na implementação: custos estimados do piloto, Field Masks, session tokens e regras de ToS/atribuição.
+- Decisões de produto documentadas; ainda sem mapa/código de busca.
+- Na implementação: custos do piloto Places, Field Masks, session tokens, ToS.

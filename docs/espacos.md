@@ -17,15 +17,21 @@ Decisão de produto: **cadastro assistido por Google Places**, com cadastro manu
 ## Conteúdo mínimo do perfil (MVP)
 
 - Nome e endereço / geolocalização (para o mapa)
+- Endereço normalizado: `city`, `state`, `country` (+ lat/lng)
 - `google_place_id` (quando vinculado via Places)
 - Fotos (próprias do proprietário; não importar fotos Google na v1)
 - Capacidade
-- **Classes de espaço** (uma ou mais) — busca/filtro; lista em [comodidades.md](./comodidades.md)
-- **Tipos de evento atendidos** — busca/filtro; inclui Aniversário
-- **Atributos / checklist de qualidade** (infra básica: estacionamento, acessibilidade, ar-condicionado, etc.) — não são itens do catálogo de comodidades
-- **Comodidades do catálogo** — o que oferece, se incluso ou opcional, preço por item
+- **Área locável** `rental_area_m2`
+- **Modalidades de locação:** dia/período e/ou horário (+ janelas horárias se aplicável) — [busca-locacao.md](./busca-locacao.md)
+- **Classes de espaço** (uma ou mais) — [comodidades.md](./comodidades.md)
+- **Tipos de evento atendidos** — inclui Aniversário
+- **Atributos / checklist de qualidade** (estacionamento, acessibilidade, ar-condicionado, etc.)
+- **Janelas:** `has_windows`, `window_count`
+- **Tomadas por tensão:** `space_outlets` (127 V / 220 V) — declaração do proprietário, sem garantia de carga
+- **Aceita pets:** `allows_pets` (+ `pet_policy` futuro)
+- **Comodidades do catálogo** — oferece / incluso / preço
 - Regras de uso
-- Preço base (ou faixa)
+- Preço base (e preço/hora se permitir horário)
 - Status na rede (parceiro ACIT / homologado)
 
 ## Comodidades
@@ -64,5 +70,5 @@ Detalhe completo em [comodidades.md](./comodidades.md). Resumo:
 
 ## Estado da implementação
 
-- Cadastro assistido + modelo de comodidades definidos em produto; ainda sem código.
-- Na implementação: modelo de dados com classes, tipos de evento, atributos básicos, `EspacoComodidade`, `google_place_id`.
+- Cadastro assistido + comodidades + atributos de busca/locação definidos em produto; ainda sem código.
+- Na implementação: modelo com classes, tipos de evento, m², modalidades, janelas, tomadas, pets, `EspacoComodidade`, `google_place_id`.

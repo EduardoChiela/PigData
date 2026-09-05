@@ -1,52 +1,51 @@
 # Pagamentos e confiança
 
-## Objetivo (fases posteriores)
+## Objetivo
 
-Fechar o ciclo marketplace: pagamento seguro, reputação e regras claras — no estilo PeerSpace, adaptado ao Brasil — incluindo **monetização sobre espaço + comodidades**.
+Fechar o ciclo marketplace: pagamento seguro, reputação e regras claras — incluindo monetização sobre **espaço + comodidades** (+ seguro quando houver parceiro).
 
-## Itens previstos
+## Camadas de pagamento
+
+| Camada | Quando | Doc |
+|--------|--------|-----|
+| Cotação/estimativa no pedido | MVP sem cobrança | [comodidades.md](./comodidades.md), [reservas.md](./reservas.md) |
+| **Pagamento simulado (demo)** | Apresentações / testes | [pagamento-demo.md](./pagamento-demo.md) |
+| Pagamento real | Fase comercial | Este arquivo + provedor (Mercado Pago, Stripe, etc.) |
+| Seguro | Demo até haver parceiro; depois integração real | [busca-locacao.md](./busca-locacao.md#8-seguro-opcional) |
+
+## Itens previstos (pagamento real)
 
 - Pagamento / sinal / comissão ou assinatura de parceiro
 - PIX e práticas locais
 - Avaliações pós-evento
 - Políticas de cancelamento e no-show
-- (Opcional) seguros / garantia de danos
+- Seguro com parceiro autorizado (sem apresentar seguro “real” sem integração)
 
 ## Monetização e comodidades
 
-Ver catálogo e carrinho em [comodidades.md](./comodidades.md).
+Composição:
 
-Composição do valor:
+1. Preço do espaço (diária/período ou horas)
+2. Comodidades selecionadas
+3. Seguro (se contratado)
+4. Receita da plataforma — preferencialmente comissão sobre o total
 
-1. **Preço do espaço** (diária/hora) — base
-2. **Comodidades** selecionadas no pedido (preço por item definido pelo espaço; inclusas = R$ 0)
-3. **Receita da plataforma** — preferencialmente comissão sobre o **total** (espaço + comodidades); opcionalmente destaque pago na busca
+**Prioridade no piloto:** agenda + catálogo honestos; demo de checkout para apresentar; monetizar de verdade depois.
 
-### MVP vs fase de pagamento
+## Hipóteses de monetização
 
-- **MVP:** total no pedido é **cotação/estimativa** (sem cobrança)
-- **Fase posterior:** cobrança real sobre o mesmo modelo de composição
-
-### Por que isso importa
-
-- Filtro/carrinho de comodidades → lead mais quente e ticket maior
-- Parceiro ACIT concentra conversão; camada Google não monetiza reserva ([mapa-busca.md](./mapa-busca.md))
-
-## Hipóteses de monetização (a refinar pós-piloto)
-
-1. Comissão por reserva (espaço + comodidades)
+1. Comissão por reserva (espaço + comodidades [+ seguro])
 2. Assinatura do espaço/organizador
-3. Híbrido (assinatura + comissão menor)
+3. Híbrido
 4. Patrocínio / selo ACIT / destaque na busca
-
-**Prioridade no piloto:** agenda confiável + catálogo honesto de comodidades; monetizar com força depois.
 
 ## Confiança
 
-- Selo “Verificado ACIT” na busca e no perfil
-- Separação visual entre parceiro cadastrado e pin genérico Google
-- Avaliações e políticas claras na fase de conversão
+- Selo “Verificado ACIT”
+- Separação visual parceiro vs pin Google
+- Banner claro em ambiente demo de pagamento
+- Avaliações e políticas na fase de conversão
 
 ## Estado da implementação
 
-- Diretriz alinhada a comodidades; cobrança ainda fora do escopo de código do MVP.
+- Diretrizes documentadas; simulador e gateway real ainda sem código.

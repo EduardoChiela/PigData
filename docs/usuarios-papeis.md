@@ -12,14 +12,15 @@
 ## Responsabilidades (produto)
 
 ### Cliente final
-- Buscar por data, mapa e filtros
-- Solicitar/reservar
+- Buscar por cidade, data/período/horário, filtros (área, pets, comodidades…)
+- Favoritar espaços
+- Solicitar/reservar (com cotação de comodidades)
 - Receber alternativas da rede se o preferido estiver ocupado
 
 ### Espaço / núcleo
-- Cadastrar o local (assistido via Google Places ou manual) — ver [cadastro-assistido-google.md](./cadastro-assistido-google.md)
-- Completar e manter dados de locação, comodidades e fotos próprias
-- Manter agenda (livre/ocupado/bloqueios) confiável
+- Cadastrar o local (assistido via Google Places ou manual) — [cadastro-assistido-google.md](./cadastro-assistido-google.md)
+- Completar dados de locação: área, modalidades dia/hora, janelas, tomadas, pets, comodidades, fotos
+- Manter agenda confiável
 - Responder pedidos e confirmar reservas
 
 ### Organizador parceiro
