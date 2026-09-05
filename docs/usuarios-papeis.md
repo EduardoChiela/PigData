@@ -17,7 +17,8 @@
 - Receber alternativas da rede se o preferido estiver ocupado
 
 ### Espaço / núcleo
-- Manter cadastro e fotos atualizados
+- Cadastrar o local (assistido via Google Places ou manual) — ver [cadastro-assistido-google.md](./cadastro-assistido-google.md)
+- Completar e manter dados de locação, comodidades e fotos próprias
 - Manter agenda (livre/ocupado/bloqueios) confiável
 - Responder pedidos e confirmar reservas
 
