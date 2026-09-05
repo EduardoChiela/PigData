@@ -16,6 +16,20 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-05 — Comodidades formalizadas (catálogo + carrinho)
+- **Contexto:** Promover o rascunho de comodidades a documentação oficial e alinhar nomenclatura (só “comodidade”, sem add-on paralelo).
+- **Áreas:** `comodidades.md` (novo), `espacos.md`, `reservas.md`, `mapa-busca.md`, `pagamentos-confianca.md`, `visao-geral.md`, `README.md`, `rascunhos/`
+- **O que mudou:** doc oficial; rascunho removido (ponteiro em `rascunhos/README.md`); sem código ainda.
+- **Como funciona agora:** catálogo único; espaço marca e precifica; pedido com cotação estilo carrinho; classes/tipos de evento só para busca; infra básica fora do catálogo.
+- **Status:** feito (decisão de produto; catálogo ainda provisório para validar com ACIT)
+
+### 2026-09-05 — Cadastro assistido com Google Places
+- **Contexto:** Incorporar decisão de onboarding assistido (Places API New + Maps JS) à documentação do PigData.
+- **Áreas:** `cadastro-assistido-google.md` (novo), `espacos.md`, `mapa-busca.md`, `agenda-calendario.md`, `visao-geral.md`, `usuarios-papeis.md`, `README.md`
+- **O que mudou:** documentação de produto; sem código do fluxo ainda.
+- **Como funciona agora:** dono escolhe Google ou manual → Place ID + revisão de dados públicos → completa locação no PigData; Places na busca (camada C) permanece uso separado; Calendar opcional e independente.
+- **Status:** feito (decisão de produto)
+
 ### 2026-09-05 — Índice da documentação na raiz
 - **Contexto:** O README do projeto fica na raiz; evitar duplicar índice dentro de `docs/`.
 - **Áreas:** `README.md` (raiz), remoção de `docs/README.md`, regra `.cursor/rules/docs-antes-de-implementar.mdc`

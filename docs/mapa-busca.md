@@ -8,16 +8,16 @@ Descoberta **disponibilidade-first**: o usuário entra pela data e vê no mapa, 
 
 1. Entrada principal: “Quando você precisa?” (data)
 2. Capacidade / tipo de evento (opcional)
-3. Filtros de comodidades (chips): o que precisa incluso ou disponível como extra
+3. Filtros de comodidades (chips): o que o espaço oferece no catálogo
 4. Mapa + lista com indicadores de disponibilidade
 5. Clique no pin → card resumido (preço base, comodidades pedidas, selo ACIT) → pedido/reserva
 6. Se indisponível → alternativas da rede parceira ([parceiros-rede.md](./parceiros-rede.md))
 
 ## Filtros
 
-- Capacidade, bairro/região, tipo de evento, preço
-- Comodidades de estrutura (estacionamento, acessibilidade, cozinha, Wi-Fi, etc.)
-- Add-ons desejados (som, buffet, decoração…) — ver [espacos.md](./espacos.md)
+- Capacidade, bairro/região, **classe de espaço**, tipo de evento, preço
+- Comodidades do catálogo que o espaço oferece — ver [comodidades.md](./comodidades.md)
+- Atributos básicos de infraestrutura (checklist do espaço), se expostos na UI — separados do catálogo de comodidades
 - Toggle: “Só verificados ACIT”
 - Toggle (opcional, off por padrão): “Mostrar outros locais da cidade” (camada Google)
 
@@ -33,7 +33,16 @@ Descoberta **disponibilidade-first**: o usuário entra pela data e vê no mapa, 
 
 Na indisponibilidade, priorizar alternativas da rede ACIT antes de qualquer sugestão genérica.
 
-## Camada Google Maps / Places (viabilidade)
+## Provedores Google (decisão)
+
+- **Google Maps JavaScript API** — mapa interativo do PigData
+- **Places API (New)** — dois usos distintos:
+  1. **Onboarding do proprietário** (cadastro assistido) — ver [cadastro-assistido-google.md](./cadastro-assistido-google.md)
+  2. **Camada C de descoberta** (pins limitados na busca do cliente) — abaixo
+
+Não confundir: ajudar o dono a cadastrar ≠ exibir locais não cadastrados no mapa de busca.
+
+## Camada Google Maps / Places na busca (viabilidade)
 
 ### Papel no produto
 
@@ -80,11 +89,12 @@ Nome, endereço, localização, avaliação geral, fotos (com regras), tipos de 
 ## Relação com outras áreas
 
 - Consome agenda de [agenda-calendario.md](./agenda-calendario.md)
-- Lista e comodidades de [espacos.md](./espacos.md)
+- Lista, classes e comodidades: [espacos.md](./espacos.md), [comodidades.md](./comodidades.md)
+- Cadastro assistido Places: [cadastro-assistido-google.md](./cadastro-assistido-google.md)
 - Destaque e alternativas de [parceiros-rede.md](./parceiros-rede.md)
 - Monetização de add-ons em [pagamentos-confianca.md](./pagamentos-confianca.md)
 
 ## Estado da implementação
 
-- Decisões de produto documentadas; ainda sem mapa/código de busca.
-- Registrar provedor (Maps JS + Places), custos estimados do piloto e regras de geocoding quando forem definidos na implementação.
+- Decisões de produto documentadas (Maps JS + Places New; camada C limitada; cadastro assistido separado); ainda sem mapa/código de busca.
+- Na implementação: custos estimados do piloto, Field Masks, session tokens e regras de ToS/atribuição.

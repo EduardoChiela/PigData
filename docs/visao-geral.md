@@ -24,10 +24,11 @@ Plataforma estilo Airbnb/PeerSpace para **espaços de eventos**, com:
 ## Diferenciais deste projeto
 
 - **Disponibilidade-first:** entrada pela data → mapa prioriza locais livres
-- **Comodidades na busca:** filtros de estrutura + add-ons vendáveis com preço
+- **Comodidades na busca e no pedido:** catálogo único + carrinho de cotação ([comodidades.md](./comodidades.md))
+- **Cadastro assistido (Places):** dono encontra o espaço no Google e completa locação no PigData ([cadastro-assistido-google.md](./cadastro-assistido-google.md))
 - **Calendário de parceria:** “não tenho → a rede tem”
 - **Destaque ACIT verificado:** selo e prioridade no mapa/lista
-- **Mapa híbrido:** parceiros em primeiro plano; Google Places só como cobertura limitada (sem reserva)
+- **Mapa híbrido:** parceiros em primeiro plano; Google Places na busca só como cobertura limitada (sem reserva)
 - **Organizador como nó da rede**, não só cliente final
 - **Brasil-first:** WhatsApp, eventos locais, operação real dos núcleos
 
@@ -35,8 +36,8 @@ Plataforma estilo Airbnb/PeerSpace para **espaços de eventos**, com:
 
 1. Cliente escolhe a data (e opcionalmente tipo/capacidade e comodidades)
 2. Vê no mapa espaços livres da rede, com ACIT em destaque
-3. Compara opções (preço base + incluso vs extras)
-4. Solicita ou reserva (com add-ons desejados)
+3. Compara opções (preço base + comodidades inclusas/opcionais)
+4. Solicita ou reserva (com comodidades no carrinho de cotação)
 5. Se indisponível, recebe alternativas de parceiros verificados livres
 6. (Opcional) vê outros locais da cidade via Google, sem agenda/reserva na plataforma
 
@@ -45,10 +46,10 @@ Plataforma estilo Airbnb/PeerSpace para **espaços de eventos**, com:
 | Fase | Foco |
 |------|------|
 | 0 | Descoberta, piloto, regras de parceria ACIT |
-| 1 | MVP: cadastro, agenda, mapa/busca por data, comodidades básicas, pedido |
+| 1 | MVP: cadastro (Places ou manual), agenda, mapa/busca, comodidades (catálogo + carrinho cotação), pedido |
 | 2 | Rede de parceria, calendário compartilhado, destaque ACIT maduro |
-| 3 | Conversão: confirmação, pagamento (espaço + add-ons), avaliações, Instant Book |
-| 4 | Escala: catálogo de serviços, camada Google limitada se fizer sentido, métricas, outras cidades |
+| 3 | Conversão: confirmação, pagamento (espaço + comodidades), avaliações, Instant Book |
+| 4 | Escala: catálogo refinado, camada Google limitada se fizer sentido, métricas, outras cidades |
 
 ## Resumo para conversa com clientes
 

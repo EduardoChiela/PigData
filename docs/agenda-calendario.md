@@ -16,6 +16,19 @@ Fonte única da verdade: **quais datas/horários estão livres** em cada espaço
 - Se A está ocupado na data X → sugerir B, C, D parceiros livres (mesmo perfil/região quando possível)
 - Organizador vê visão multi-espaço: “opções livres no dia 15”
 
+## Google Calendar (opcional, independente do Places)
+
+O cadastro assistido via Places ([cadastro-assistido-google.md](./cadastro-assistido-google.md)) **não** conecta Calendar automaticamente.
+
+Ordem de onboarding:
+
+1. Identificar espaço (Places ou manual)
+2. Completar dados de locação no PigData
+3. Configurar disponibilidade na **agenda PigData**
+4. Opcional: conectar Google Calendar (OAuth próprio)
+
+Existir no Google Maps ≠ ter Calendar disponível. A agenda PigData é a fonte usada na busca; sync externo é complemento.
+
 ## Riscos
 
 - Agenda desatualizada destrói a confiança do produto
@@ -24,4 +37,4 @@ Fonte única da verdade: **quais datas/horários estão livres** em cada espaço
 ## Estado da implementação
 
 - Ainda sem código de agenda.
-- Documentar aqui sync com calendários externos (Google etc.) se for adotado.
+- Sync Google Calendar: previsto como opcional pós-agenda nativa; detalhar quando for implementado.

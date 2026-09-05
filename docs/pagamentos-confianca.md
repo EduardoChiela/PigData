@@ -2,7 +2,7 @@
 
 ## Objetivo (fases posteriores)
 
-Fechar o ciclo marketplace: pagamento seguro, reputação e regras claras — no estilo PeerSpace, adaptado ao Brasil — incluindo **monetização ligada a comodidades/add-ons**.
+Fechar o ciclo marketplace: pagamento seguro, reputação e regras claras — no estilo PeerSpace, adaptado ao Brasil — incluindo **monetização sobre espaço + comodidades**.
 
 ## Itens previstos
 
@@ -14,26 +14,32 @@ Fechar o ciclo marketplace: pagamento seguro, reputação e regras claras — no
 
 ## Monetização e comodidades
 
-Composição do valor para o cliente:
+Ver catálogo e carrinho em [comodidades.md](./comodidades.md).
 
-1. **Preço do espaço** (diária/hora) — base da reserva
-2. **Catálogo de add-ons do espaço** — cada comodidade vendável com preço próprio
-3. **Receita da plataforma** — preferencialmente comissão sobre o **total** (espaço + add-ons); opcionalmente destaque pago de comodidades/selo na busca
+Composição do valor:
+
+1. **Preço do espaço** (diária/hora) — base
+2. **Comodidades** selecionadas no pedido (preço por item definido pelo espaço; inclusas = R$ 0)
+3. **Receita da plataforma** — preferencialmente comissão sobre o **total** (espaço + comodidades); opcionalmente destaque pago na busca
+
+### MVP vs fase de pagamento
+
+- **MVP:** total no pedido é **cotação/estimativa** (sem cobrança)
+- **Fase posterior:** cobrança real sobre o mesmo modelo de composição
 
 ### Por que isso importa
 
-- Filtro “quero som + buffet” devolve quem vende isso → lead mais quente para o dono
-- Ticket médio sobe sem depender só da diária do salão
-- Parceiro ACIT verificado concentra a conversão; camada Google não monetiza reserva ([mapa-busca.md](./mapa-busca.md))
+- Filtro/carrinho de comodidades → lead mais quente e ticket maior
+- Parceiro ACIT concentra conversão; camada Google não monetiza reserva ([mapa-busca.md](./mapa-busca.md))
 
 ## Hipóteses de monetização (a refinar pós-piloto)
 
-1. Comissão por reserva (espaço + add-ons)
-2. Assinatura do espaço/organizador (acesso à rede e ao calendário)
+1. Comissão por reserva (espaço + comodidades)
+2. Assinatura do espaço/organizador
 3. Híbrido (assinatura + comissão menor)
-4. Patrocínio / selo ACIT / destaque de comodidades na busca
+4. Patrocínio / selo ACIT / destaque na busca
 
-**Prioridade no piloto:** adoção da agenda e cadastro honesto de comodidades; monetizar com força depois que disponibilidade e catálogo forem confiáveis.
+**Prioridade no piloto:** agenda confiável + catálogo honesto de comodidades; monetizar com força depois.
 
 ## Confiança
 
@@ -43,4 +49,4 @@ Composição do valor para o cliente:
 
 ## Estado da implementação
 
-- Diretriz de monetização por add-ons documentada; ainda fora do escopo de código do MVP inicial de pagamento.
+- Diretriz alinhada a comodidades; cobrança ainda fora do escopo de código do MVP.
