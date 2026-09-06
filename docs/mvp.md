@@ -25,8 +25,9 @@
 
 ## Estado da implementação
 
-- **Em andamento (reinício limpo):** landing `/` (T01) com hero + barra cidade/data/período; `/buscar` (T02) com filtros e cards; mock com 22 espaços em Toledo - PR (`src/lib/mock-data.ts`).
-- Ainda fora deste slice: detalhe, solicitação, painéis, mapa 3D, pagamento demo.
+- Landing `/` (T01) + `/buscar` (T02) **map-first** (mapa fundo, filtros dropdown, lista colapsável).
+- Mock: 22 espaços Toledo - PR.
+- Ainda fora: detalhe/solicitação, painéis, Photorealistic 3D, camada C Places, pagamento demo.
 
 ## Fora deste slice (ainda)
 

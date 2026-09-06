@@ -5,11 +5,11 @@
 | Camada | Tecnologia |
 |--------|------------|
 | Linguagem | **TypeScript** |
-| UI | **React 19** |
+| UI | **React 19** + **motion** (animações) |
 | App / rotas | **Vite** + **TanStack Start / Router** |
 | Estilo | **Tailwind CSS 4** (Sora/Manrope + paleta verde ACIT) |
 | Dados | **Mock** no front (`src/lib/mock-data.ts`) |
-| Mapa | **Google Maps JavaScript API** 3D com relevo (`VITE_GOOGLE_MAPS_API_KEY`) — a religar na tela de busca |
+| Mapa | **Google Maps JavaScript API** vista oblíqua + pins (`VITE_GOOGLE_MAPS_API_KEY`; fallback mock sem chave) |
 | Alvos | Web responsivo (mobile + desktop) |
 
 **Código da UI:** reinício em `src/` — home + busca + mock. Demais telas do MVP entram em iterações seguintes.

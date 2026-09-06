@@ -68,7 +68,7 @@ function HomePage() {
           </div>
 
           <div className="animate-rise-delay w-full max-w-4xl">
-            <SearchBar />
+            <SearchBar layout="stacked" className="rounded-2xl bg-white/95 p-3 shadow-lg" />
             <p className="mt-3 text-sm text-white/70">
               Entrada disponibilidade-first: cidade + data + período.{" "}
               {spaces.length} espaços no mock · {acitCount} verificados ACIT.

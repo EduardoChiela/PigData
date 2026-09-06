@@ -968,6 +968,8 @@ export type SearchFilters = {
   eventType?: EventType | string;
   className?: SpaceClass | string;
   maxPrice?: number;
+  /** Texto livre (nome, bairro, comodidade…) */
+  query?: string;
   /** Se true, inclui indisponíveis (padrão: só livres/parciais — disponibilidade-first) */
   includeUnavailable?: boolean;
 };
@@ -1036,6 +1038,23 @@ export function filterSpaces(filters: SearchFilters = {}): ListedSpace[] {
       s.classes.includes(filters.className as SpaceClass),
     );
   }
+  if (filters.query?.trim()) {
+    const q = filters.query.trim().toLowerCase();
+    list = list.filter((s) => {
+      const hay = [
+        s.name,
+        s.region,
+        s.address,
+        s.blurb,
+        ...s.classes,
+        ...s.eventTypes,
+        ...s.amenities.map((a) => a.name),
+      ]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
+    });
+  }
 
   const rank = (s: ListedSpace) => {
     const acit = s.acitVerified ? 0 : 1;
@@ -1048,6 +1067,39 @@ export function filterSpaces(filters: SearchFilters = {}): ListedSpace[] {
 
 export function getSpaceBySlug(slug: string) {
   return spaces.find((s) => s.slug === slug);
+}
+
+/** Fotos extras para galeria do detalhe (mock — fotos próprias do dono no produto real). */
+const galleryPool = [
+  "photo-1519167758481-83f29da8c2b4",
+  "photo-1464366400600-7168b8af9bc3",
+  "photo-1464146072230-91cabc968266",
+  "photo-1497366216548-37526070297c",
+  "photo-1492684223066-81342ee5ff30",
+  "photo-1511795409834-ef04bbd58670",
+  "photo-1478146896981-b80fe463b330",
+  "photo-1505373877841-8d25f7d46678",
+  "photo-1414235077428-338989a2e8c0",
+  "photo-1556761175-5973dc0f32e7",
+  "photo-1522771739844-6a9f6d5f14af",
+  "photo-1560448204-e02f11c3d0e2",
+] as const;
+
+export function getSpaceGallery(space: Space, count = 5): string[] {
+  let hash = 0;
+  for (let i = 0; i < space.slug.length; i++) {
+    hash = (hash * 31 + space.slug.charCodeAt(i)) >>> 0;
+  }
+  const mainPath = space.image.split("?")[0];
+  const extras: string[] = [];
+  for (let i = 0; extras.length < count - 1 && i < galleryPool.length * 2; i++) {
+    const id = galleryPool[(hash + i * 5) % galleryPool.length]!;
+    const url = img(id, `${space.slug}-g${i}`);
+    if (url.split("?")[0] === mainPath) continue;
+    if (extras.some((e) => e.split("?")[0] === url.split("?")[0])) continue;
+    extras.push(url);
+  }
+  return [space.image, ...extras];
 }
 
 export function acitAlternatives(slug: string, date?: string) {

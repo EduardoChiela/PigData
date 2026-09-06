@@ -16,6 +16,46 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-05 — Painel de detalhe do espaço (T03 na busca)
+- **Contexto:** Ao selecionar um espaço na lista, exibir perfil completo estilo Airbnb sem fechar a listagem.
+- **Áreas:** `espacos.md`, `fluxo-telas.md`, `mapa-busca.md`
+- **O que mudou:** `SpaceDetailPanel`; galeria mock (`getSpaceGallery`); `/buscar` abre painel à direita da lista (~80% da área restante).
+- **Como funciona agora:** clique no card ou pin abre o detalhe (galeria, infra, comodidades incluso/opcional, regras, preço); lista permanece aberta para trocar de espaço; CTA de pedido aguarda T04.
+- **Status:** feito (protótipo)
+
+### 2026-09-05 — Motion + search stacked
+- **Contexto:** Expandida deve manter campo de texto em cima e detalhes embaixo; animar UI; filtros sem drop shadow.
+- **Áreas:** `stack.md`, `fluxo-telas.md`
+- **O que mudou:** dep `motion`; `SearchBar` layout stacked; animações na busca/lista/filtros; botão Filtros sem sombra.
+- **Status:** feito
+
+### 2026-09-05 — Busca: chip Material + lista branca mais larga
+- **Contexto:** Minimizado deve ser só lupa + campo de texto, centralizado; fundos off-white incomodavam.
+- **Áreas:** `fluxo-telas.md`
+- **O que mudou:** chip de busca estilo Material (expandir ao focar); painel expandido com q/data/período; sidebar 26rem e fundo branco; filtro por texto livre no mock.
+- **Status:** feito
+
+### 2026-09-05 — Busca: UI limpa (busca colapsável, pins, tags)
+- **Contexto:** Reduzir ruído sobre o mapa; melhorar contraste e leitura da lista; destacar diferenciais.
+- **Áreas:** `fluxo-telas.md`, `mapa-busca.md`, `comodidades.md`
+- **O que mudou:** busca colapsável; filtros limpos ao lado da lista; botões creme/âmbar de alto contraste; pins teardrop (ACIT verde claro, demais cinza); `AmenityTags` reutilizável nos cards.
+- **Como funciona agora:** mapa permanece protagonista; cidade/data só na busca colapsável; comodidades aparecem como tags coloridas.
+- **Status:** feito (protótipo)
+
+### 2026-09-05 — Busca map-first (lista colapsável + filtros dropdown)
+- **Contexto:** Layout em 3 colunas apertava o mapa; priorizar o mapa como superfície principal.
+- **Áreas:** `fluxo-telas.md`, `mapa-busca.md`, `mvp.md`
+- **O que mudou:** `/buscar` com mapa full-bleed; filtros em painel dropdown; lista lateral colapsável (`SpaceCard` compacto); footer oculto em `/buscar`.
+- **Como funciona agora:** o mapa ocupa o viewport; busca/filtros flutuam no topo; a lista abre/fecha sem perder o contexto do mapa.
+- **Status:** feito (protótipo)
+
+### 2026-09-05 — Mapa oblíquo na busca (pins, sem prédios texturizados)
+- **Contexto:** Implementar mapa na T02 com vista isométrica/oblíqua; sem recolorir malha fotorealística — só posição + pins dos espaços do site.
+- **Áreas:** `mapa-busca.md`, `stack.md`, `mvp.md`, `fluxo-telas.md`, `busca-locacao.md`
+- **O que mudou:** `src/components/spaces-map.tsx` (Google hybrid tilt 45° + AdvancedMarker; fallback mock); `/buscar` em split lista + mapa com sync de seleção.
+- **Como funciona agora:** resultados filtrados aparecem como pins (ACIT maiores); clique no pin ou no card seleciona; sem chave Google usa mapa mock. Camada C e Photorealistic 3D ficam para depois.
+- **Status:** feito (protótipo)
+
 ### 2026-09-05 — Reinício: landing + busca + mock Toledo
 - **Contexto:** Código antigo apagado por desalinhamento com regras de negócio; reconstruir a partir de `docs/`, começando pela superfície de entrada.
 - **Áreas:** `fluxo-telas.md`, `busca-locacao.md`, `espacos.md`, `comodidades.md`, `mvp.md`, `stack.md`, `README.md`

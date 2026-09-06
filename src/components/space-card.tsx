@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { MapPin, PawPrint, ShieldCheck, Users } from "lucide-react";
+import { AmenityTags } from "@/components/amenity-tags";
 import type { ListedSpace } from "@/lib/mock-data";
 import { brl } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -14,11 +15,63 @@ export function SpaceCard({
   space,
   searchDate,
   searchPeriod,
+  compact = false,
+  onSelect,
 }: {
   space: ListedSpace;
   searchDate?: string;
   searchPeriod?: string;
+  compact?: boolean;
+  onSelect?: (slug: string) => void;
 }) {
+  if (compact) {
+    return (
+      <button
+        type="button"
+        onClick={() => onSelect?.(space.slug)}
+        className="group flex w-full gap-3 overflow-hidden rounded-xl border border-border/70 bg-white p-2.5 text-left shadow-sm transition hover:border-primary/40 hover:shadow-md"
+      >
+        <div className="relative size-[5.25rem] shrink-0 overflow-hidden rounded-lg bg-muted">
+          <img
+            src={space.image}
+            alt=""
+            className="size-full object-cover"
+            loading="lazy"
+          />
+          {space.acitVerified ? (
+            <span className="absolute left-1 top-1 rounded bg-[var(--forest)] px-1 py-0.5 text-[0.6rem] font-bold text-[var(--leaf)]">
+              ACIT
+            </span>
+          ) : null}
+        </div>
+        <div className="min-w-0 flex-1 py-0.5">
+          <h3 className="truncate font-display text-base font-semibold tracking-tight">
+            {space.name}
+          </h3>
+          <p className="mt-0.5 truncate text-sm text-muted-foreground">
+            {space.region}
+          </p>
+          <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-0.5">
+              <Users className="size-3.5" />
+              {space.capacity}
+            </span>
+            <span>{space.rentalAreaM2} m²</span>
+            {space.allowsPets ? <PawPrint className="size-3.5" /> : null}
+          </div>
+          <AmenityTags
+            amenities={space.amenities}
+            limit={2}
+            className="mt-2"
+          />
+          <p className="mt-1.5 font-display text-base font-semibold text-foreground">
+            {brl(space.basePrice)}
+          </p>
+        </div>
+      </button>
+    );
+  }
+
   return (
     <article className="group overflow-hidden rounded-2xl border border-border/80 bg-card shadow-[0_12px_40px_-28px_rgba(20,40,30,0.55)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_48px_-24px_rgba(20,40,30,0.55)]">
       <Link
@@ -70,6 +123,7 @@ export function SpaceCard({
           <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
             {space.blurb}
           </p>
+          <AmenityTags amenities={space.amenities} limit={4} size="md" />
           <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1">
               <Users className="size-3.5" />

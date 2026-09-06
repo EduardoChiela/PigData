@@ -27,7 +27,7 @@ Stack: [`docs/stack.md`](./docs/stack.md) · Slice MVP: [`docs/mvp.md`](./docs/m
 | Rota | Tela |
 |------|------|
 | `/` | Landing (T01) — hero + busca disponibilidade-first |
-| `/buscar` | Resultados (T02) — filtros + cards mock |
+| `/buscar` | Resultados (T02) — mapa full-bleed + filtros dropdown + lista colapsável |
 
 Próximas (ainda não): `/espacos/$slug`, `/reservar/$slug`, `/solicitacoes/$id`, `/pagar/$id`, `/minhas-reservas`, `/favoritos`, `/cadastrar`, `/painel`, `/organizador`.
 

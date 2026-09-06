@@ -129,4 +129,4 @@ Filtros de comodidade na busca usam o que o espaço **oferece** no catálogo ([m
 
 ## Estado da implementação
 
-- Catálogo mestre e ofertas por espaço no mock. Carrinho de cotação no pedido ainda não.
+- Catálogo mestre e ofertas por espaço no mock. Tags de comodidade na UI (`AmenityTags`) em cards da busca (reutilizável). Carrinho de cotação no pedido ainda não.

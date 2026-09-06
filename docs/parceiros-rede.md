@@ -27,4 +27,4 @@ Pins Google **não** são parceiros: não têm selo, agenda nem reserva na plata
 
 ## Estado da implementação
 
-- Selo e prioridade ACIT nos cards/lista do reinício. Alternativas na indisponibilidade ainda não.
+- Selo e prioridade ACIT nos cards/lista/mapa (pins maiores). Alternativas na indisponibilidade ainda não.

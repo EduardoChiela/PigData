@@ -70,4 +70,6 @@ Detalhe completo em [comodidades.md](./comodidades.md). Resumo:
 
 ## Estado da implementação
 
-- Perfis mock em `src/lib/mock-data.ts` (22 espaços Toledo) com campos do MVP. Cadastro assistido / detalhe ainda não.
+- Perfis mock em `src/lib/mock-data.ts` (22 espaços Toledo) com campos do MVP.
+- Detalhe (T03) no mapa: painel lateral em `/buscar` (`SpaceDetailPanel`) com galeria, perfil completo e CTA (pedido ainda pendente).
+- Cadastro assistido ainda não.

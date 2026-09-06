@@ -59,10 +59,11 @@ Hero com busca rápida disponibilidade-first: Onde (cidade) | Data | Período (o
 
 ### T02 — Busca / resultados
 
-Filtros (ACIT, capacidade, área, pets, comodidades, preço) + **mapa 3D com relevo** + cards.
+**Layout atual:** mapa full-bleed; **busca colapsável** (chip resumo → expandir); **filtros** dropdown limpo ao lado da lista; **lista colapsável** com cards + tags de comodidades.
 
 - Só espaços **disponíveis** no período  
 - Destaque verificados ACIT; mapa prioriza parceiros  
+- Pins: ACIT verde claro com contorno; demais cinza  
 - Alterar data/filtros sem reiniciar tudo  
 - Google Places: cobertura limitada, **sem** agenda/reserva na plataforma ([mapa-busca.md](./mapa-busca.md))
 
@@ -70,7 +71,7 @@ Filtros (ACIT, capacidade, área, pets, comodidades, preço) + **mapa 3D com rel
 
 Galeria, selo ACIT, endereço, capacidade, área, tipos de evento, comodidades/atributos, regras, preço base, favoritar → **Escolher data e solicitar** → T04.
 
-Exemplos de itens no wireframe são ilustrativos; catálogo oficial em [comodidades.md](./comodidades.md).
+No protótipo atual: painel à direita da lista em `/buscar` (~80% do espaço restante sobre o mapa); a lista permanece aberta para trocar de espaço. Exemplos de itens no wireframe são ilustrativos; catálogo oficial em [comodidades.md](./comodidades.md).
 
 ### T04 — Data, período e evento
 
@@ -183,4 +184,6 @@ Solicitação criada → Aguardando resposta
 
 ## Estado da implementação
 
-- Reinício: T01 (home) e T02 (busca lista + filtros) de volta em `src/`. Mapa 3D e T03–T12 ainda pendentes.
+- T01 (home) e T02 map-first (mapa fundo + filtros dropdown + lista colapsável).
+- T03 parcial: painel de detalhe ao lado da lista em `/buscar` (galeria + perfil; CTA de pedido ainda sem T04).
+- Photorealistic 3D e T04–T12 ainda pendentes.

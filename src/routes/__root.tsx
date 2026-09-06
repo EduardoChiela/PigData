@@ -3,11 +3,13 @@ import {
   Outlet,
   Scripts,
   createRootRoute,
+  useRouterState,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { APP_NAME } from "@/lib/mock-data";
+import { cn } from "@/lib/utils";
 import appCss from "@/styles.css?url";
 
 export const Route = createRootRoute({
@@ -30,14 +32,17 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const mapFullscreen = pathname.startsWith("/buscar");
+
   return (
     <RootDocument>
-      <div id="app">
+      <div id="app" className={cn(mapFullscreen && "h-dvh overflow-hidden")}>
         <SiteHeader />
-        <main className="flex-1">
+        <main className={cn("flex-1", mapFullscreen && "min-h-0")}>
           <Outlet />
         </main>
-        <SiteFooter />
+        {mapFullscreen ? null : <SiteFooter />}
       </div>
     </RootDocument>
   );

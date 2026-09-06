@@ -46,10 +46,12 @@ Na indisponibilidade, priorizar alternativas da rede ACIT antes de qualquer suge
 
 ## Provedores Google (decisão)
 
-- **Google Maps JavaScript API** — mapa interativo **3D com relevo** (Photorealistic 3D / `maps3d`; fallback híbrido inclinado)
+- **Google Maps JavaScript API** — mapa **vetorial** em vista oblíqua (`tilt` ~45° + `heading`, `roadmap` + Map ID) com **pins** nos espaços cadastrados. Sem textura/recoloração de prédios nesta fase.
+- **Photorealistic 3D / `maps3d`:** adiados; podem voltar quando a cobertura e o custo fizerem sentido.
+- **Fallback sem chave:** mapa mock isométrico local (mesmos pins) se `VITE_GOOGLE_MAPS_API_KEY` estiver vazia.
 - **Places API (New)** — dois usos distintos:
   1. **Onboarding do proprietário** (cadastro assistido) — [cadastro-assistido-google.md](./cadastro-assistido-google.md)
-  2. **Camada C de descoberta** (pins limitados na busca do cliente) — abaixo
+  2. **Camada C de descoberta** (pins limitados na busca do cliente) — abaixo (toggle off no MVP atual)
 
 Não confundir: ajudar o dono a cadastrar ≠ exibir locais não cadastrados no mapa de busca.
 
@@ -107,4 +109,5 @@ Nome, endereço, localização, avaliação geral, fotos (com regras), tipos de 
 
 ## Estado da implementação
 
-- Ordenação ACIT na lista de `/buscar` ativa. Mapa 3D / camadas A–C ainda não religados.
+- `/buscar`: mapa full-bleed; busca colapsável; filtros ao lado da lista; pins teardrop (ACIT verde claro / cinza); tags de comodidades nos cards.
+- Clique no card/pin abre painel de detalhe (~80% da área à frente do mapa), com a lista aberta.
