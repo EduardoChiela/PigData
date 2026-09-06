@@ -69,21 +69,46 @@ Uma tela própria do organizador (não o componente do proprietário) — mesma 
 [ ← Voltar pro calendário compartilhado ]
 ```
 
-## 6. Tela 3 — Filiados/Parceiros (gestão)
+## 6. Tela 3 — Filiados/Parceiros (gestão de homologação)
 
 ```
 👥 Filiados/Parceiros
 
+── Aguardando homologação (2) ──────────────
+┌─────────────────────────────────────────┐
+│ Espaço Corujas Coworking                 │
+│ Cadastrado em 06/09/2026 · Toledo - PR   │
+│ [ Ver cadastro completo ]                │
+│ [ Homologar ]         [ Recusar ]        │
+└─────────────────────────────────────────┘
+
+── Verificados ─────────────────────────────
 ┌─────────────────────────────────────────┐
 │ Salão Vila Verde                         │
 │ ✓ Verificado ACIT                        │
 │ [ Remover selo ]                         │
-├─────────────────────────────────────────┤
-│ Espaço Corujas Coworking                 │
-│ Aguardando homologação                   │
-│ [ Homologar ]   [ Recusar ]              │
 └─────────────────────────────────────────┘
 ```
+
+### Como isso se conecta ao código já existente
+
+O cadastro de espaço (`SpaceRegistrationWizard` + `src/lib/space-registration.ts`) já publica cada espaço novo com:
+
+```ts
+export type PublishedSpaceListing = {
+  ...
+  status: "aguardando_homologacao"; // hoje só existe este valor
+  ...
+};
+```
+
+Tudo fica no mesmo `localStorage` (`agora.mock.ownerListings`), só filtrado por `ownerId` na função `listOwnerListings`. Para o painel do organizador:
+
+1. **Ampliar o tipo do status**: `"aguardando_homologacao" | "verificado" | "recusado"`
+2. **Nova função de leitura**, sem filtro por dono: `listPendingHomologacoes()` — retorna todos os listings com `status === "aguardando_homologacao"`, de qualquer parceiro
+3. **Nova função de escrita**: `updateListingStatus(listingId, status)` — usada pelos botões "Homologar" (→ `"verificado"`) e "Recusar" (→ `"recusado"`)
+4. **Efeito visível pro parceiro**: a aba "Meus anúncios" do `OwnerPanel` já mostra o status do espaço — ao ser homologado, passa a exibir o selo "Verificado ACIT" automaticamente, sem o parceiro precisar fazer nada
+5. **Efeito na busca/mapa**: um espaço `"verificado"` entra na **camada A** (destaque ACIT) descrita em `docs/mapa-busca.md` e `docs/parceiros-rede.md`; enquanto `"aguardando_homologacao"`, não aparece na busca pública ainda (só pro próprio dono, na aba Meus anúncios)
 
 ## 7. Tela 4 — Comunicação direta com parceiros
 
@@ -101,6 +126,7 @@ Selecionar espaço: [ Salão Vila Verde ▼ ]
 2. Organizador tem **acesso de leitura a todos os calendários de todos os espaços da rede**, não uma lista restrita
 3. **Lista de espaços** como visão principal (não grade consolidada)
 4. Organizador **não bloqueia data, não aceita/recusa reserva** — só visualiza
+5. Organizador **aceita ou recusa a homologação** (selo de verificação) dos espaços recém-cadastrados — ação exclusiva dele, o parceiro só solicita ao publicar o cadastro
 
 ## 9. Relação com os docs existentes
 
@@ -108,6 +134,8 @@ Selecionar espaço: [ Salão Vila Verde ▼ ]
 - Papéis do produto: `docs/usuarios-papeis.md`
 - Painel do proprietário (intocado): `docs/rascunhos/painel-proprietario.md`
 - Regra de agenda desatualizada: `docs/espacos.md`
+- Cadastro/status de homologação: `src/lib/space-registration.ts`, `formulario-cadastro-espaco.md`
+- Selo/destaque na busca: `docs/mapa-busca.md`, `docs/parceiros-rede.md`
 
 ---
 *Gerado a partir da conversa de definição de produto — reflete decisões até o momento, sujeito a mudança até ser formalizado nos docs oficiais do repositório.*
