@@ -46,7 +46,7 @@ Na indisponibilidade, priorizar alternativas da rede ACIT antes de qualquer suge
 
 ## Provedores Google (decisão)
 
-- **Google Maps JavaScript API** — mapa interativo da plataforma
+- **Google Maps JavaScript API** — mapa interativo **3D com relevo** (Photorealistic 3D / `maps3d`; fallback híbrido inclinado)
 - **Places API (New)** — dois usos distintos:
   1. **Onboarding do proprietário** (cadastro assistido) — [cadastro-assistido-google.md](./cadastro-assistido-google.md)
   2. **Camada C de descoberta** (pins limitados na busca do cliente) — abaixo
@@ -107,5 +107,4 @@ Nome, endereço, localização, avaliação geral, fotos (com regras), tipos de 
 
 ## Estado da implementação
 
-- Decisões de produto documentadas; ainda sem mapa/código de busca.
-- Na implementação: custos do piloto Places, Field Masks, session tokens, ToS.
+- Ordenação ACIT na lista de `/buscar` ativa. Mapa 3D / camadas A–C ainda não religados.

@@ -175,5 +175,4 @@ Busca → cidade → período (dia ou horário) → filtros (área, capacidade, 
 
 ## Estado da implementação
 
-- Definição funcional documentada; ainda sem código destas features.
-- Priorizar cidade, m², favoritos, janelas, tomadas, pets antes de locação por horário e seguro real.
+- Mock + filtros básicos na `/buscar` (cidade, data, ACIT, pets, capacidade, evento, classe). Favoritos, mapa e locação por horário fino ainda pendentes.

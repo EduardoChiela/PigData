@@ -27,5 +27,4 @@ Pins Google **não** são parceiros: não têm selo, agenda nem reserva na plata
 
 ## Estado da implementação
 
-- Regras de destaque documentadas; ainda sem modelo de vínculos/parceria no código.
-- Regras de consentimento (quem aparece como alternativa de quem) devem ser fechadas com a ACIT e registradas aqui.
+- Selo e prioridade ACIT nos cards/lista do reinício. Alternativas na indisponibilidade ainda não.

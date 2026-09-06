@@ -48,4 +48,4 @@ Composição:
 
 ## Estado da implementação
 
-- Diretrizes documentadas; simulador e gateway real ainda sem código.
+- Diretrizes documentadas; gateway real ainda sem código. Simulador demo também foi removido com o `src/`.

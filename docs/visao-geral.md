@@ -9,7 +9,7 @@ Quem busca local para evento na cidade precisa contatar estabelecimentos um a um
 Plataforma estilo Airbnb/PeerSpace para **espaços de eventos**, com:
 
 1. Disponibilidade em tempo real
-2. Mapa interativo
+2. Mapa interativo **3D com relevo**
 3. Calendário compartilhado entre parceiros (rede ACIT)
 4. Fluxo de pedido/reserva sem recomeçar a busca do zero
 
@@ -49,8 +49,8 @@ Base de telas: [fluxo-telas.md](./fluxo-telas.md) (não definitivo).
 
 | Fase | Foco |
 |------|------|
-| 0 | Descoberta, piloto, regras ACIT; nome comercial a definir ([nomenclatura.md](./nomenclatura.md)) |
-| 1 | Cadastro, agenda, busca, comodidades, **solicitação + acompanhamento** (wireframe base); pagamento demo se necessário |
+| 0 | Descoberta, piloto **Toledo - PR**, regras ACIT; nome comercial a definir ([nomenclatura.md](./nomenclatura.md)) |
+| 1 | Protótipo web responsivo (mock): cadastro visual, agenda, busca, solicitação — [mvp.md](./mvp.md), [stack.md](./stack.md) |
 | 2 | Rede de parceria, fila de interesse madura, calendário compartilhado, locação por horário |
 | 3 | Pagamento real pós-aprovação, seguro com parceiro, avaliações, Instant Book (se houver) |
 | 4 | Escala, métricas, outras cidades |
