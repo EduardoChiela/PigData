@@ -45,5 +45,4 @@ Existir no Google Maps ≠ Calendar disponível. A agenda da plataforma é a fon
 
 ## Estado da implementação
 
-- Modalidades dia/horário definidas em produto; ainda sem código de agenda.
-- Sync Google Calendar: opcional pós-agenda nativa.
+- Código do protótipo removido (`src/` apagado). Agenda mock/Calendar continuam a spec.

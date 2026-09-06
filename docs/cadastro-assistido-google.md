@@ -261,4 +261,4 @@ Places API (New), Autocomplete (New), Place Details (New), Place IDs, Field Mask
 
 ## Estado da implementação
 
-- Decisão de produto documentada; ainda sem código do fluxo de cadastro assistido.
+- Código do protótipo removido (`src/` apagado). Fluxo de cadastro assistido continua a spec.

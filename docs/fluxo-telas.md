@@ -55,11 +55,11 @@ Início → Buscar (data/período + local + filtros) → Resultados (lista + map
 
 ### T01 — Página inicial
 
-Busca rápida: Onde? | Data | Período → **Buscar espaços** → T02.
+Hero com busca rápida disponibilidade-first: Onde (cidade) | Data | Período (ou horário) → **Buscar espaços** → T02. Mapa 3D com relevo na home como prévia da cobertura.
 
 ### T02 — Busca / resultados
 
-Filtros (ACIT, capacidade, área, pets, comodidades, preço) + mapa + cards.
+Filtros (ACIT, capacidade, área, pets, comodidades, preço) + **mapa 3D com relevo** + cards.
 
 - Só espaços **disponíveis** no período  
 - Destaque verificados ACIT; mapa prioriza parceiros  
@@ -183,5 +183,4 @@ Solicitação criada → Aguardando resposta
 
 ## Estado da implementação
 
-- Wireframe base documentado; UI e fluxos ainda sujeitos a validação.
-- Ao implementar telas, atualizar este arquivo e [reservas.md](./reservas.md) se estados mudarem.
+- Reinício: T01 (home) e T02 (busca lista + filtros) de volta em `src/`. Mapa 3D e T03–T12 ainda pendentes.

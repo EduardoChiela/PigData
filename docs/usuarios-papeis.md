@@ -37,5 +37,4 @@
 
 ## Estado da implementação
 
-- Ainda sem autenticação/código de papéis.
-- Ao implementar auth e permissões, registrar aqui as regras concretas (quem pode criar o quê).
+- Código do protótipo removido (`src/` apagado). Papéis continuam definidos neste documento.

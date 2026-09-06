@@ -1,36 +1,58 @@
 # PigData (codinome) — Plataforma de Espaços para Eventos (ACIT)
 
-> **Nome do app:** a definir. **PigData** é o codinome/repositório atual — ver [`docs/nomenclatura.md`](./docs/nomenclatura.md).
+> **Nome do app (UI):** Espaços ACIT (comercial a definir) — [`docs/nomenclatura.md`](./docs/nomenclatura.md).  
+> **Cidade piloto:** Toledo - PR.  
+> **Base visual:** Tagvenue (hero + barra de busca) + paleta verde ACIT.
 
-Índice da documentação. Detalhes em [`docs/`](./docs/). **Antes de implementar**, leia as áreas envolvidas e registre em [`docs/IMPLEMENTACAO.md`](./docs/IMPLEMENTACAO.md).
+Documentação de produto em [`docs/`](./docs/). Protótipo web mock em `src/`.
 
-## Como usar
+## Rodar o protótipo
 
-1. Identifique as partes do sistema tocadas.
-2. Leia os arquivos abaixo + histórico recente em `docs/IMPLEMENTACAO.md`.
-3. Implemente.
-4. Atualize os docs da área + entrada em `docs/IMPLEMENTACAO.md`.
+```sh
+npm install
+npm run dev
+```
+
+Stack: [`docs/stack.md`](./docs/stack.md) · Slice MVP: [`docs/mvp.md`](./docs/mvp.md)
+
+## Como usar a documentação
+
+1. Identifique as áreas tocadas (`README` / `docs/`).
+2. Leia os arquivos + `docs/IMPLEMENTACAO.md`.
+3. Implemente (UI mock ok na apresentação).
+4. Atualize docs da área + entrada em `IMPLEMENTACAO.md`.
+
+## Rotas atuais
+
+| Rota | Tela |
+|------|------|
+| `/` | Landing (T01) — hero + busca disponibilidade-first |
+| `/buscar` | Resultados (T02) — filtros + cards mock |
+
+Próximas (ainda não): `/espacos/$slug`, `/reservar/$slug`, `/solicitacoes/$id`, `/pagar/$id`, `/minhas-reservas`, `/favoritos`, `/cadastrar`, `/painel`, `/organizador`.
 
 ## Mapa dos documentos
 
 | Arquivo | Parte do sistema |
 |---------|------------------|
-| [nomenclatura.md](./docs/nomenclatura.md) | Codinome PigData vs nome comercial do app |
-| [visao-geral.md](./docs/visao-geral.md) | Problema, proposta, fluxo, fases |
-| [usuarios-papeis.md](./docs/usuarios-papeis.md) | Cliente, espaço/núcleo, organizador, ACIT |
-| [espacos.md](./docs/espacos.md) | Cadastro e perfil do local |
-| [comodidades.md](./docs/comodidades.md) | Catálogo, precificação, carrinho no pedido |
-| [busca-locacao.md](./docs/busca-locacao.md) | Favoritos, cidade, m², dia/hora, janelas, tomadas, pets, seguro |
-| [cadastro-assistido-google.md](./docs/cadastro-assistido-google.md) | Onboarding via Google Places |
-| [agenda-calendario.md](./docs/agenda-calendario.md) | Disponibilidade e calendário compartilhado |
-| [mapa-busca.md](./docs/mapa-busca.md) | Mapa, busca, camadas ACIT vs Google |
-| [parceiros-rede.md](./docs/parceiros-rede.md) | Parceria e destaque verificado ACIT |
-| [reservas.md](./docs/reservas.md) | Solicitação → aprovação → pagamento → confirmação |
-| [fluxo-telas.md](./docs/fluxo-telas.md) | Wireframe base do fluxo do cliente (não definitivo) |
-| [pagamento-demo.md](./docs/pagamento-demo.md) | Checkout simulado para apresentações |
-| [pagamentos-confianca.md](./docs/pagamentos-confianca.md) | Monetização e pagamento real |
-| [metricas-impacto.md](./docs/metricas-impacto.md) | KPIs e impacto |
-| [IMPLEMENTACAO.md](./docs/IMPLEMENTACAO.md) | Histórico de criações e alterações |
+| [nomenclatura.md](./docs/nomenclatura.md) | Codinome vs nome comercial |
+| [stack.md](./docs/stack.md) | Tecnologias e como rodar |
+| [mvp.md](./docs/mvp.md) | Slice de apresentação |
+| [visao-geral.md](./docs/visao-geral.md) | Problema, proposta, fases |
+| [usuarios-papeis.md](./docs/usuarios-papeis.md) | Papéis |
+| [espacos.md](./docs/espacos.md) | Cadastro e perfil |
+| [comodidades.md](./docs/comodidades.md) | Catálogo e carrinho |
+| [busca-locacao.md](./docs/busca-locacao.md) | Favoritos, filtros, dia/hora… |
+| [cadastro-assistido-google.md](./docs/cadastro-assistido-google.md) | Places no onboarding |
+| [agenda-calendario.md](./docs/agenda-calendario.md) | Disponibilidade |
+| [mapa-busca.md](./docs/mapa-busca.md) | Mapa e camadas |
+| [parceiros-rede.md](./docs/parceiros-rede.md) | Rede ACIT |
+| [reservas.md](./docs/reservas.md) | Solicitação → confirmação |
+| [fluxo-telas.md](./docs/fluxo-telas.md) | Wireframe base |
+| [pagamento-demo.md](./docs/pagamento-demo.md) | Checkout simulado |
+| [pagamentos-confianca.md](./docs/pagamentos-confianca.md) | Pagamento real |
+| [metricas-impacto.md](./docs/metricas-impacto.md) | KPIs |
+| [IMPLEMENTACAO.md](./docs/IMPLEMENTACAO.md) | Histórico |
 
 ## Pitch rápido
 

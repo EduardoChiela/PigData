@@ -129,5 +129,4 @@ Filtros de comodidade na busca usam o que o espaço **oferece** no catálogo ([m
 
 ## Estado da implementação
 
-- Decisão de produto formalizada; catálogo ainda provisório (validar com ACIT).
-- Ainda sem código de catálogo / EspacoComodidade / PedidoComodidade.
+- Catálogo mestre e ofertas por espaço no mock. Carrinho de cotação no pedido ainda não.

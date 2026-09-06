@@ -70,5 +70,4 @@ Detalhe completo em [comodidades.md](./comodidades.md). Resumo:
 
 ## Estado da implementação
 
-- Cadastro assistido + comodidades + atributos de busca/locação definidos em produto; ainda sem código.
-- Na implementação: modelo com classes, tipos de evento, m², modalidades, janelas, tomadas, pets, `EspacoComodidade`, `google_place_id`.
+- Perfis mock em `src/lib/mock-data.ts` (22 espaços Toledo) com campos do MVP. Cadastro assistido / detalhe ainda não.

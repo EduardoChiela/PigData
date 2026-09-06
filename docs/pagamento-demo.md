@@ -109,4 +109,4 @@ Banner demo; zero dinheiro real; cartão aprova/recusa; PIX QR fictício + auto-
 
 ## Estado da implementação
 
-- Decisão documentada; ainda sem código do simulador.
+- Código do protótipo removido (`src/` apagado). Checkout demo continua a spec.

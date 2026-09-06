@@ -57,4 +57,4 @@ Priorizar alternativas da rede ACIT ([parceiros-rede.md](./parceiros-rede.md)).
 
 ## Estado da implementação
 
-- Modelo de estados e wireframe base documentados; ainda sem fluxo de reserva no código.
+- Código do protótipo removido (`src/` apagado). Fluxo solicitação → aprovação → pagamento continua a spec.

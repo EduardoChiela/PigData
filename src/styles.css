@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: #f3f6f2;
+  --color-foreground: #14261c;
+  --color-card: #ffffff;
+  --color-muted: #e4ebe4;
+  --color-muted-foreground: #5a6b60;
+  --color-border: #d5ddd5;
+  --color-primary: #1f6b45;
+  --color-primary-foreground: #f4faf6;
+  --color-secondary: #e8f0e6;
+  --color-secondary-foreground: #1a3d2a;
+  --color-ring: #2f9e6b;
+}
+
+:root {
+  --forest: #1a4d32;
+  --forest-deep: #0f2e1e;
+  --forest-ink: #0c1f14;
+  --leaf: #b8e07a;
+  --leaf-bright: #d4f29a;
+  --warm: #c47a3a;
+  --sand: #e7efe4;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    font-family: var(--font-sans);
+    color: var(--color-foreground);
+    background:
+      radial-gradient(1200px 500px at 10% -10%, #d7e8cf 0%, transparent 55%),
+      radial-gradient(900px 420px at 90% 0%, #f0e6d4 0%, transparent 50%),
+      var(--color-background);
+  }
+
+  #app {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@layer utilities {
+  .page-shell {
+    width: min(1120px, calc(100% - 2rem));
+    margin-inline: auto;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-soft {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-rise {
+  animation: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-rise-delay {
+  animation: rise-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+.animate-fade {
+  animation: fade-soft 1s ease both;
+}

@@ -16,6 +16,69 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-05 — Reinício: landing + busca + mock Toledo
+- **Contexto:** Código antigo apagado por desalinhamento com regras de negócio; reconstruir a partir de `docs/`, começando pela superfície de entrada.
+- **Áreas:** `fluxo-telas.md`, `busca-locacao.md`, `espacos.md`, `comodidades.md`, `mvp.md`, `stack.md`, `README.md`
+- **O que mudou:** `src/` recriado com home (T01), `/buscar` (T02), header/footer, barra de busca disponibilidade-first, e `mock-data.ts` com 22 espaços em Toledo - PR (ACIT, comodidades, agenda mock).
+- **Como funciona agora:** cliente escolhe cidade/data/período na home → lista só disponíveis com ACIT primeiro; filtros ACIT/pets/capacidade/evento/classe. Sem solicitação/pagamento ainda.
+- **Status:** feito (base); mapa e T03+ pendentes
+
+### 2026-09-05 — Código do protótipo apagado
+- **Contexto:** Pedido explícito de remover o código da UI (as milhares de linhas em `src/`).
+- **Áreas:** `README.md`, `stack.md`, `mvp.md`, e seções “Estado da implementação” das áreas do produto
+- **O que mudou:** pasta `src/` inteira removida (rotas, componentes, mock, mapa, estilos).
+- **Como funciona agora:** o repositório fica só com documentação de produto. Não há `npm run dev` até recriar a UI a partir de `docs/`.
+- **Status:** feito
+
+### 2026-09-05 — Lixo duplicado removido
+- **Contexto:** Ainda restava o rascunho antigo de busca (~1.000 linhas), config shadcn e boilerplate Lovable/Bun.
+- **Áreas:** `IMPLEMENTACAO.md`
+- **O que mudou:** apagados `docs/novas-funcionalidades-busca-locacao-pigdata.md`, `components.json`, `src/routes/README.md`, `roadmap.md`, `bunfig.toml`, `bun.lock`.
+- **Como funciona agora:** busca/locação só em `docs/busca-locacao.md`; o app continua npm + as telas do protótipo.
+- **Status:** feito
+
+### 2026-09-05 — Remoção do kit shadcn não usado
+- **Contexto:** O dump Lovable trazia dezenas de componentes UI e deps (sidebar, charts, menus…) que o protótipo não importa — milhares de linhas mortas.
+- **Áreas:** `stack.md`
+- **O que mudou:** apagados os `src/components/ui/*` não usados (fica `button` + `sonner`); CSS sem tokens de sidebar/chart/dark; saíram Radix/recharts/cmdk/etc. e o React Query sem fetch.
+- **Como funciona agora:** as telas continuam iguais; o código do app é só rotas, mapa, mock e os dois primitivos de UI.
+- **Status:** feito
+
+### 2026-09-05 — UI Tagvenue + mapa 3D com relevo
+- **Contexto:** Inspirar home/busca no Tagvenue (hero split, barra de busca, lista + mapa) sem copiar o fluxo deles; o mapa precisa de relevo 3D.
+- **Áreas:** `mapa-busca.md`, `stack.md`, `mvp.md`, `fluxo-telas.md`
+- **O que mudou:** `spaces-map.tsx` (Photorealistic 3D HYBRID + fallback híbrido inclinado); home hero + header; busca em split viewport; cards mais fotográficos.
+- **Como funciona agora:** Entrada continua cidade + data/período; mapa tenta `gmp-map-3d` com pins no terreno (ACIT maior); se a API 3D falhar, usa satélite inclinado. Fluxo T01–T12 inalterado.
+- **Status:** feito (protótipo)
+
+### 2026-09-05 — Protótipo alinhado à documentação (sem o zip Lovable)
+- **Contexto:** Ignorar o export `espaço-em-rede.zip` e construir o site a partir de `docs/` (fluxo T01–T12, busca/locação, comodidades, reservas, pagamento demo, cadastro assistido).
+- **Áreas:** `mvp.md`, `fluxo-telas.md`, `reservas.md`, `busca-locacao.md`, `espacos.md`, `comodidades.md`, `mapa-busca.md`, `pagamento-demo.md`, `cadastro-assistido-google.md`, `agenda-calendario.md`, `parceiros-rede.md`, `usuarios-papeis.md`, `pagamentos-confianca.md`, `README.md`
+- **O que mudou:** catálogo oficial de comodidades e perfis Toledo; filtros reais no mock; favoritos; solicitação com estados persistidos; painel aprova/recusa; checkout demo; cadastro mock Google/manual; camada C no mapa (toggle).
+- **Como funciona agora:** cliente busca só disponíveis (ACIT primeiro), solicita sem pagar, espaço analisa, pagamento simulado confirma a reserva. Nome visível: Espaços ACIT (codinome do repo continua PigData).
+- **Status:** feito (protótipo)
+
+### 2026-09-05 — UI própria (Lovable só como inspiração visual)
+- **Contexto:** Não usar o export Lovable como produto; reconstruir telas a partir de `docs/` (fluxo, reservas, busca).
+- **Áreas:** rotas `src/routes/*`, header/card/footer; `stack.md`, `mvp.md`
+- **O que mudou:** home/busca/detalhe/solicitação/acompanhamento/painéis reescritos; remoção de reporting Lovable; Maps mantido.
+- **Como funciona agora:** produto alinhado ao wireframe de negócio; Lovable = cores/tipografia/referência de layout.
+- **Status:** feito (protótipo)
+
+### 2026-09-05 — Google Maps + alinhamento Lovable × docs
+- **Contexto:** Integrar Maps com chave via `.env`; revisar telas Lovable vs fluxo documentado; Calendar secret só server-side.
+- **Áreas:** `stack.md`, `IMPLEMENTACAO.md`; `src/components/spaces-map.tsx`; `buscar`, `reservar`, `espacos`, `mock-data`; `.env.example`
+- **O que mudou:** mapa real (fallback mock); solicitação em 3 passos com comodidades/cotação; filtros ACIT/pets; favoritar; Toledo no mapa.
+- **Como funciona agora:** `VITE_GOOGLE_MAPS_API_KEY` no `.env`; Calendar OAuth documentado mas não conectado.
+- **Status:** feito (protótipo)
+
+### 2026-09-05 — Base Lovable + stack TS + Toledo-PR
+- **Contexto:** Começar programação com front mockado; integrar esqueleto Lovable; cidade piloto Toledo - PR.
+- **Áreas:** `stack.md`, `mvp.md` (novos); `README.md`; app em `src/` (mock, home, busca)
+- **O que mudou:** Vite/React/TanStack/Tailwind na raiz; mocks em Toledo; docs de stack/MVP.
+- **Como funciona agora:** `npm run dev` sobe o protótipo visual; backend permanece mock.
+- **Status:** feito (protótipo)
+
 ### 2026-09-05 — Wireframe / fluxo de telas (base)
 - **Contexto:** Incorporar wireframe de fluxo do cliente (busca → solicitação → aprovação → pagamento → confirmação), marcado como base não definitiva.
 - **Áreas:** `fluxo-telas.md` (novo), `reservas.md`, `visao-geral.md`, `usuarios-papeis.md`, `README.md`
