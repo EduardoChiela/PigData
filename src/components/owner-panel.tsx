@@ -7,7 +7,7 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { OwnerAgenda } from "@/components/owner-agenda";
 import { SpaceRegistrationWizard } from "@/components/space-registration-wizard";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import {
   acceptOwnerRequest,
   listPendingOwnerRequests,
   refuseOwnerRequest,
+  resetOwnerRequestsSeed,
   type OwnerReservationRequest,
 } from "@/lib/owner-panel-data";
 import {
@@ -29,16 +30,24 @@ import { cn } from "@/lib/utils";
 type TabId = "agenda" | "solicitacoes" | "anuncios" | "cadastrar";
 
 export function OwnerPanel({ user }: { user: MockUser }) {
-  const spaceSlugs = user.spaceSlugs ?? ["vila-verde"];
-  const ownedSpaces = spaceSlugs
-    .map((s) => getSpaceBySlug(s))
-    .filter((s): s is Space => Boolean(s));
+  const spaceSlugs = useMemo(
+    () => user.spaceSlugs ?? ["vila-verde"],
+    [user.spaceSlugs],
+  );
+  const ownedSpaces = useMemo(
+    () =>
+      spaceSlugs
+        .map((s) => getSpaceBySlug(s))
+        .filter((s): s is Space => Boolean(s)),
+    [spaceSlugs],
+  );
 
   const [tab, setTab] = useState<TabId>("agenda");
   const [activeSlug, setActiveSlug] = useState(
-    ownedSpaces[0]?.slug ?? spaceSlugs[0]!,
+    () => ownedSpaces[0]?.slug ?? spaceSlugs[0]!,
   );
   const [tick, setTick] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
   const refresh = () => setTick((n) => n + 1);
 
   const published = useMemo(
@@ -47,14 +56,13 @@ export function OwnerPanel({ user }: { user: MockUser }) {
     [user.id, tick],
   );
 
+  // Ler localStorage só no cliente (evita badge vazio por SSR / storage stale).
+  useEffect(() => {
+    setPendingCount(listPendingOwnerRequests(spaceSlugs).length);
+  }, [spaceSlugs, tick]);
+
   const activeSpace =
     ownedSpaces.find((s) => s.slug === activeSlug) ?? ownedSpaces[0];
-
-  const pending = useMemo(
-    () => listPendingOwnerRequests(spaceSlugs),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [spaceSlugs, tick],
-  );
 
   const nav = [
     { id: "agenda" as const, label: "Agenda", icon: CalendarDays },
@@ -62,7 +70,7 @@ export function OwnerPanel({ user }: { user: MockUser }) {
       id: "solicitacoes" as const,
       label: "Solicitações",
       icon: ClipboardList,
-      badge: pending.length,
+      badge: pendingCount,
     },
     { id: "anuncios" as const, label: "Meus anúncios", icon: Home },
     { id: "cadastrar" as const, label: "Cadastrar espaço", icon: Plus },
@@ -100,7 +108,7 @@ export function OwnerPanel({ user }: { user: MockUser }) {
                 >
                   <Icon className="size-4 shrink-0" />
                   <span className="flex-1">{item.label}</span>
-                  {item.badge ? (
+                  {item.badge != null && item.badge > 0 ? (
                     <span
                       className={cn(
                         "grid min-w-5 place-items-center rounded-full px-1.5 text-[0.65rem] font-bold",
@@ -130,11 +138,7 @@ export function OwnerPanel({ user }: { user: MockUser }) {
           />
         ) : null}
         {tab === "solicitacoes" ? (
-          <OwnerRequests
-            spaceSlugs={spaceSlugs}
-            tick={tick}
-            onRefresh={refresh}
-          />
+          <OwnerRequests spaceSlugs={spaceSlugs} onRefresh={refresh} />
         ) : null}
         {tab === "anuncios" ? (
           <OwnerListings
@@ -160,27 +164,44 @@ export function OwnerPanel({ user }: { user: MockUser }) {
 
 function OwnerRequests({
   spaceSlugs,
-  tick,
   onRefresh,
 }: {
   spaceSlugs: string[];
-  tick: number;
   onRefresh: () => void;
 }) {
-  const pending = useMemo(
-    () => listPendingOwnerRequests(spaceSlugs),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [spaceSlugs, tick],
-  );
+  const [pending, setPending] = useState<OwnerReservationRequest[]>([]);
+  const [feedback, setFeedback] = useState<string | null>(null);
+  const spaceKey = spaceSlugs.join("|");
 
-  function onAccept(req: OwnerReservationRequest) {
-    acceptOwnerRequest(req.id);
-    onRefresh();
+  function reload() {
+    setPending(listPendingOwnerRequests(spaceSlugs));
   }
 
-  function onRefuse(id: string) {
-    refuseOwnerRequest(id);
+  useEffect(() => {
+    reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [spaceKey]);
+
+  function onAccept(req: OwnerReservationRequest) {
+    const updated = acceptOwnerRequest(req.id);
+    reload();
     onRefresh();
+    setFeedback(
+      updated
+        ? `Solicitação de ${req.clientName} aceita — data bloqueada na agenda.`
+        : "Não foi possível aceitar a solicitação.",
+    );
+  }
+
+  function onRefuse(req: OwnerReservationRequest) {
+    const updated = refuseOwnerRequest(req.id);
+    reload();
+    onRefresh();
+    setFeedback(
+      updated
+        ? `Solicitação de ${req.clientName} recusada.`
+        : "Não foi possível recusar a solicitação.",
+    );
   }
 
   return (
@@ -194,10 +215,34 @@ function OwnerRequests({
         </p>
       </div>
 
-      {pending.length === 0 ? (
-        <p className="rounded-2xl border border-dashed border-border bg-white p-8 text-center text-sm text-muted-foreground">
-          Nenhuma solicitação pendente.
+      {feedback ? (
+        <p
+          className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-950"
+          role="status"
+        >
+          {feedback}
         </p>
+      ) : null}
+
+      {pending.length === 0 ? (
+        <div className="space-y-3 rounded-2xl border border-dashed border-border bg-white p-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            Nenhuma solicitação pendente.
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            className="font-semibold"
+            onClick={() => {
+              resetOwnerRequestsSeed();
+              reload();
+              onRefresh();
+              setFeedback("Solicitações demo restauradas.");
+            }}
+          >
+            Restaurar solicitações demo
+          </Button>
+        </div>
       ) : (
         <ul className="space-y-3">
           {pending.map((req) => {
@@ -235,7 +280,7 @@ function OwnerRequests({
                     type="button"
                     variant="outline"
                     className="font-semibold"
-                    onClick={() => onRefuse(req.id)}
+                    onClick={() => onRefuse(req)}
                   >
                     <X className="size-4" />
                     Recusar
@@ -337,9 +382,20 @@ function OwnerListings({
                 {listing.address}
               </p>
               <p className="mt-1 flex flex-wrap items-center gap-2 text-xs">
-                <span className="rounded-md bg-amber-100 px-2 py-0.5 font-semibold text-amber-950">
-                  Aguardando homologação ACIT
-                </span>
+                {listing.status === "verificado" ? (
+                  <span className="inline-flex items-center gap-1 rounded-md bg-[var(--forest)] px-2 py-0.5 font-semibold text-white">
+                    <ShieldCheck className="size-3" />
+                    Verificado ACIT
+                  </span>
+                ) : listing.status === "recusado" ? (
+                  <span className="rounded-md bg-rose-100 px-2 py-0.5 font-semibold text-rose-900">
+                    Homologação recusada
+                  </span>
+                ) : (
+                  <span className="rounded-md bg-amber-100 px-2 py-0.5 font-semibold text-amber-950">
+                    Aguardando homologação ACIT
+                  </span>
+                )}
                 <span className="text-muted-foreground">
                   {listing.capacity} pessoas · a partir de{" "}
                   {brl(listing.basePrice)}

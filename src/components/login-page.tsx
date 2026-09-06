@@ -4,6 +4,7 @@ import {
   CalendarDays,
   ClipboardList,
   LogIn,
+  Network,
   Plus,
   ShieldCheck,
 } from "lucide-react";
@@ -69,8 +70,8 @@ export function LoginPage() {
           Entrar no {APP_NAME}
         </h1>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Protótipo com duas contas mock: cliente (mapa e pedidos) e parceiro
-          ACIT (painel + mesmo mapa de busca).
+          Três contas mock: cliente (mapa), parceiro (painel do espaço) e
+          organizador ACIT (calendário da rede e homologação).
         </p>
 
         <div className="mt-8 space-y-3">
@@ -82,14 +83,18 @@ export function LoginPage() {
               key={account.id}
               type="button"
               onClick={() => quickLogin(account.id)}
-              className="flex w-full items-center gap-3 rounded-2xl border border-border bg-white p-3 text-left shadow-sm transition hover:border-primary/40 hover:shadow-md"
+              className={cn(
+                "flex w-full items-center gap-3 rounded-2xl border border-border bg-white p-3 text-left shadow-sm transition hover:border-primary/40 hover:shadow-md",
+              )}
             >
               <span
                 className={cn(
                   "grid size-11 place-items-center rounded-full text-sm font-bold",
-                  account.role === "parceiro"
-                    ? "bg-[var(--leaf)] text-[var(--ink)]"
-                    : "bg-[var(--ink)] text-white",
+                  account.role === "organizador"
+                    ? "bg-[var(--forest)] text-white"
+                    : account.role === "parceiro"
+                      ? "bg-[var(--leaf)] text-[var(--ink)]"
+                      : "bg-[var(--ink)] text-white",
                 )}
               >
                 {account.initials}
@@ -168,6 +173,16 @@ export function LoginPage() {
                   <ShieldCheck className="size-4 text-[var(--forest)]" />
                   Parceiro ACIT — painel do proprietário
                 </label>
+                <label className="flex items-center gap-2 text-sm">
+                  <input
+                    type="radio"
+                    name="role"
+                    checked={role === "organizador"}
+                    onChange={() => setRole("organizador")}
+                  />
+                  <Network className="size-4 text-[var(--forest)]" />
+                  Organizador ACIT — rede e homologação
+                </label>
               </fieldset>
             </>
           ) : null}
@@ -218,15 +233,15 @@ export function LoginPage() {
         <ul className="mt-5 space-y-2 border-t border-border pt-4 text-xs text-muted-foreground">
           <li className="flex items-center gap-2">
             <CalendarDays className="size-3.5" />
-            Parceiro abre na Agenda
+            Parceiro abre na Agenda; organizador no calendário da rede
           </li>
           <li className="flex items-center gap-2">
             <ClipboardList className="size-3.5" />
-            Solicitações com aceitar/recusar
+            Organizador homologa cadastros e só visualiza agendas
           </li>
           <li className="flex items-center gap-2">
             <Plus className="size-3.5" />
-            Cadastro de espaço = fluxo mock
+            Cadastro de espaço = fluxo mock do parceiro
           </li>
         </ul>
       </div>

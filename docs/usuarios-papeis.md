@@ -34,9 +34,11 @@
 - Homologar parceiros / selo da rede
 - Definir padrões mínimos de cadastro e atualização de agenda
 - Acompanhar métricas de impacto
+- Painel próprio (`/painel-acit`): calendários compartilhados da rede (leitura), filiados e comunicação com parceiros — [rascunhos/painel-acit.md](./rascunhos/painel-acit.md)
 
 ## Estado da implementação
 
-- Contas mock em `src/lib/mock-session.ts`: **cliente** (Ana) e **parceiro ACIT** (Marcos — Vila Verde + Salão das Corujas).
-- Login/cadastro mock em `/entrar`; após login o parceiro abre `/painel`, mas também acessa o **mapa** (`/`) como o cliente (nav Mapa + Painel).
-- Organizador parceiro (papel intermediário) ainda não.
+- Contas mock em `src/lib/mock-session.ts`: **cliente** (Ana), **parceiro ACIT** (Marcos — Vila Verde + Salão das Corujas) e **organizador ACIT** (Helena).
+- Login/cadastro mock em `/entrar`; após login: cliente → mapa; parceiro → `/painel` (também acessa mapa); organizador → `/painel-acit`.
+- Painel do organizador: calendário compartilhado (só leitura), filiados/homologação, mensagens — ver [rascunhos/painel-acit.md](./rascunhos/painel-acit.md).
+- **Organizador parceiro** (profissional de eventos, papel intermediário distinto da ACIT) ainda não.

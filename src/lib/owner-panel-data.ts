@@ -147,14 +147,19 @@ export const SEED_CALENDAR_EVENTS: OwnerCalendarEvent[] = [
 ];
 
 function readRequests(): OwnerReservationRequest[] {
-  if (typeof window === "undefined") return SEED_REQUESTS;
+  if (typeof window === "undefined") return [...SEED_REQUESTS];
   try {
     const raw = window.localStorage.getItem(REQUESTS_KEY);
     if (!raw) {
       window.localStorage.setItem(REQUESTS_KEY, JSON.stringify(SEED_REQUESTS));
       return [...SEED_REQUESTS];
     }
-    return JSON.parse(raw) as OwnerReservationRequest[];
+    const parsed = JSON.parse(raw) as OwnerReservationRequest[];
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      window.localStorage.setItem(REQUESTS_KEY, JSON.stringify(SEED_REQUESTS));
+      return [...SEED_REQUESTS];
+    }
+    return parsed;
   } catch {
     return [...SEED_REQUESTS];
   }
@@ -163,6 +168,13 @@ function readRequests(): OwnerReservationRequest[] {
 function writeRequests(list: OwnerReservationRequest[]) {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(REQUESTS_KEY, JSON.stringify(list));
+}
+
+/** Força reseed das solicitações demo (útil se o storage ficou vazio). */
+export function resetOwnerRequestsSeed() {
+  if (typeof window === "undefined") return [...SEED_REQUESTS];
+  window.localStorage.setItem(REQUESTS_KEY, JSON.stringify(SEED_REQUESTS));
+  return [...SEED_REQUESTS];
 }
 
 export function listOwnerRequests(spaceSlugs: string[]) {
@@ -204,9 +216,8 @@ export function acceptOwnerRequest(id: string) {
   const list = readRequests().map((r) =>
     r.id === id ? { ...r, status: "aceita" as const } : r,
   );
-  const accepted = list.find((r) => r.id === id);
   writeRequests(list);
-  return accepted;
+  return list.find((r) => r.id === id) ?? null;
 }
 
 export function refuseOwnerRequest(id: string) {
@@ -214,6 +225,7 @@ export function refuseOwnerRequest(id: string) {
     r.id === id ? { ...r, status: "recusada" as const } : r,
   );
   writeRequests(list);
+  return list.find((r) => r.id === id) ?? null;
 }
 
 export function getBlockedDates(spaceSlug: string): string[] {

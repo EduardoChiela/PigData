@@ -3,6 +3,7 @@ import {
   eventTypes,
   spaceClasses,
   type EventType,
+  type Space,
   type SpaceClass,
 } from "@/lib/mock-data";
 
@@ -58,6 +59,11 @@ export type SpaceRegistrationDraft = {
   rules: string;
 };
 
+export type ListingStatus =
+  | "aguardando_homologacao"
+  | "verificado"
+  | "recusado";
+
 export type PublishedSpaceListing = {
   id: string;
   slug: string;
@@ -68,9 +74,13 @@ export type PublishedSpaceListing = {
   basePrice: number;
   classes: SpaceClass[];
   eventTypes: EventType[];
-  status: "aguardando_homologacao";
+  status: ListingStatus;
   createdAt: string;
   ownerId: string;
+  lat?: number;
+  lng?: number;
+  phone?: string;
+  rules?: string;
 };
 
 const LISTINGS_KEY = "agora.mock.ownerListings";
@@ -195,16 +205,43 @@ export function slugifyName(name: string) {
 }
 
 export function listOwnerListings(ownerId: string): PublishedSpaceListing[] {
+  return listAllListings().filter((l) => l.ownerId === ownerId);
+}
+
+export function listAllListings(): PublishedSpaceListing[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(LISTINGS_KEY);
     const all: PublishedSpaceListing[] = raw
       ? (JSON.parse(raw) as PublishedSpaceListing[])
       : [];
-    return all.filter((l) => l.ownerId === ownerId);
+    return all;
   } catch {
     return [];
   }
+}
+
+export function listPendingHomologacoes(): PublishedSpaceListing[] {
+  return listAllListings().filter((l) => l.status === "aguardando_homologacao");
+}
+
+export function listVerifiedListings(): PublishedSpaceListing[] {
+  return listAllListings().filter((l) => l.status === "verificado");
+}
+
+export function updateListingStatus(
+  listingId: string,
+  status: ListingStatus,
+): PublishedSpaceListing | null {
+  if (typeof window === "undefined") return null;
+  const all = listAllListings();
+  const idx = all.findIndex((l) => l.id === listingId);
+  if (idx < 0) return null;
+  const current = all[idx]!;
+  const updated: PublishedSpaceListing = { ...current, status };
+  all[idx] = updated;
+  window.localStorage.setItem(LISTINGS_KEY, JSON.stringify(all));
+  return updated;
 }
 
 export function publishSpaceDraft(
@@ -224,16 +261,50 @@ export function publishSpaceDraft(
     status: "aguardando_homologacao",
     createdAt: new Date().toISOString(),
     ownerId,
+    lat: draft.lat,
+    lng: draft.lng,
+    phone: draft.phone.trim() || undefined,
+    rules: draft.rules.trim() || undefined,
   };
   if (typeof window !== "undefined") {
-    const raw = window.localStorage.getItem(LISTINGS_KEY);
-    const all: PublishedSpaceListing[] = raw
-      ? (JSON.parse(raw) as PublishedSpaceListing[])
-      : [];
+    const all = listAllListings();
     all.unshift(listing);
     window.localStorage.setItem(LISTINGS_KEY, JSON.stringify(all));
   }
   return listing;
+}
+
+/** Converte listing homologado em Space mínimo para a busca/mapa (camada A). */
+export function verifiedListingAsSpace(listing: PublishedSpaceListing): Space {
+  return {
+    slug: listing.slug,
+    name: listing.name,
+    city: "Toledo",
+    state: "PR",
+    region: "Centro",
+    address: listing.address,
+    lat: listing.lat ?? -24.7136,
+    lng: listing.lng ?? -53.7431,
+    acitVerified: true,
+    capacity: listing.capacity,
+    rentalAreaM2: 120,
+    basePrice: listing.basePrice,
+    allowsFullDayRental: true,
+    allowsHourlyRental: false,
+    hasWindows: true,
+    windowCount: 4,
+    outlets: [{ voltage: 127, quantity: 8 }],
+    allowsPets: false,
+    classes: listing.classes,
+    eventTypes: listing.eventTypes,
+    amenities: [],
+    rules: listing.rules ?? "Regras conforme cadastro do parceiro.",
+    image: listing.image,
+    phone: listing.phone,
+    busyDates: [],
+    partialDates: [],
+    blurb: "Espaço homologado pela rede ACIT (cadastro recente).",
+  };
 }
 
 export { amenityCatalog, eventTypes, spaceClasses };

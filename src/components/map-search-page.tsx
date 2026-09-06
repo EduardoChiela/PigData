@@ -19,10 +19,16 @@ import {
   eventTypes,
   filterSpaces,
   spaceClasses,
+  withAvailability,
   type EventType,
+  type ListedSpace,
   type SpaceClass,
 } from "@/lib/mock-data";
 import type { MapSearchParams } from "@/lib/search-params";
+import {
+  listVerifiedListings,
+  verifiedListingAsSpace,
+} from "@/lib/space-registration";
 import { cn } from "@/lib/utils";
 
 const routeApi = getRouteApi("/");
@@ -51,31 +57,49 @@ export function MapSearchPage() {
   const petsOnly = search.pets === "1";
   const minCapacity = search.capacidade ? Number(search.capacidade) : undefined;
 
-  const results = useMemo(
-    () =>
-      filterSpaces({
-        city: "Toledo",
-        date,
-        period,
-        query: search.q,
-        acitOnly,
-        pets: petsOnly,
-        minCapacity:
-          minCapacity && !Number.isNaN(minCapacity) ? minCapacity : undefined,
-        eventType: search.evento as EventType | undefined,
-        className: search.classe as SpaceClass | undefined,
-      }),
-    [
+  const results = useMemo(() => {
+    const base = filterSpaces({
+      city: "Toledo",
       date,
       period,
-      search.q,
+      query: search.q,
       acitOnly,
-      petsOnly,
-      minCapacity,
-      search.evento,
-      search.classe,
-    ],
-  );
+      pets: petsOnly,
+      minCapacity:
+        minCapacity && !Number.isNaN(minCapacity) ? minCapacity : undefined,
+      eventType: search.evento as EventType | undefined,
+      className: search.classe as SpaceClass | undefined,
+    });
+    const verifiedExtra: ListedSpace[] = listVerifiedListings()
+      .filter((l) => !base.some((b) => b.slug === l.slug))
+      .map((l) => withAvailability(verifiedListingAsSpace(l), date))
+      .filter((s) => {
+        if (acitOnly && !s.acitVerified) return false;
+        if (petsOnly && !s.allowsPets) return false;
+        if (minCapacity && !Number.isNaN(minCapacity) && s.capacity < minCapacity) {
+          return false;
+        }
+        if (search.q?.trim()) {
+          const q = search.q.trim().toLowerCase();
+          const hay = `${s.name} ${s.address} ${s.blurb}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    return [...verifiedExtra, ...base].sort((a, b) => {
+      const acit = (s: ListedSpace) => (s.acitVerified ? 0 : 1);
+      return acit(a) - acit(b) || a.basePrice - b.basePrice;
+    });
+  }, [
+    date,
+    period,
+    search.q,
+    acitOnly,
+    petsOnly,
+    minCapacity,
+    search.evento,
+    search.classe,
+  ]);
 
   const selectedSlug = search.slug ?? results[0]?.slug;
   const detailSpace = search.slug

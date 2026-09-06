@@ -16,6 +16,13 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-06 — Painel do organizador ACIT
+- **Contexto:** Novo perfil institucional (Helena); calendários compartilhados e homologação — `painel-acit.md`.
+- **Áreas:** `usuarios-papeis.md`, `rascunhos/painel-acit.md`, `espacos.md`, `mapa-busca.md`, `README.md`
+- **O que mudou:** role `organizador`; `/painel-acit` (`AcitOrganizerPanel`); status de listing `verificado`/`recusado`; homologação + listings verificados no mapa; login com 3ª conta demo.
+- **Como funciona agora:** organizador vê lista da rede → agenda só leitura; homologa cadastros do parceiro; Meus anúncios reflete o selo; mapa inclui listings homologados (camada A).
+- **Status:** feito (protótipo)
+
 ### 2026-09-06 — Parceiro também acessa o mapa
 - **Contexto:** Parceiro ACIT precisa ver a mesma busca/mapa do cliente (rede, concorrência, indicação).
 - **Áreas:** `usuarios-papeis.md`, `rascunhos/painel-proprietario.md`, `fluxo-telas.md`, `README.md`
