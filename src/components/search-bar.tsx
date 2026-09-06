@@ -8,7 +8,7 @@ import {
   periods,
   type PeriodId,
 } from "@/lib/mock-data";
-import { setMockAuthenticated } from "@/lib/mock-session";
+import { loginAsMock } from "@/lib/mock-session";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -52,7 +52,7 @@ export function SearchBar({
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
-    setMockAuthenticated(true);
+    loginAsMock("cli-ana");
     void navigate({
       to: "/",
       search: {

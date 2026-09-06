@@ -37,4 +37,6 @@
 
 ## Estado da implementação
 
-- Código do protótipo removido (`src/` apagado). Papéis continuam definidos neste documento.
+- Contas mock em `src/lib/mock-session.ts`: **cliente** (Ana) e **parceiro ACIT** (Marcos — Vila Verde + Salão das Corujas).
+- Login/cadastro mock em `/entrar`; home do parceiro = `/painel` (agenda, solicitações, anúncios).
+- Organizador parceiro (papel intermediário) ainda não.

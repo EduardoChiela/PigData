@@ -5,16 +5,26 @@ import {
   RenderingType,
   useMap,
 } from "@vis.gl/react-google-maps";
-import { useEffect } from "react";
+import { useEffect, useId } from "react";
 import { PILOT_MAP_CENTER, type ListedSpace } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
 /** Map ID vetorial — necessário para tilt/heading e AdvancedMarker */
 const MAP_ID = "DEMO_MAP_ID";
 
+/** Pins: ACIT verde 3D; demais cinza flat */
 const PIN = {
-  acit: { fill: "#c8e87a", stroke: "#1a4d32", glyph: "#0f2e1e" },
-  other: { fill: "#9ca3af", stroke: "#374151", glyph: "#ffffff" },
+  acit: {
+    stroke: "#14532d",
+    glyph: "#ffffff",
+    ring: "#fef9c3",
+  },
+  other: {
+    fill: "#9ca3af",
+    stroke: "#4b5563",
+    glyph: "#ffffff",
+    dot: "#6b7280",
+  },
 } as const;
 
 type Props = {
@@ -43,7 +53,7 @@ function MapCamera({ selected }: { selected?: ListedSpace }) {
   return null;
 }
 
-/** Marcador estilo pin do Google Maps (teardrop) */
+/** Marcador teardrop — ACIT: verde com gradiente 3D; demais: cinza flat */
 function MapPinGlyph({
   acit,
   selected,
@@ -51,37 +61,107 @@ function MapPinGlyph({
   acit: boolean;
   selected: boolean;
 }) {
-  const tone = acit ? PIN.acit : PIN.other;
-  const scale = selected ? 1.2 : acit ? 1.12 : 1;
+  const uid = useId().replace(/:/g, "");
+  const gradId = `pin-grad-${uid}`;
+  const scale = selected ? 1.22 : acit ? 1.14 : 1;
   const w = 36 * scale;
   const h = 48 * scale;
 
   return (
-    <svg
-      width={w}
-      height={h}
-      viewBox="0 0 36 48"
-      className="drop-shadow-md"
-      aria-hidden
+    <div
+      className="relative"
+      style={{
+        filter: acit
+          ? "drop-shadow(0 5px 4px rgba(20, 60, 30, 0.35)) drop-shadow(0 2px 1px rgba(10, 30, 15, 0.22))"
+          : "drop-shadow(0 3px 2px rgba(30, 30, 30, 0.28)) drop-shadow(0 1px 1px rgba(20, 20, 20, 0.16))",
+      }}
     >
-      <path
-        d="M18 1.5C9.44 1.5 2.5 8.44 2.5 17c0 11.25 15.5 28.5 15.5 28.5S33.5 28.25 33.5 17C33.5 8.44 26.56 1.5 18 1.5z"
-        fill={tone.fill}
-        stroke={tone.stroke}
-        strokeWidth={acit ? 2.75 : 2}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute bottom-0 left-1/2 h-[5px] w-[15px] -translate-x-1/2 rounded-[100%] bg-black/35 blur-[2.5px]"
+        style={{ opacity: selected ? 0.5 : 0.36 }}
       />
-      <circle cx="18" cy="17" r="6.5" fill={tone.glyph} opacity={0.92} />
-      {acit ? (
-        <circle
-          cx="18"
-          cy="17"
-          r="3.2"
-          fill={tone.fill}
-          stroke={tone.stroke}
-          strokeWidth="1.2"
+      <svg
+        width={w}
+        height={h}
+        viewBox="0 0 36 48"
+        className="relative block"
+        aria-hidden
+      >
+        {acit ? (
+          <defs>
+            <linearGradient
+              id={gradId}
+              x1="18"
+              y1="2"
+              x2="18"
+              y2="46"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0%" stopColor="#86efac" />
+              <stop offset="35%" stopColor="#4ade80" />
+              <stop offset="72%" stopColor="#16a34a" />
+              <stop offset="100%" stopColor="#14532d" />
+            </linearGradient>
+          </defs>
+        ) : null}
+
+        <path
+          d="M18 1.5C9.44 1.5 2.5 8.44 2.5 17c0 11.25 15.5 28.5 15.5 28.5S33.5 28.25 33.5 17C33.5 8.44 26.56 1.5 18 1.5z"
+          fill={acit ? `url(#${gradId})` : PIN.other.fill}
+          stroke={acit ? PIN.acit.stroke : PIN.other.stroke}
+          strokeWidth={acit ? 2.6 : 2}
         />
-      ) : null}
-    </svg>
+
+        {acit ? (
+          <>
+            <ellipse
+              cx="13.5"
+              cy="10"
+              rx="7.5"
+              ry="5.2"
+              fill="white"
+              opacity={0.38}
+            />
+            <path
+              d="M18 3.4C12.2 3.4 7.2 7.6 6.4 13c-.15 1 .85 1.45 1.55.65C9.8 11 13.4 8.8 18 8.8c4.6 0 8.2 2.2 10.05 4.85.7.8 1.7.35 1.55-.65C28.8 7.6 23.8 3.4 18 3.4z"
+              fill="white"
+              opacity={0.28}
+            />
+            <circle
+              cx="18"
+              cy="17"
+              r="6.5"
+              fill={PIN.acit.glyph}
+              opacity={0.95}
+              stroke="rgba(20,83,45,0.35)"
+              strokeWidth="0.8"
+            />
+            <circle
+              cx="18"
+              cy="17"
+              r="3.4"
+              fill={PIN.acit.ring}
+              stroke={PIN.acit.stroke}
+              strokeWidth="1.15"
+            />
+          </>
+        ) : (
+          <>
+            <circle
+              cx="18"
+              cy="17"
+              r="6.5"
+              fill={PIN.other.glyph}
+              opacity={0.95}
+              stroke="rgba(75,85,99,0.4)"
+              strokeWidth="0.8"
+            />
+            <circle cx="18" cy="17" r="2.6" fill={PIN.other.dot} opacity={0.9} />
+          </>
+        )}
+      </svg>
+    </div>
   );
 }
 
@@ -241,7 +321,7 @@ export function SpacesMap(props: Props) {
         )}
       >
         <span className="rounded-md bg-black/55 px-2 py-1 text-[0.65rem] font-medium text-white backdrop-blur">
-          Verde claro = ACIT · cinza = cadastrado
+          Verde = ACIT · cinza = cadastrado
         </span>
       </div>
     </section>

@@ -27,13 +27,15 @@ Stack: [`docs/stack.md`](./docs/stack.md) · Slice MVP: [`docs/mvp.md`](./docs/m
 
 | Rota | Tela |
 |------|------|
-| `/` | Mapa / busca (T02) — home quando logado (mock) |
-| `/bem-vindo` | Landing (T01) — só visitante não autenticado |
+| `/bem-vindo` | Landing (T01) — visitante |
+| `/entrar` | Login / cadastro mock (cliente ou parceiro ACIT) |
+| `/` | Mapa / busca — home do **cliente** |
+| `/painel` | Painel do **parceiro** (agenda, solicitações, anúncios) |
 | `/buscar` | Redireciona para `/` (compat) |
 
-Protótipo: sessão mock logada por padrão. “Sair (mock)” na topbar leva à landing. Login real ainda não.
+Contas demo (senha `demo`): `ana.ribeiro@email.com` (cliente) · `parceiro@acit.toledo.br` (parceiro ACIT).
 
-Próximas (ainda não): `/espacos/$slug`, `/reservar/$slug`, `/solicitacoes/$id`, `/pagar/$id`, `/minhas-reservas`, `/favoritos`, `/cadastrar`, `/painel`, `/organizador`.
+Próximas (ainda não): formulário completo de cadastro de espaço, `/minhas-reservas`, `/favoritos`, pagamento real.
 
 ## Mapa dos documentos
 

@@ -3,7 +3,7 @@ import { MapPin, PawPrint, ShieldCheck, Users } from "lucide-react";
 import { AmenityTags } from "@/components/amenity-tags";
 import type { ListedSpace } from "@/lib/mock-data";
 import { brl } from "@/lib/format";
-import { setMockAuthenticated } from "@/lib/mock-session";
+import { loginAsMock } from "@/lib/mock-session";
 import { cn } from "@/lib/utils";
 
 const statusLabel = {
@@ -83,7 +83,7 @@ export function SpaceCard({
           slug: space.slug,
         }}
         className="block"
-        onClick={() => setMockAuthenticated(true)}
+        onClick={() => loginAsMock("cli-ana")}
       >
         <div className="relative aspect-[16/10] overflow-hidden bg-muted">
           <img

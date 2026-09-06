@@ -16,6 +16,13 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-06 — Login + painel do parceiro ACIT
+- **Contexto:** Fluxo do proprietário (`painel-proprietario.md`); contas cliente e parceiro.
+- **Áreas:** `usuarios-papeis.md`, `rascunhos/painel-proprietario.md`, `README.md`
+- **O que mudou:** `/entrar` (login/cadastro mock); `/painel` (agenda, solicitações aceitar/recusar, anúncios); sessão com papéis.
+- **Como funciona agora:** deslogado → apresentação; cliente → mapa; parceiro ACIT → painel (Agenda primeiro). Contas demo: Ana (cliente) e Marcos (parceiro).
+- **Status:** feito (protótipo; cadastro de espaço ainda stub)
+
 ### 2026-09-06 — Pedido T04–T06: data, comodidades, revisão
 - **Contexto:** Incorporar `fluxo-comodidades.md` a partir da Tela 1 do pedido.
 - **Áreas:** `fluxo-telas.md`, `comodidades.md`, `rascunhos/fluxo-comodidades.md`

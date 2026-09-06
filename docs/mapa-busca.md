@@ -109,5 +109,5 @@ Nome, endereço, localização, avaliação geral, fotos (com regras), tipos de 
 
 ## Estado da implementação
 
-- `/` (home logada): mapa full-bleed; busca colapsável; filtros ao lado da lista; pins teardrop (ACIT verde claro / cinza); tags de comodidades nos cards. `/buscar` redireciona para `/`.
+- `/` (home logada): mapa full-bleed; busca colapsável; filtros ao lado da lista; pins teardrop (ACIT verde 3D com gradiente; demais cinza flat); tags de comodidades nos cards. `/buscar` redireciona para `/`.
 - Clique no card/pin abre painel de detalhe (~80% da área à frente do mapa), com a lista aberta.

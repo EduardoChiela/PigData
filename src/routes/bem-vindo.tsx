@@ -1,4 +1,4 @@
-import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { ShieldCheck, Sparkles } from "lucide-react";
 import { SearchBar } from "@/components/search-bar";
 import { SpaceCard } from "@/components/space-card";
@@ -11,12 +11,20 @@ import {
   filterSpaces,
   spaces,
 } from "@/lib/mock-data";
-import { isMockAuthenticated, setMockAuthenticated } from "@/lib/mock-session";
+import {
+  getActiveMockUser,
+  homePathForRole,
+  isMockAuthenticated,
+  loginAsMock,
+} from "@/lib/mock-session";
 
 export const Route = createFileRoute("/bem-vindo")({
   beforeLoad: () => {
     if (isMockAuthenticated()) {
-      throw redirect({ to: "/" });
+      const user = getActiveMockUser();
+      throw redirect({
+        to: user ? homePathForRole(user.role) : "/",
+      });
     }
   },
   head: () => ({
@@ -32,14 +40,8 @@ export const Route = createFileRoute("/bem-vindo")({
 });
 
 function WelcomePage() {
-  const navigate = useNavigate();
   const preview = filterSpaces({ date: defaultSearchDate }).slice(0, 6);
   const acitCount = spaces.filter((s) => s.acitVerified).length;
-
-  function enterMock() {
-    setMockAuthenticated(true);
-    void navigate({ to: "/" });
-  }
 
   return (
     <>
@@ -80,12 +82,11 @@ function WelcomePage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button
-                type="button"
+                asChild
                 size="lg"
                 className="bg-[var(--leaf)] font-semibold text-[var(--ink)] hover:bg-[var(--leaf-bright)]"
-                onClick={enterMock}
               >
-                Entrar (mock)
+                <Link to="/entrar">Entrar</Link>
               </Button>
               <Button
                 asChild
@@ -123,11 +124,7 @@ function WelcomePage() {
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link
-              to="/"
-              search={{ data: defaultSearchDate, periodo: "dia_inteiro" }}
-              onClick={() => setMockAuthenticated(true)}
-            >
+            <Link to="/" onClick={() => loginAsMock("cli-ana")}>
               Abrir mapa
             </Link>
           </Button>

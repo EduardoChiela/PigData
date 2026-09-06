@@ -65,7 +65,7 @@ No protótipo: rota `/bem-vindo`, exibida quando o usuário **não** está auten
 
 - Só espaços **disponíveis** no período  
 - Destaque verificados ACIT; mapa prioriza parceiros  
-- Pins: ACIT verde claro com contorno; demais cinza  
+- Pins: ACIT verde 3D (gradiente + highlight); demais cinza flat  
 - Alterar data/filtros sem reiniciar tudo  
 - Google Places: cobertura limitada, **sem** agenda/reserva na plataforma ([mapa-busca.md](./mapa-busca.md))
 

@@ -46,4 +46,5 @@ Existir no Google Maps ≠ Calendar disponível. A agenda da plataforma é a fon
 ## Estado da implementação
 
 - Calendário de disponibilidade do espaço no passo T04 (mock `busyDates` / `partialDates` em `SpaceAvailabilityCalendar`).
-- Agenda compartilhada / Google Calendar ainda não.
+- Agenda do parceiro em `/painel` com UI estilo Google Calendar simplificada + botão mock “Sincronizar Google” (sem OAuth).
+- Sync real Google Calendar ainda não.

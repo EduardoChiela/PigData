@@ -10,3 +10,4 @@ Arquivos de discussão **antes** de entrar nos docs oficiais.
 | ~~wireframe_fluxo_telas_pigdata.md~~ (Downloads) | [`../fluxo-telas.md`](../fluxo-telas.md) |
 | [agendar-visita.md](./agendar-visita.md) | Em protótipo (T04); formalizar em `reservas.md` / `espacos.md` |
 | [fluxo-comodidades.md](./fluxo-comodidades.md) | Em protótipo (T04–T06); formalizar em `comodidades.md` / `fluxo-telas.md` |
+| [painel-proprietario.md](./painel-proprietario.md) | Em protótipo (`/painel`); formalizar em `usuarios-papeis.md` / `agenda-calendario.md` |
