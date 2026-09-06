@@ -1,8 +1,9 @@
-# PigData (codinome) — Plataforma de Espaços para Eventos (ACIT)
+# PigData (codinome) — Ágora (Espaços ACIT)
 
-> **Nome do app (UI):** Espaços ACIT (comercial a definir) — [`docs/nomenclatura.md`](./docs/nomenclatura.md).  
+> **Nome do app (UI):** Ágora — [`docs/nomenclatura.md`](./docs/nomenclatura.md).  
+> **Rede / selo:** Espaços ACIT.  
 > **Cidade piloto:** Toledo - PR.  
-> **Base visual:** Tagvenue (hero + barra de busca) + paleta verde ACIT.
+> **Visual:** topbar charcoal + marca Ágora; acento verde ACIT nos selos.
 
 Documentação de produto em [`docs/`](./docs/). Protótipo web mock em `src/`.
 
@@ -26,8 +27,11 @@ Stack: [`docs/stack.md`](./docs/stack.md) · Slice MVP: [`docs/mvp.md`](./docs/m
 
 | Rota | Tela |
 |------|------|
-| `/` | Landing (T01) — hero + busca disponibilidade-first |
-| `/buscar` | Resultados (T02) — mapa full-bleed + filtros dropdown + lista colapsável |
+| `/` | Mapa / busca (T02) — home quando logado (mock) |
+| `/bem-vindo` | Landing (T01) — só visitante não autenticado |
+| `/buscar` | Redireciona para `/` (compat) |
+
+Protótipo: sessão mock logada por padrão. “Sair (mock)” na topbar leva à landing. Login real ainda não.
 
 Próximas (ainda não): `/espacos/$slug`, `/reservar/$slug`, `/solicitacoes/$id`, `/pagar/$id`, `/minhas-reservas`, `/favoritos`, `/cadastrar`, `/painel`, `/organizador`.
 

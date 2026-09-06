@@ -3,6 +3,7 @@ import { MapPin, PawPrint, ShieldCheck, Users } from "lucide-react";
 import { AmenityTags } from "@/components/amenity-tags";
 import type { ListedSpace } from "@/lib/mock-data";
 import { brl } from "@/lib/format";
+import { setMockAuthenticated } from "@/lib/mock-session";
 import { cn } from "@/lib/utils";
 
 const statusLabel = {
@@ -75,13 +76,14 @@ export function SpaceCard({
   return (
     <article className="group overflow-hidden rounded-2xl border border-border/80 bg-card shadow-[0_12px_40px_-28px_rgba(20,40,30,0.55)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_48px_-24px_rgba(20,40,30,0.55)]">
       <Link
-        to="/buscar"
+        to="/"
         search={{
           data: searchDate,
           periodo: searchPeriod,
           slug: space.slug,
         }}
         className="block"
+        onClick={() => setMockAuthenticated(true)}
       >
         <div className="relative aspect-[16/10] overflow-hidden bg-muted">
           <img

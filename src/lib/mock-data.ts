@@ -5,7 +5,9 @@
  */
 
 /** Nome visível na UI — comercial a definir (docs/nomenclatura.md). Codinome do repo: PigData. */
-export const APP_NAME = "Espaços ACIT";
+export const APP_NAME = "Ágora";
+/** Marca completa quando precisar do contexto ACIT */
+export const APP_TAGLINE = "Espaços ACIT";
 
 export const PILOT_CITY = "Toledo";
 export const PILOT_STATE = "PR";
@@ -67,6 +69,8 @@ export type Space = {
   amenities: AmenityOffer[];
   rules: string;
   image: string;
+  /** WhatsApp / contato (obrigatório no cadastro real; mock se ausente) */
+  phone?: string;
   /** Datas ISO em que o espaço está ocupado o dia todo (mock de agenda) */
   busyDates: string[];
   /** Datas com só um período livre (mock) */

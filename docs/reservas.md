@@ -12,7 +12,7 @@ Fluxo de telas (wireframe base): [fluxo-telas.md](./fluxo-telas.md).
 Solicitar → Aguardar análise → Aprovar → Pagar → Confirmar
 ```
 
-`Solicitação ≠ Reserva confirmada`. Sem etapa de visitação.
+`Solicitação ≠ Reserva confirmada`. Visita presencial é **opcional** (atalho WhatsApp — [rascunhos/agendar-visita.md](./rascunhos/agendar-visita.md)); o fluxo de reserva **não** exige visitação.
 
 ## Fluxo do cliente (alinhado ao wireframe)
 

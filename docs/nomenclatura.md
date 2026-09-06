@@ -5,12 +5,13 @@
 | Uso | Nome |
 |-----|------|
 | **Repositório / codinome interno** | PigData |
-| **Nome comercial do app** | A definir |
+| **Nome comercial do app (UI)** | **Ágora** |
+| **Contexto de rede** | Espaços ACIT (selo / parceria) |
 
-Enquanto o nome comercial não estiver fechado:
+## Uso
 
-- Na documentação técnica deste repositório, **PigData** pode aparecer como codinome do projeto.
-- Em textos de produto e fluxos de UI, preferir **a plataforma**, **o app** ou o nome comercial quando existir.
-- Não tratar “PigData” como marca definitiva perante clientes finais.
+- Em textos de produto e UI: **Ágora**
+- Rede / verificação: **ACIT** / “Verificado ACIT”
+- Documentação técnica do repositório pode continuar citando **PigData** como codinome
 
-Quando o nome for definido, atualizar este arquivo, o `README.md` da raiz e as menções visíveis ao usuário.
+Assets: `public/agora-logo.png` (marca), `public/favicon.png` (ícone do navegador com fundo branco).

@@ -25,7 +25,7 @@
 
 ## Estado da implementação
 
-- Landing `/` (T01) + `/buscar` (T02) **map-first** (mapa fundo, filtros dropdown, lista colapsável).
+- Home autenticada `/` = mapa (T02); landing `/bem-vindo` (T01) para visitante; marca **Ágora**.
 - Mock: 22 espaços Toledo - PR.
 - Ainda fora: detalhe/solicitação, painéis, Photorealistic 3D, camada C Places, pagamento demo.
 

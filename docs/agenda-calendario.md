@@ -45,4 +45,5 @@ Existir no Google Maps ≠ Calendar disponível. A agenda da plataforma é a fon
 
 ## Estado da implementação
 
-- Código do protótipo removido (`src/` apagado). Agenda mock/Calendar continuam a spec.
+- Calendário de disponibilidade do espaço no passo T04 (mock `busyDates` / `partialDates` em `SpaceAvailabilityCalendar`).
+- Agenda compartilhada / Google Calendar ainda não.

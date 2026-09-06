@@ -175,4 +175,4 @@ Busca → cidade → período (dia ou horário) → filtros (área, capacidade, 
 
 ## Estado da implementação
 
-- Mock + filtros na `/buscar` + mapa oblíquo com pins. Favoritos e locação por horário fino ainda pendentes.
+- Mock + filtros na home `/` + mapa oblíquo com pins. Favoritos e locação por horário fino ainda pendentes.

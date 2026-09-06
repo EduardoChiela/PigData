@@ -129,4 +129,5 @@ Filtros de comodidade na busca usam o que o espaço **oferece** no catálogo ([m
 
 ## Estado da implementação
 
-- Catálogo mestre e ofertas por espaço no mock. Tags de comodidade na UI (`AmenityTags`) em cards da busca (reutilizável). Carrinho de cotação no pedido ainda não.
+- Catálogo mestre e ofertas por espaço no mock. Tags na busca; vitrine no perfil.
+- Pedido: aba/tela de comodidades com checklist + total estimado em tempo real (`BookingRequestFlow`, Tela 2 — ver [rascunhos/fluxo-comodidades.md](./rascunhos/fluxo-comodidades.md)).

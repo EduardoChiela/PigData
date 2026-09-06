@@ -23,17 +23,21 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Encontre espaços para eventos disponíveis por data e período. Rede ACIT em Toledo - PR.",
+          "Ágora — encontre espaços para eventos disponíveis por data e período. Rede ACIT em Toledo - PR.",
       },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
+    ],
   }),
   component: RootComponent,
 });
 
 function RootComponent() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const mapFullscreen = pathname.startsWith("/buscar");
+  const mapFullscreen = pathname === "/" || pathname.startsWith("/buscar");
 
   return (
     <RootDocument>

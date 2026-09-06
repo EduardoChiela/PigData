@@ -1,6 +1,6 @@
 # Agendar Visita — Documentação da Feature
 
-> Status: **rascunho de discussão**, ainda não incorporado aos docs oficiais do projeto (`docs/reservas.md`, `docs/espacos.md`). Guardar aqui até fecharmos o desenho e decidirmos formalizar.
+> Status: **rascunho em protótipo parcial** — UI no painel fullscreen (T04); ainda não formalizado em `docs/reservas.md` / `docs/espacos.md` como doc oficial.
 
 ## 1. Objetivo
 
@@ -22,14 +22,14 @@ flowchart TD
 
 ## 3. Onde aparece na interface
 
-Um bloco simples dentro do `space-detail-panel` (componente já existente no protótipo), **ao lado do botão "Solicitar reserva"** — não como pop-up/modal intrusivo:
+No protótipo atual: bloco destacado **abaixo do calendário**, quando o painel expande após **Escolher data e solicitar** (não só ao lado do CTA do perfil).
 
 ```
-Quer conhecer pessoalmente?
-[ Agendar visita ]
+Gostaria de agendar uma visita?
+[ Sim, agendar visita ]  [ Agora não ]
 ```
 
-Duas ações lado a lado, propósitos diferentes: "Solicitar reserva" (compromisso de evento) e "Agendar visita" (conhecer antes de decidir) — uma não substitui a outra.
+Duas ações com propósitos diferentes ao longo do fluxo: "Solicitar reserva" (compromisso de evento) e "Agendar visita" (conhecer antes de decidir) — uma não substitui a outra.
 
 ## 4. Mensagem padrão
 

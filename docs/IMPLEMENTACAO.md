@@ -16,6 +16,27 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-06 — Pedido T04–T06: data, comodidades, revisão
+- **Contexto:** Incorporar `fluxo-comodidades.md` a partir da Tela 1 do pedido.
+- **Áreas:** `fluxo-telas.md`, `comodidades.md`, `rascunhos/fluxo-comodidades.md`
+- **O que mudou:** `BookingRequestFlow` (basics → amenities com total → review → sent); painel fullscreen.
+- **Como funciona agora:** após “Escolher data e solicitar”: calendário + visita + período/evento/convidados → checklist de comodidades com continha → revisão e envio mock.
+- **Status:** feito (protótipo)
+
+### 2026-09-06 — T04 parcial: calendário + agendar visita
+- **Contexto:** Continuar o fluxo após “Escolher data e solicitar”; calendário do espaço e pergunta de visita (rascunho).
+- **Áreas:** `fluxo-telas.md`, `agenda-calendario.md`, `rascunhos/agendar-visita.md`
+- **O que mudou:** painel fullscreen; `SpaceAvailabilityCalendar`; `ScheduleVisitBlock` + `visit-request` (WhatsApp + registro mock tag Visita).
+- **Como funciona agora:** CTA expande o modal; calendário mostra livre/parcial/ocupado; abaixo, pergunta de visita (Sim abre wa.me; Agora não segue). Período/evento ainda placeholder.
+- **Status:** feito (protótipo parcial)
+
+### 2026-09-06 — Marca Ágora, topbar e home no mapa
+- **Contexto:** Logo/nome definitivos; mapa como home; landing só para visitante; favicon próprio.
+- **Áreas:** `nomenclatura.md`, `fluxo-telas.md`, `mapa-busca.md`, `mvp.md`, `espacos.md`, `busca-locacao.md`, `README.md`
+- **O que mudou:** assets `agora-logo`/`favicon.png`; topbar charcoal com perfil mock; `APP_NAME=Ágora`; `/` = mapa; `/bem-vindo` = landing; `/buscar` → `/`; sessão mock (`mock-session.ts`); fundo/paleta ink + acento ACIT.
+- **Como funciona agora:** logado (padrão) abre o mapa; “Sair (mock)” mostra a apresentação; ícone do navegador usa a logo com fundo branco.
+- **Status:** feito (protótipo; login real pendente)
+
 ### 2026-09-05 — Painel de detalhe do espaço (T03 na busca)
 - **Contexto:** Ao selecionar um espaço na lista, exibir perfil completo estilo Airbnb sem fechar a listagem.
 - **Áreas:** `espacos.md`, `fluxo-telas.md`, `mapa-busca.md`
