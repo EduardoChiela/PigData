@@ -1,6 +1,6 @@
 # Formulário de Cadastro do Espaço — Campos e Fluxo de Telas
 
-> Status: **rascunho de discussão**, ainda não incorporado aos docs oficiais (`docs/espacos.md`, `docs/cadastro-assistido-google.md`). Baseado nas decisões já formalizadas nesses dois arquivos — não inventa produto novo, só desenha o formulário e as telas em cima do que já foi decidido.
+> Status: **rascunho em protótipo** — telas 0–8 implementadas no wizard do painel (`SpaceRegistrationWizard`). Spec ainda baseia-se em `docs/espacos.md` e `docs/cadastro-assistido-google.md`; Places real pendente.
 
 ## 1. Objetivo
 

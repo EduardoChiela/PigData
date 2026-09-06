@@ -29,13 +29,13 @@ Stack: [`docs/stack.md`](./docs/stack.md) · Slice MVP: [`docs/mvp.md`](./docs/m
 |------|------|
 | `/bem-vindo` | Landing (T01) — visitante |
 | `/entrar` | Login / cadastro mock (cliente ou parceiro ACIT) |
-| `/` | Mapa / busca — home do **cliente** |
-| `/painel` | Painel do **parceiro** (agenda, solicitações, anúncios) |
+| `/` | Mapa / busca — cliente e **parceiro** (mesmo mapa) |
+| `/painel` | Painel do **parceiro** (agenda, solicitações, anúncios, cadastro de espaço) |
 | `/buscar` | Redireciona para `/` (compat) |
 
 Contas demo (senha `demo`): `ana.ribeiro@email.com` (cliente) · `parceiro@acit.toledo.br` (parceiro ACIT).
 
-Próximas (ainda não): formulário completo de cadastro de espaço, `/minhas-reservas`, `/favoritos`, pagamento real.
+Próximas (ainda não): Places API real, `/minhas-reservas`, `/favoritos`, pagamento real.
 
 ## Mapa dos documentos
 

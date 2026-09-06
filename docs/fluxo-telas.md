@@ -189,7 +189,7 @@ Solicitação criada → Aguardando resposta
 
 ## Estado da implementação
 
-- T02 map-first é a home autenticada (`/`); T01 em `/bem-vindo` para visitante (sessão mock).
+- T02 map-first em `/` para **cliente e parceiro** (parceiro também navega pelo mapa; login do parceiro continua abrindo `/painel`). T01 em `/bem-vindo` para visitante.
 - T03: painel de detalhe (vitrine de comodidades incluso/opcional).
 - T04–T06 no painel fullscreen (`BookingRequestFlow`): data/evento → comodidades com total → revisão/envio mock.
 - Marca **Ágora**; login real pendente. T07+ ainda não.

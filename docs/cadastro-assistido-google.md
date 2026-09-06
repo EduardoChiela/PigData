@@ -261,4 +261,4 @@ Places API (New), Autocomplete (New), Place Details (New), Place IDs, Field Mask
 
 ## Estado da implementação
 
-- Código do protótipo removido (`src/` apagado). Fluxo de cadastro assistido continua a spec.
+- Protótipo no painel do parceiro (`/painel` → Cadastrar): busca mock de Places (`MOCK_GOOGLE_PLACES`), revisão editável, caminho manual, demais telas PigData. Sem Places API real / OAuth.

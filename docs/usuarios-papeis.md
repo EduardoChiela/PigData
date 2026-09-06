@@ -38,5 +38,5 @@
 ## Estado da implementação
 
 - Contas mock em `src/lib/mock-session.ts`: **cliente** (Ana) e **parceiro ACIT** (Marcos — Vila Verde + Salão das Corujas).
-- Login/cadastro mock em `/entrar`; home do parceiro = `/painel` (agenda, solicitações, anúncios).
+- Login/cadastro mock em `/entrar`; após login o parceiro abre `/painel`, mas também acessa o **mapa** (`/`) como o cliente (nav Mapa + Painel).
 - Organizador parceiro (papel intermediário) ainda não.

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { OwnerAgenda } from "@/components/owner-agenda";
+import { SpaceRegistrationWizard } from "@/components/space-registration-wizard";
 import { Button } from "@/components/ui/button";
 import { formatDateBR, brl } from "@/lib/format";
 import { getSpaceBySlug, type Space } from "@/lib/mock-data";
@@ -19,6 +20,10 @@ import {
   refuseOwnerRequest,
   type OwnerReservationRequest,
 } from "@/lib/owner-panel-data";
+import {
+  listOwnerListings,
+  type PublishedSpaceListing,
+} from "@/lib/space-registration";
 import { cn } from "@/lib/utils";
 
 type TabId = "agenda" | "solicitacoes" | "anuncios" | "cadastrar";
@@ -35,6 +40,12 @@ export function OwnerPanel({ user }: { user: MockUser }) {
   );
   const [tick, setTick] = useState(0);
   const refresh = () => setTick((n) => n + 1);
+
+  const published = useMemo(
+    () => listOwnerListings(user.id),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user.id, tick],
+  );
 
   const activeSpace =
     ownedSpaces.find((s) => s.slug === activeSlug) ?? ownedSpaces[0];
@@ -128,11 +139,20 @@ export function OwnerPanel({ user }: { user: MockUser }) {
         {tab === "anuncios" ? (
           <OwnerListings
             spaces={ownedSpaces}
+            published={published}
             onEdit={() => setTab("cadastrar")}
             onNew={() => setTab("cadastrar")}
           />
         ) : null}
-        {tab === "cadastrar" ? <OwnerCadastroStub /> : null}
+        {tab === "cadastrar" ? (
+          <SpaceRegistrationWizard
+            ownerId={user.id}
+            onDone={() => {
+              refresh();
+              setTab("anuncios");
+            }}
+          />
+        ) : null}
       </div>
     </div>
   );
@@ -232,10 +252,12 @@ function OwnerRequests({
 
 function OwnerListings({
   spaces,
+  published,
   onEdit,
   onNew,
 }: {
   spaces: Space[];
+  published: PublishedSpaceListing[];
   onEdit: () => void;
   onNew: () => void;
 }) {
@@ -247,7 +269,7 @@ function OwnerListings({
             Meus anúncios
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Espaços cadastrados nesta conta parceira
+            Espaços da conta + cadastros publicados neste dispositivo
           </p>
         </div>
         <Button type="button" className="font-semibold" onClick={onNew}>
@@ -257,7 +279,7 @@ function OwnerListings({
       </div>
 
       <ul className="space-y-3">
-        {spaces.map((space, i) => (
+        {spaces.map((space) => (
           <li
             key={space.slug}
             className="flex gap-3 overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
@@ -282,8 +304,45 @@ function OwnerListings({
                     Aguardando homologação
                   </span>
                 )}
+                <span className="text-muted-foreground">Ativo</span>
+              </p>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="mt-3 w-fit font-semibold"
+                onClick={onEdit}
+              >
+                Editar
+              </Button>
+            </div>
+          </li>
+        ))}
+
+        {published.map((listing) => (
+          <li
+            key={listing.id}
+            className="flex gap-3 overflow-hidden rounded-2xl border border-border bg-white shadow-sm"
+          >
+            <img
+              src={listing.image}
+              alt=""
+              className="h-28 w-28 shrink-0 object-cover sm:h-32 sm:w-36"
+            />
+            <div className="flex min-w-0 flex-1 flex-col justify-center py-3 pr-3">
+              <p className="truncate font-display text-lg font-semibold">
+                {listing.name}
+              </p>
+              <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                {listing.address}
+              </p>
+              <p className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                <span className="rounded-md bg-amber-100 px-2 py-0.5 font-semibold text-amber-950">
+                  Aguardando homologação ACIT
+                </span>
                 <span className="text-muted-foreground">
-                  {i === 0 ? "Ativo" : "Ativo"}
+                  {listing.capacity} pessoas · a partir de{" "}
+                  {brl(listing.basePrice)}
                 </span>
               </p>
               <Button
@@ -299,35 +358,6 @@ function OwnerListings({
           </li>
         ))}
       </ul>
-    </section>
-  );
-}
-
-function OwnerCadastroStub() {
-  return (
-    <section className="rounded-2xl border border-border bg-white p-5 shadow-sm md:p-6">
-      <h1 className="font-display text-xl font-semibold tracking-tight md:text-2xl">
-        Cadastrar novo espaço
-      </h1>
-      <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-        Reaproveita o fluxo de{" "}
-        <code className="rounded bg-muted px-1 text-xs">
-          formulario-cadastro-espaco.md
-        </code>{" "}
-        (Google/manual → dados PigData → comodidades → fotos → publicar). O
-        assistente completo entra na próxima iteração — por ora este é o ponto
-        de entrada mock.
-      </p>
-      <ol className="mt-5 list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
-        <li>Busca Google Places ou cadastro manual</li>
-        <li>Revisão dos dados públicos</li>
-        <li>Capacidade, classes, eventos, infra</li>
-        <li>Comodidades e preços</li>
-        <li>Fotos, preço base, regras → publicar</li>
-      </ol>
-      <Button type="button" className="mt-6 font-semibold" disabled>
-        Iniciar cadastro (em breve)
-      </Button>
     </section>
   );
 }

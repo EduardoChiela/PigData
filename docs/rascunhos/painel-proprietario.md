@@ -98,5 +98,12 @@ Aciona **exatamente** o fluxo já documentado em [`formulario-cadastro-espaco.md
 - Cadastro/edição de espaço: `formulario-cadastro-espaco.md`, `docs/cadastro-assistido-google.md`, `docs/espacos.md`
 - Distinção com visita informal: `agendar-visita.md`
 
+## Estado da implementação (protótipo)
+
+- `/painel`: Agenda, Solicitações, Meus anúncios, Cadastrar.
+- **Cadastrar** abre o fluxo de `formulario-cadastro-espaco.md` (wizard completo mock).
+- **Meus anúncios** lista espaços mock da conta + publicações locais (`listOwnerListings`).
+- Parceiro acessa o **mapa** (`/`) pela topbar (Mapa / logo), além do painel.
+
 ---
 *Gerado a partir da conversa de definição de produto — reflete decisões até o momento, sujeito a mudança até ser formalizado nos docs oficiais do repositório.*

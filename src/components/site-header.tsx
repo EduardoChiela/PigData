@@ -3,6 +3,7 @@ import {
   ChevronDown,
   LayoutDashboard,
   LogOut,
+  Map,
   Menu,
   User,
   X,
@@ -53,7 +54,7 @@ export function SiteHeader() {
   const isPartner = user?.role === "parceiro";
   const mapMode = pathname === "/" || pathname.startsWith("/buscar");
   const panelMode = pathname.startsWith("/painel");
-  const homeTo = !authed ? "/bem-vindo" : isPartner ? "/painel" : "/";
+  const homeTo = !authed ? "/bem-vindo" : "/";
 
   return (
     <header
@@ -78,7 +79,7 @@ export function SiteHeader() {
               {APP_NAME.toUpperCase()}
             </span>
             <span className="mt-0.5 block text-[0.65rem] font-medium tracking-wide text-white/55">
-              {isPartner
+              {isPartner && panelMode
                 ? "Painel do parceiro"
                 : `${APP_TAGLINE} · ${PILOT_CITY_LABEL}`}
             </span>
@@ -88,6 +89,19 @@ export function SiteHeader() {
         <div className="hidden items-center gap-1 md:flex">
           {authed && user ? (
             <>
+              <Link
+                to="/"
+                className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
+              >
+                Mapa
+              </Link>
+              <Link
+                to="/"
+                search={{ acit: "1" }}
+                className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
+              >
+                Verificados ACIT
+              </Link>
               {isPartner ? (
                 <Link
                   to="/painel"
@@ -95,23 +109,7 @@ export function SiteHeader() {
                 >
                   Painel
                 </Link>
-              ) : (
-                <>
-                  <Link
-                    to="/"
-                    className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
-                  >
-                    Mapa
-                  </Link>
-                  <Link
-                    to="/"
-                    search={{ acit: "1" }}
-                    className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
-                  >
-                    Verificados ACIT
-                  </Link>
-                </>
-              )}
+              ) : null}
 
               <div className="relative ml-2" ref={profileRef}>
                 <button
@@ -144,14 +142,24 @@ export function SiteHeader() {
                     </div>
                     <div className="p-1.5">
                       {isPartner ? (
-                        <Link
-                          to="/painel"
-                          className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
-                          onClick={() => setProfileOpen(false)}
-                        >
-                          <LayoutDashboard className="size-4 text-muted-foreground" />
-                          Abrir painel
-                        </Link>
+                        <>
+                          <Link
+                            to="/"
+                            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
+                            onClick={() => setProfileOpen(false)}
+                          >
+                            <Map className="size-4 text-muted-foreground" />
+                            Ver mapa
+                          </Link>
+                          <Link
+                            to="/painel"
+                            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
+                            onClick={() => setProfileOpen(false)}
+                          >
+                            <LayoutDashboard className="size-4 text-muted-foreground" />
+                            Abrir painel
+                          </Link>
+                        </>
                       ) : (
                         <button
                           type="button"
@@ -216,6 +224,21 @@ export function SiteHeader() {
                   <p className="truncate text-xs text-white/55">{user.email}</p>
                 </div>
               </div>
+              <Link
+                to="/"
+                className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
+                onClick={() => setOpen(false)}
+              >
+                Mapa
+              </Link>
+              <Link
+                to="/"
+                search={{ acit: "1" }}
+                className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
+                onClick={() => setOpen(false)}
+              >
+                Verificados ACIT
+              </Link>
               {isPartner ? (
                 <Link
                   to="/painel"
@@ -224,25 +247,7 @@ export function SiteHeader() {
                 >
                   Painel
                 </Link>
-              ) : (
-                <>
-                  <Link
-                    to="/"
-                    className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
-                    onClick={() => setOpen(false)}
-                  >
-                    Mapa
-                  </Link>
-                  <Link
-                    to="/"
-                    search={{ acit: "1" }}
-                    className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
-                    onClick={() => setOpen(false)}
-                  >
-                    Verificados ACIT
-                  </Link>
-                </>
-              )}
+              ) : null}
               <button
                 type="button"
                 className="rounded-md px-3 py-2.5 text-left text-sm font-medium text-rose-200 hover:bg-white/10"

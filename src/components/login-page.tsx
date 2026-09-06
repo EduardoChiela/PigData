@@ -70,7 +70,7 @@ export function LoginPage() {
         </h1>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
           Protótipo com duas contas mock: cliente (mapa e pedidos) e parceiro
-          ACIT (painel de agenda e solicitações).
+          ACIT (painel + mesmo mapa de busca).
         </p>
 
         <div className="mt-8 space-y-3">

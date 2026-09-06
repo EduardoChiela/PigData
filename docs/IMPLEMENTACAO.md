@@ -16,12 +16,26 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-06 — Parceiro também acessa o mapa
+- **Contexto:** Parceiro ACIT precisa ver a mesma busca/mapa do cliente (rede, concorrência, indicação).
+- **Áreas:** `usuarios-papeis.md`, `rascunhos/painel-proprietario.md`, `fluxo-telas.md`, `README.md`
+- **O que mudou:** removido redirect `/` → `/painel` para role parceiro; topbar com Mapa + Verificados + Painel.
+- **Como funciona agora:** login do parceiro ainda abre o painel; logo/nav “Mapa” leva a `/` com a mesma UI de busca.
+- **Status:** feito (protótipo)
+
+### 2026-09-06 — Cadastro de espaço (wizard no painel)
+- **Contexto:** Fluxo de `formulario-cadastro-espaco.md` + Places assistido; sair do stub do painel.
+- **Áreas:** `espacos.md`, `cadastro-assistido-google.md`, `rascunhos/formulario-cadastro-espaco.md`, `rascunhos/painel-proprietario.md`, `README.md`
+- **O que mudou:** `SpaceRegistrationWizard`, `space-registration.ts` (Places mock, draft, `localStorage`); aba Cadastrar no `/painel`; Meus anúncios inclui publicações locais.
+- **Como funciona agora:** parceiro escolhe Google mock ou manual → telas PigData (capacidade/classes/eventos, infra, comodidades, fotos, preço/regras, revisão) → publica com status aguardando homologação ACIT.
+- **Status:** feito (protótipo; Places API real pendente)
+
 ### 2026-09-06 — Login + painel do parceiro ACIT
 - **Contexto:** Fluxo do proprietário (`painel-proprietario.md`); contas cliente e parceiro.
 - **Áreas:** `usuarios-papeis.md`, `rascunhos/painel-proprietario.md`, `README.md`
 - **O que mudou:** `/entrar` (login/cadastro mock); `/painel` (agenda, solicitações aceitar/recusar, anúncios); sessão com papéis.
 - **Como funciona agora:** deslogado → apresentação; cliente → mapa; parceiro ACIT → painel (Agenda primeiro). Contas demo: Ana (cliente) e Marcos (parceiro).
-- **Status:** feito (protótipo; cadastro de espaço ainda stub)
+- **Status:** feito (protótipo)
 
 ### 2026-09-06 — Pedido T04–T06: data, comodidades, revisão
 - **Contexto:** Incorporar `fluxo-comodidades.md` a partir da Tela 1 do pedido.
