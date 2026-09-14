@@ -16,6 +16,48 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-14 — Lightbox da galeria do espaço
+- **Contexto:** Permitir abrir fotos do detalhe em tela cheia e navegar como carrossel.
+- **Áreas:** `espacos.md`, `fluxo-telas.md`
+- **O que mudou:** `ImageLightbox` + clique nas fotos do `SpaceDetailPanel` (setas, teclado, Escape, thumbnails).
+- **Como funciona agora:** no detalhe do espaço, qualquer foto da grade abre overlay fullscreen; navega entre as imagens da galeria mock.
+- **Status:** feito (protótipo)
+
+### 2026-09-14 — Pacote Eduardo E1–E5 (reservas mock)
+- **Contexto:** Implementar concorrência/fila, calendário com solicitações, aprovação automática, notificações in-app conforme spec do Eduardo.
+- **Áreas:** `reservas.md`, `agenda-calendario.md`, `rascunhos/planejamento-eduardo.md`, `rascunhos/backlog-equipe.md`, `README.md`
+- **O que mudou:** `reservations.ts` (estados, overlap, confirm, auto-regras, settings); `notifications.ts`; calendário/solicitações/regras no painel; envio real no `BookingRequestFlow`; `/minhas-reservas`; sino + Toaster (sonner).
+- **Como funciona agora:** várias pendências no mesmo período; aprovar cria hold; confirmar move concorrentes para fila; Vila Verde default automático; cliente vê toast/sino e paga no demo.
+- **Status:** feito (protótipo mock); e-mail/WhatsApp/GCal e backend real pendentes
+
+### 2026-09-14 — Spec Eduardo E1–E5 (reservas / calendário / comunicação)
+- **Contexto:** Incorporar a especificação aprovada do Eduardo (concorrência, calendário, aprovação automática, e-mail/WhatsApp, notificações) ao repositório antes de codificar.
+- **Áreas:** `rascunhos/planejamento-eduardo.md`, `rascunhos/backlog-equipe.md`, `rascunhos/README.md`
+- **O que mudou:** documento completo com máquina de estados, regras de conflito, hold de pagamento, APIs conceituais, ordem em 9 etapas e critérios de aceite; E1–E5 marcados como planejados.
+- **Como funciona agora:** implementação ainda não iniciada; docs oficiais (`reservas.md`, etc.) serão atualizados quando o desenvolvimento começar. Pontos da seção 23 da spec devem ser fechados antes de improvisar.
+- **Status:** feito (especificação); implementação pendente
+
+### 2026-09-14 — Pacote Gabriel G1–G5 (landing, fluxo, guia)
+- **Contexto:** Corrigir CTA Ver espaços, padronizar landing, tornar o fluxo compreensível sem explicação oral e publicar guia para demo/banca.
+- **Áreas:** `fluxo-telas.md`, `guia-usuario.md`, `mvp.md`, `README.md`, `rascunhos/backlog-equipe.md`, `rascunhos/planejamento-gabriel.md`
+- **O que mudou:** `bem-vindo.tsx` (Ver espaços → mapa com Ana; Como funciona; ritmo/CTAs); footer com login mock + link Ajuda; rota `/ajuda`; link Ajuda no `OwnerPanel`; docs do guia e checklist G5.
+- **Como funciona agora:** visitante em `/bem-vindo` abre o mapa pelo CTA principal; parceiro acha Ajuda no painel; documentação oficial descreve T01–T06 clicáveis vs T07+ pendente.
+- **Status:** feito (protótipo)
+
+### 2026-09-14 — Planejamento do pacote Gabriel (G1–G5)
+- **Contexto:** Detalhar correção do CTA Ver espaços, padronização da landing, clareza de fluxo, guia do usuário e critério de usabilidade antes de implementar.
+- **Áreas:** `rascunhos/planejamento-gabriel.md`, `rascunhos/backlog-equipe.md`, `rascunhos/README.md`
+- **O que mudou:** plano com diagnóstico (Ver espaços → `#preview`; mapa gated), decisões (login mock Ana no CTA, guia em `docs/guia-usuario.md` + Ajuda no painel, foco parceiro), ordem G1→G5 e checklist de aceite.
+- **Como funciona agora:** G1–G5 marcados como planejados no backlog; implementação aguarda OK.
+- **Status:** feito (planejamento)
+
+### 2026-09-14 — Backlog formal da equipe
+- **Contexto:** Inventariar e distribuir entre os cinco integrantes os pontos de correção, evolução e revisão levantados para pesquisa individual, antes de planejar e implementar.
+- **Áreas:** `rascunhos/backlog-equipe.md`, `rascunhos/README.md`
+- **O que mudou:** documento de backlog com pacotes Gabriel (UX/fluxo), Eduardo (reservas/calendário), Matheus (confiança/monetização), Rafael (busca/papéis), Amabilly (backend/banca); índice dos rascunhos atualizado.
+- **Como funciona agora:** o grupo usa o backlog como inventário compartilhado; status dos itens `a pesquisar`; planejamentos detalhados e código ficam para etapas posteriores.
+- **Status:** feito (documentação)
+
 ### 2026-09-06 — Painel do organizador ACIT
 - **Contexto:** Novo perfil institucional (Helena); calendários compartilhados e homologação — `painel-acit.md`.
 - **Áreas:** `usuarios-papeis.md`, `rascunhos/painel-acit.md`, `espacos.md`, `mapa-busca.md`, `README.md`

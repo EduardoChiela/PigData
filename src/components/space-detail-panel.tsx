@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { AmenityTags } from "@/components/amenity-tags";
 import { BookingRequestFlow } from "@/components/booking-request-flow";
+import { ImageLightbox } from "@/components/image-lightbox";
 import { Button } from "@/components/ui/button";
 import { brl } from "@/lib/format";
 import {
@@ -42,13 +43,16 @@ export function SpaceDetailPanel({
   initialPeriod?: string;
 }) {
   const [step, setStep] = useState<"detail" | "booking">("detail");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!open) {
       setStep("detail");
+      setLightboxIndex(null);
       return;
     }
     setStep("detail");
+    setLightboxIndex(null);
   }, [open, space?.slug]);
 
   const status: Availability | undefined =
@@ -160,25 +164,38 @@ export function SpaceDetailPanel({
                 >
                   <div className="grid grid-cols-2 gap-1.5 p-3 md:grid-cols-4 md:gap-2 md:p-4">
                     {gallery.map((src, i) => (
-                      <div
+                      <button
                         key={`${space.slug}-g-${i}`}
+                        type="button"
+                        onClick={() => setLightboxIndex(i)}
                         className={cn(
-                          "overflow-hidden bg-muted",
+                          "group relative overflow-hidden bg-muted text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--leaf)]",
                           i === 0
                             ? "col-span-2 row-span-2 aspect-[4/3] rounded-xl md:rounded-2xl"
                             : "aspect-[4/3] rounded-lg md:rounded-xl",
                           i > 4 && "hidden md:block",
                         )}
+                        aria-label={`Abrir foto ${i + 1} de ${gallery.length} em tela cheia`}
                       >
                         <img
                           src={src}
                           alt=""
-                          className="size-full object-cover"
+                          className="size-full object-cover transition duration-300 group-hover:scale-[1.03]"
                           loading={i === 0 ? "eager" : "lazy"}
                         />
-                      </div>
+                        <span className="pointer-events-none absolute inset-0 bg-black/0 transition group-hover:bg-black/15" />
+                      </button>
                     ))}
                   </div>
+
+                  <ImageLightbox
+                    images={gallery}
+                    index={lightboxIndex ?? 0}
+                    open={lightboxIndex != null}
+                    altPrefix={space.name}
+                    onClose={() => setLightboxIndex(null)}
+                    onIndexChange={setLightboxIndex}
+                  />
 
                   <div className="space-y-6 px-4 pb-28 md:px-5">
                     <section>

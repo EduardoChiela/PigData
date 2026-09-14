@@ -1,7 +1,25 @@
 import type { EventType } from "@/lib/mock-data";
 import { brl } from "@/lib/format";
+import {
+  approveReservation,
+  confirmReservation,
+  listPendingForSpaces,
+  listReservationCalendarEntries,
+  listReservationsForSpaces,
+  rejectReservation,
+  resetReservationsSeed,
+  STATUS_LABEL_CLIENT,
+  type CalendarEntry,
+  type Reservation,
+  type ReservationStatus,
+} from "@/lib/reservations";
 
-export type OwnerRequestStatus = "pendente" | "aceita" | "recusada";
+/** @deprecated Prefer Reservation — mantido para imports existentes. */
+export type OwnerRequestStatus =
+  | "pendente"
+  | "aceita"
+  | "recusada"
+  | ReservationStatus;
 
 export type OwnerReservationRequest = {
   id: string;
@@ -13,92 +31,27 @@ export type OwnerReservationRequest = {
   amenities: string[];
   estimatedTotal: number;
   status: OwnerRequestStatus;
+  period?: string;
+  reservationStatus?: ReservationStatus;
 };
 
-/** Eventos fixos na agenda do parceiro (mock de visita / reserva). */
+/** Eventos fixos na agenda do parceiro (visitas mock). */
 export type OwnerCalendarEvent = {
   id: string;
   spaceSlug: string;
   date: string;
-  kind: "reserva" | "visita";
+  kind: "reserva" | "visita" | "pendente" | "hold" | "bloqueado" | "external";
   label: string;
   clientName: string;
   detail: string;
+  reservationId?: string;
+  status?: ReservationStatus;
 };
 
-const REQUESTS_KEY = "agora.mock.ownerRequests";
 const BLOCKED_KEY = "agora.mock.ownerBlocked";
 
-const SEED_REQUESTS: OwnerReservationRequest[] = [
-  {
-    id: "req-1",
-    spaceSlug: "vila-verde",
-    clientName: "João Silva",
-    date: "2026-09-15",
-    eventType: "Aniversário",
-    guests: 80,
-    amenities: ["Cascata de chocolate", "Coffee break"],
-    estimatedTotal: 1930,
-    status: "pendente",
-  },
-  {
-    id: "req-2",
-    spaceSlug: "vila-verde",
-    clientName: "Carla Mendes",
-    date: "2026-09-22",
-    eventType: "Casamento",
-    guests: 120,
-    amenities: [
-      "Iluminação cênica programável",
-      "Camarim com espelho iluminado (making-of)",
-    ],
-    estimatedTotal: 5530,
-    status: "pendente",
-  },
-  {
-    id: "req-3",
-    spaceSlug: "salao-corujas",
-    clientName: "Empresa Norte Sul",
-    date: "2026-09-18",
-    eventType: "Corporativo",
-    guests: 40,
-    amenities: ["Wi-Fi dedicado de alta velocidade"],
-    estimatedTotal: 2100,
-    status: "pendente",
-  },
-  {
-    id: "req-4",
-    spaceSlug: "vila-verde",
-    clientName: "Família Prado",
-    date: "2026-09-12",
-    eventType: "Formatura",
-    guests: 150,
-    amenities: ["Guarda-volumes com serviço"],
-    estimatedTotal: 4920,
-    status: "aceita",
-  },
-];
-
-/** Visitas e reservas já na agenda (além das solicitações aceitas). */
+/** Visitas já na agenda (seed). */
 export const SEED_CALENDAR_EVENTS: OwnerCalendarEvent[] = [
-  {
-    id: "evt-res-1",
-    spaceSlug: "vila-verde",
-    date: "2026-09-12",
-    kind: "reserva",
-    label: "Reserva confirmada",
-    clientName: "Família Prado",
-    detail: "Formatura · 150 convidados · dia inteiro",
-  },
-  {
-    id: "evt-res-2",
-    spaceSlug: "vila-verde",
-    date: "2026-09-20",
-    kind: "reserva",
-    label: "Reserva confirmada",
-    clientName: "Lucia Ferreira",
-    detail: "Casamento · 180 convidados · pagamento ok",
-  },
   {
     id: "evt-vis-1",
     spaceSlug: "vila-verde",
@@ -118,15 +71,6 @@ export const SEED_CALENDAR_EVENTS: OwnerCalendarEvent[] = [
     detail: "16h · conhecer salão e jardim",
   },
   {
-    id: "evt-res-3",
-    spaceSlug: "salao-corujas",
-    date: "2026-09-27",
-    kind: "reserva",
-    label: "Reserva confirmada",
-    clientName: "Hub Criativo LTDA",
-    detail: "Corporativo · 35 pessoas · manhã+tarde",
-  },
-  {
     id: "evt-vis-3",
     spaceSlug: "salao-corujas",
     date: "2026-09-16",
@@ -144,66 +88,117 @@ export const SEED_CALENDAR_EVENTS: OwnerCalendarEvent[] = [
     clientName: "Ana Ribeiro",
     detail: "11h · possível evento de confraternização",
   },
+  {
+    id: "evt-res-2",
+    spaceSlug: "vila-verde",
+    date: "2026-09-20",
+    kind: "reserva",
+    label: "Reserva confirmada",
+    clientName: "Lucia Ferreira",
+    detail: "Casamento · 180 convidados · pagamento ok",
+  },
+  {
+    id: "evt-res-3",
+    spaceSlug: "salao-corujas",
+    date: "2026-09-27",
+    kind: "reserva",
+    label: "Reserva confirmada",
+    clientName: "Hub Criativo LTDA",
+    detail: "Corporativo · 35 pessoas · manhã+tarde",
+  },
 ];
 
-function readRequests(): OwnerReservationRequest[] {
-  if (typeof window === "undefined") return [...SEED_REQUESTS];
-  try {
-    const raw = window.localStorage.getItem(REQUESTS_KEY);
-    if (!raw) {
-      window.localStorage.setItem(REQUESTS_KEY, JSON.stringify(SEED_REQUESTS));
-      return [...SEED_REQUESTS];
-    }
-    const parsed = JSON.parse(raw) as OwnerReservationRequest[];
-    if (!Array.isArray(parsed) || parsed.length === 0) {
-      window.localStorage.setItem(REQUESTS_KEY, JSON.stringify(SEED_REQUESTS));
-      return [...SEED_REQUESTS];
-    }
-    return parsed;
-  } catch {
-    return [...SEED_REQUESTS];
-  }
+function toOwnerRequest(r: Reservation): OwnerReservationRequest {
+  return {
+    id: r.id,
+    spaceSlug: r.spaceSlug,
+    clientName: r.clientName,
+    date: r.date,
+    eventType: r.eventType,
+    guests: r.guests,
+    amenities: r.amenities,
+    estimatedTotal: r.estimatedTotal,
+    status:
+      r.status === "pending" || r.status === "requested"
+        ? "pendente"
+        : r.status === "rejected"
+          ? "recusada"
+          : r.status === "confirmed"
+            ? "aceita"
+            : r.status,
+    period: r.period,
+    reservationStatus: r.status,
+  };
 }
 
-function writeRequests(list: OwnerReservationRequest[]) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(REQUESTS_KEY, JSON.stringify(list));
-}
-
-/** Força reseed das solicitações demo (útil se o storage ficou vazio). */
 export function resetOwnerRequestsSeed() {
-  if (typeof window === "undefined") return [...SEED_REQUESTS];
-  window.localStorage.setItem(REQUESTS_KEY, JSON.stringify(SEED_REQUESTS));
-  return [...SEED_REQUESTS];
+  return resetReservationsSeed().map(toOwnerRequest);
 }
 
 export function listOwnerRequests(spaceSlugs: string[]) {
-  return readRequests().filter((r) => spaceSlugs.includes(r.spaceSlug));
+  return listReservationsForSpaces(spaceSlugs).map(toOwnerRequest);
 }
 
 export function listPendingOwnerRequests(spaceSlugs: string[]) {
-  return listOwnerRequests(spaceSlugs).filter((r) => r.status === "pendente");
+  return listPendingForSpaces(spaceSlugs).map(toOwnerRequest);
+}
+
+export function listActionableOwnerRequests(spaceSlugs: string[]) {
+  return listReservationsForSpaces(spaceSlugs)
+    .filter((r) =>
+      [
+        "pending",
+        "requested",
+        "awaiting_payment",
+        "waitlisted",
+        "confirmed",
+      ].includes(r.status),
+    )
+    .map(toOwnerRequest);
+}
+
+function entryToEvent(e: CalendarEntry): OwnerCalendarEvent {
+  const kind =
+    e.kind === "confirmed"
+      ? "reserva"
+      : e.kind === "hold"
+        ? "hold"
+        : e.kind === "pending"
+          ? "pendente"
+          : e.kind === "blocked"
+            ? "bloqueado"
+            : e.kind === "external"
+              ? "external"
+              : "visita";
+  return {
+    id: e.id,
+    spaceSlug: e.spaceSlug,
+    date: e.date,
+    kind,
+    label: e.label,
+    clientName: e.clientName,
+    detail: e.detail,
+    reservationId: e.reservationId,
+    status: e.status,
+  };
 }
 
 export function listCalendarEvents(spaceSlug: string): OwnerCalendarEvent[] {
+  const fromReservations = listReservationCalendarEntries(spaceSlug).map(
+    entryToEvent,
+  );
   const seeded = SEED_CALENDAR_EVENTS.filter((e) => e.spaceSlug === spaceSlug);
-  const fromAccepted = listOwnerRequests([spaceSlug])
-    .filter((r) => r.status === "aceita")
-    .filter(
-      (r) => !seeded.some((e) => e.date === r.date && e.kind === "reserva"),
-    )
-    .map(
-      (r): OwnerCalendarEvent => ({
-        id: `evt-from-${r.id}`,
-        spaceSlug: r.spaceSlug,
-        date: r.date,
-        kind: "reserva",
-        label: "Reserva confirmada",
-        clientName: r.clientName,
-        detail: `${r.eventType} · ${r.guests} convidados`,
-      }),
-    );
-  return [...seeded, ...fromAccepted].sort((a, b) =>
+  const seededFiltered = seeded.filter(
+    (s) =>
+      !fromReservations.some(
+        (r) =>
+          r.date === s.date &&
+          r.kind === "reserva" &&
+          s.kind === "reserva" &&
+          r.clientName === s.clientName,
+      ),
+  );
+  return [...fromReservations, ...seededFiltered].sort((a, b) =>
     a.date.localeCompare(b.date),
   );
 }
@@ -212,20 +207,23 @@ export function eventsOnDate(spaceSlug: string, iso: string) {
   return listCalendarEvents(spaceSlug).filter((e) => e.date === iso);
 }
 
-export function acceptOwnerRequest(id: string) {
-  const list = readRequests().map((r) =>
-    r.id === id ? { ...r, status: "aceita" as const } : r,
-  );
-  writeRequests(list);
-  return list.find((r) => r.id === id) ?? null;
+export function acceptOwnerRequest(id: string, actorId = "par-vila") {
+  const approved = approveReservation(id, actorId);
+  return approved ? toOwnerRequest(approved) : null;
 }
 
-export function refuseOwnerRequest(id: string) {
-  const list = readRequests().map((r) =>
-    r.id === id ? { ...r, status: "recusada" as const } : r,
-  );
-  writeRequests(list);
-  return list.find((r) => r.id === id) ?? null;
+export function refuseOwnerRequest(id: string, actorId = "par-vila") {
+  const rejected = rejectReservation(id, actorId);
+  return rejected ? toOwnerRequest(rejected) : null;
+}
+
+export function confirmOwnerRequestPayment(
+  id: string,
+  actorId = "par-vila",
+) {
+  const result = confirmReservation(id, "owner", actorId);
+  if (!result.ok) return null;
+  return toOwnerRequest(result.reservation);
 }
 
 export function getBlockedDates(spaceSlug: string): string[] {
@@ -256,3 +254,5 @@ export function toggleBlockedDate(spaceSlug: string, iso: string) {
 export function formatEstimate(n: number) {
   return brl(n);
 }
+
+export { STATUS_LABEL_CLIENT };

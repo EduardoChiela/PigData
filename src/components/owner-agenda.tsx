@@ -40,7 +40,7 @@ const TODAY_ISO = toIso(new Date());
 
 type DayChip = {
   key: string;
-  tone: "reserva" | "visita" | "bloqueado";
+  tone: "reserva" | "visita" | "bloqueado" | "pendente" | "hold" | "external";
   text: string;
 };
 
@@ -82,21 +82,44 @@ export function OwnerAgenda({
     const chips: DayChip[] = [];
 
     for (const evt of events) {
+      const tone =
+        evt.kind === "reserva"
+          ? "reserva"
+          : evt.kind === "hold"
+            ? "hold"
+            : evt.kind === "pendente"
+              ? "pendente"
+              : evt.kind === "bloqueado"
+                ? "bloqueado"
+                : evt.kind === "external"
+                  ? "external"
+                  : "visita";
+      const firstName = evt.clientName.split(" ")[0] ?? "Pedido";
       chips.push({
         key: evt.id,
-        tone: evt.kind === "reserva" ? "reserva" : "visita",
+        tone,
         text:
-          evt.kind === "reserva"
-            ? (evt.clientName.split(" ")[0] ?? "Reserva")
-            : `Visita · ${(evt.clientName.split(" ")[0] ?? "").slice(0, 8)}`,
+          tone === "reserva"
+            ? firstName
+            : tone === "hold"
+              ? `Hold · ${firstName}`
+              : tone === "pendente"
+                ? `Pend. · ${firstName}`
+                : tone === "visita"
+                  ? `Visita · ${firstName.slice(0, 8)}`
+                  : evt.label,
       });
     }
 
     if (
       space.busyDates.includes(iso) &&
-      !events.some((e) => e.kind === "reserva")
+      !events.some((e) => e.kind === "reserva" || e.kind === "external")
     ) {
-      chips.push({ key: `busy-${iso}`, tone: "reserva", text: "Reserva" });
+      chips.push({
+        key: `busy-${iso}`,
+        tone: "external",
+        text: "Externo",
+      });
     }
 
     if (blocked.includes(iso)) {
@@ -106,10 +129,15 @@ export function OwnerAgenda({
     return chips;
   }
 
-  function dayKind(iso: string): "livre" | "ocupado" | "visita" | "bloqueado" {
+  function dayKind(
+    iso: string,
+  ): "livre" | "ocupado" | "visita" | "bloqueado" | "pendente" {
     const chips = dayChips(iso);
-    if (chips.some((c) => c.tone === "reserva")) return "ocupado";
-    if (chips.some((c) => c.tone === "bloqueado")) return "bloqueado";
+    if (chips.some((c) => c.tone === "reserva" || c.tone === "hold"))
+      return "ocupado";
+    if (chips.some((c) => c.tone === "bloqueado" || c.tone === "external"))
+      return "bloqueado";
+    if (chips.some((c) => c.tone === "pendente")) return "pendente";
     if (chips.some((c) => c.tone === "visita")) return "visita";
     return "livre";
   }
@@ -249,8 +277,11 @@ export function OwnerAgenda({
                     className={cn(
                       "truncate rounded px-1 py-0.5 text-[0.65rem] font-medium leading-tight text-white",
                       chip.tone === "reserva" && "bg-[#0b8043]",
+                      chip.tone === "hold" && "bg-[#f9ab00] text-[#202124]",
+                      chip.tone === "pendente" && "bg-[#9334e6]",
                       chip.tone === "visita" && "bg-[#039be5]",
                       chip.tone === "bloqueado" && "bg-[#d50000]",
+                      chip.tone === "external" && "bg-[#5f6368]",
                     )}
                     title={chip.text}
                   >
@@ -274,13 +305,22 @@ export function OwnerAgenda({
           Livre
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-[#0b8043]" /> Reserva feita
+          <span className="size-2.5 rounded-sm bg-[#0b8043]" /> Confirmada
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-[#039be5]" /> Visita marcada
+          <span className="size-2.5 rounded-sm bg-[#f9ab00]" /> Hold / pgto
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-[#d50000]" /> Bloqueado por mim
+          <span className="size-2.5 rounded-sm bg-[#9334e6]" /> Solicitação
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="size-2.5 rounded-sm bg-[#039be5]" /> Visita
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="size-2.5 rounded-sm bg-[#d50000]" /> Bloqueado
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="size-2.5 rounded-sm bg-[#5f6368]" /> Externo
         </span>
       </div>
 
@@ -290,12 +330,14 @@ export function OwnerAgenda({
             {formatDateBR(selectedDay)}
             <span className="ml-2 font-normal text-[#5f6368]">
               {dayKind(selectedDay) === "ocupado"
-                ? "· com reserva"
-                : dayKind(selectedDay) === "visita"
-                  ? "· com visita"
-                  : dayKind(selectedDay) === "bloqueado"
-                    ? "· bloqueado"
-                    : "· livre"}
+                ? "· reservado / hold"
+                : dayKind(selectedDay) === "pendente"
+                  ? "· com solicitação"
+                  : dayKind(selectedDay) === "visita"
+                    ? "· com visita"
+                    : dayKind(selectedDay) === "bloqueado"
+                      ? "· bloqueado"
+                      : "· livre"}
             </span>
           </p>
 
@@ -309,7 +351,12 @@ export function OwnerAgenda({
                   <span
                     className={cn(
                       "mt-1 size-2.5 shrink-0 rounded-full",
-                      evt.kind === "reserva" ? "bg-[#0b8043]" : "bg-[#039be5]",
+                      evt.kind === "reserva" && "bg-[#0b8043]",
+                      evt.kind === "hold" && "bg-[#f9ab00]",
+                      evt.kind === "pendente" && "bg-[#9334e6]",
+                      evt.kind === "visita" && "bg-[#039be5]",
+                      evt.kind === "bloqueado" && "bg-[#d50000]",
+                      evt.kind === "external" && "bg-[#5f6368]",
                     )}
                   />
                   <div className="min-w-0">
@@ -317,8 +364,14 @@ export function OwnerAgenda({
                       {evt.label}
                       <span className="ml-1.5 text-xs font-normal text-[#5f6368]">
                         {evt.kind === "reserva"
-                          ? "reserva feita"
-                          : "visita marcada"}
+                          ? "confirmada"
+                          : evt.kind === "hold"
+                            ? "aguardando pagamento"
+                            : evt.kind === "pendente"
+                              ? "solicitação"
+                              : evt.kind === "visita"
+                                ? "visita"
+                                : evt.kind}
                       </span>
                     </p>
                     <p className="text-[#5f6368]">
@@ -372,7 +425,12 @@ export function OwnerAgenda({
                   <span
                     className={cn(
                       "mt-1.5 size-2.5 shrink-0 rounded-full",
-                      evt.kind === "reserva" ? "bg-[#0b8043]" : "bg-[#039be5]",
+                      evt.kind === "reserva" && "bg-[#0b8043]",
+                      evt.kind === "hold" && "bg-[#f9ab00]",
+                      evt.kind === "pendente" && "bg-[#9334e6]",
+                      evt.kind === "visita" && "bg-[#039be5]",
+                      (evt.kind === "bloqueado" || evt.kind === "external") &&
+                        "bg-[#5f6368]",
                     )}
                   />
                   <span className="min-w-0 flex-1">

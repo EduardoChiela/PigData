@@ -1,5 +1,11 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { ShieldCheck, Sparkles } from "lucide-react";
+import {
+  CalendarSearch,
+  Handshake,
+  Package,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { SearchBar } from "@/components/search-bar";
 import { SpaceCard } from "@/components/space-card";
 import { Button } from "@/components/ui/button";
@@ -86,7 +92,12 @@ function WelcomePage() {
                 size="lg"
                 className="bg-[var(--leaf)] font-semibold text-[var(--ink)] hover:bg-[var(--leaf-bright)]"
               >
-                <Link to="/entrar">Entrar</Link>
+                <Link
+                  to="/"
+                  onClick={() => loginAsMock("cli-ana")}
+                >
+                  Ver espaços
+                </Link>
               </Button>
               <Button
                 asChild
@@ -94,9 +105,13 @@ function WelcomePage() {
                 variant="outline"
                 className="border-white/30 bg-white/10 text-white hover:bg-white/20"
               >
-                <a href="#preview">Ver espaços</a>
+                <Link to="/entrar">Entrar</Link>
               </Button>
             </div>
+            <p className="mt-3 text-sm text-white/60">
+              “Ver espaços” abre o mapa como cliente demo (Ana). Para parceiro
+              ou outra conta, use Entrar.
+            </p>
           </div>
 
           <div className="animate-rise-delay w-full max-w-4xl">
@@ -105,29 +120,91 @@ function WelcomePage() {
               className="rounded-2xl bg-white/95 p-3 shadow-lg"
             />
             <p className="mt-3 text-sm text-white/70">
-              Entrada disponibilidade-first: cidade + data + período.{" "}
-              {spaces.length} espaços no mock · {acitCount} verificados ACIT.
+              Busca disponibilidade-first: cidade + data + período.{" "}
+              {spaces.length} espaços no mock · {acitCount} verificados ACIT.{" "}
+              <a
+                href="#preview"
+                className="underline decoration-white/40 underline-offset-2 hover:text-white"
+              >
+                Ver amostra abaixo
+              </a>
             </p>
           </div>
         </div>
       </section>
 
-      <section id="preview" className="page-shell py-16 md:py-20">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h2 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">
-              Livres em {defaultSearchDate.split("-").reverse().join("/")}
-            </h2>
-            <p className="mt-2 max-w-xl text-muted-foreground">
-              Resultados mock ordenados com parceiros ACIT primeiro. Só entram
-              espaços disponíveis no período.
-            </p>
+      <section
+        id="como-funciona"
+        className="border-y border-border/70 bg-[var(--sand)]/70"
+      >
+        <div className="page-shell py-16 md:py-20">
+          <h2 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">
+            Como funciona
+          </h2>
+          <p className="mt-2 max-w-2xl text-muted-foreground">
+            Três passos até a contratação — sem pagar na solicitação.
+          </p>
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {[
+              {
+                step: "1",
+                title: "Busque a data",
+                body: "Informe cidade, data e período. Só aparecem espaços livres naquele momento.",
+                icon: CalendarSearch,
+              },
+              {
+                step: "2",
+                title: "Solicite sem pagar",
+                body: "Escolha o espaço, comodidades e envie o pedido. Solicitação não é reserva.",
+                icon: Package,
+              },
+              {
+                step: "3",
+                title: "Reserva após aprovação",
+                body: "O espaço analisa. Só depois da aprovação você paga e a reserva confirma.",
+                icon: Handshake,
+              },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.step} className="animate-fade">
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="grid size-10 place-items-center rounded-lg bg-[var(--ink)] text-sm font-bold text-[var(--leaf)]">
+                      {item.step}
+                    </span>
+                    <div className="grid size-10 place-items-center rounded-lg bg-white text-[var(--ink)] shadow-sm">
+                      <Icon className="size-5" />
+                    </div>
+                  </div>
+                  <h3 className="font-display text-lg font-semibold">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {item.body}
+                  </p>
+                </div>
+              );
+            })}
           </div>
-          <Button asChild variant="outline">
-            <Link to="/" onClick={() => loginAsMock("cli-ana")}>
-              Abrir mapa
+        </div>
+      </section>
+
+      <section id="preview" className="page-shell py-16 md:py-20">
+        <div className="mb-8">
+          <h2 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">
+            Livres em {defaultSearchDate.split("-").reverse().join("/")}
+          </h2>
+          <p className="mt-2 max-w-xl text-muted-foreground">
+            Amostra mock com parceiros ACIT primeiro. Só entram espaços
+            disponíveis no período.{" "}
+            <Link
+              to="/"
+              onClick={() => loginAsMock("cli-ana")}
+              className="font-medium text-foreground underline underline-offset-2"
+            >
+              Abrir mapa completo
             </Link>
-          </Button>
+          </p>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -142,32 +219,40 @@ function WelcomePage() {
         </div>
       </section>
 
-      <section className="border-y border-border/70 bg-[var(--sand)]/70">
-        <div className="page-shell grid gap-8 py-14 md:grid-cols-3">
+      <section className="border-t border-border/70 bg-[var(--sand)]/40">
+        <div className="page-shell grid gap-8 py-16 md:grid-cols-3 md:py-20">
           {[
             {
               title: "Solicitação ≠ reserva",
               body: "Você envia o pedido com data e comodidades. Só paga se o espaço aprovar.",
+              icon: Package,
             },
             {
               title: "Destaque ACIT",
               body: "Parceiros verificados aparecem primeiro na lista e no mapa da rede.",
+              icon: ShieldCheck,
             },
             {
               title: "Comodidades no pedido",
               body: "Monte a cotação com o que cada espaço oferece — incluso ou opcional.",
+              icon: Handshake,
             },
-          ].map((item) => (
-            <div key={item.title} className="animate-fade">
-              <div className="mb-3 grid size-10 place-items-center rounded-lg bg-[var(--ink)] text-[var(--leaf)]">
-                <ShieldCheck className="size-5" />
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <div key={item.title} className="animate-fade">
+                <div className="mb-3 grid size-10 place-items-center rounded-lg bg-[var(--ink)] text-[var(--leaf)]">
+                  <Icon className="size-5" />
+                </div>
+                <h3 className="font-display text-lg font-semibold">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {item.body}
+                </p>
               </div>
-              <h3 className="font-display text-lg font-semibold">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {item.body}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     </>

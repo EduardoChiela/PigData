@@ -1,12 +1,20 @@
 # Painel do Organizador (ACIT) — Calendários Compartilhados
 
+<<<<<<< HEAD
 > Status: **rascunho em protótipo** — UI em `/painel-acit`. Guardar aqui até formalizar nos docs oficiais.
+=======
+> Status: **rascunho de discussão**, ainda não incorporado aos docs oficiais do projeto. Guardar aqui até fecharmos o desenho e decidirmos formalizar.
+>>>>>>> 6f13980274d613da5d8e20084864ae2620c4b16c
 >
 > **Este painel é separado do painel do proprietário.** `painel-proprietario.md`, `OwnerPanel` e `OwnerAgenda` continuam exatamente como estão — nada aqui propõe alterar esses arquivos. São dois papéis diferentes (`docs/usuarios-papeis.md`): **Espaço/núcleo** (proprietário, dono de um espaço) e **ACIT** (rede, enxerga todos os espaços). Cada um com seu próprio painel.
 
 ## 1. Objetivo
 
+<<<<<<< HEAD
 Dar ao **Organizador (ACIT)** — o papel institucional que governa a rede — uma visão de **calendário compartilhado**: os horários/datas de todos os espaços filiados, num painel próprio, distinto do painel do proprietário.
+=======
+Dar ao **Organizador (ACIT)** — o papel institucional que governa a rede (Pilar 1 de `3-pilares-estrutura.md`) — uma visão de **calendário compartilhado**: os horários/datas de todos os espaços filiados, num painel próprio, distinto do painel do proprietário.
+>>>>>>> 6f13980274d613da5d8e20084864ae2620c4b16c
 
 ## 2. Onde isso vive (separado do proprietário)
 
@@ -130,17 +138,24 @@ Selecionar espaço: [ Salão Vila Verde ▼ ]
 
 ## 9. Relação com os docs existentes
 
+<<<<<<< HEAD
+=======
+- Papel institucional: `3-pilares-estrutura.md` (Pilar 1 — Organizador ACIT)
+>>>>>>> 6f13980274d613da5d8e20084864ae2620c4b16c
 - Papéis do produto: `docs/usuarios-papeis.md`
 - Painel do proprietário (intocado): `docs/rascunhos/painel-proprietario.md`
 - Regra de agenda desatualizada: `docs/espacos.md`
 - Cadastro/status de homologação: `src/lib/space-registration.ts`, `formulario-cadastro-espaco.md`
 - Selo/destaque na busca: `docs/mapa-busca.md`, `docs/parceiros-rede.md`
 
+<<<<<<< HEAD
 ## Estado da implementação (protótipo)
 
 - Conta mock: `organizador@acit.toledo.br` / `demo` → `/painel-acit`
 - Abas: Calendário compartilhado, agenda somente leitura, Filiados (homologar/recusar), Mensagens mock
 - Status de listing ampliado; `listPendingHomologacoes` / `updateListingStatus`
 
+=======
+>>>>>>> 6f13980274d613da5d8e20084864ae2620c4b16c
 ---
 *Gerado a partir da conversa de definição de produto — reflete decisões até o momento, sujeito a mudança até ser formalizado nos docs oficiais do repositório.*

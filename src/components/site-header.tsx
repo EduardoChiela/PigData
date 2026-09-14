@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { NotificationBell } from "@/components/notification-bell";
 import { Button } from "@/components/ui/button";
 import { APP_NAME, APP_TAGLINE, PILOT_CITY_LABEL } from "@/lib/mock-data";
 import {
@@ -124,6 +125,17 @@ export function SiteHeader() {
                 </Link>
               ) : null}
 
+              {!isPartner && !isOrganizer ? (
+                <Link
+                  to="/minhas-reservas"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
+                >
+                  Minhas reservas
+                </Link>
+              ) : null}
+
+              <NotificationBell userId={user.id} />
+
               <div className="relative ml-2" ref={profileRef}>
                 <button
                   type="button"
@@ -185,14 +197,16 @@ export function SiteHeader() {
                           )}
                         </>
                       ) : (
-                        <button
-                          type="button"
-                          className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
-                          onClick={() => setProfileOpen(false)}
-                        >
-                          <User className="size-4 text-muted-foreground" />
-                          Meu perfil
-                        </button>
+                        <>
+                          <Link
+                            to="/minhas-reservas"
+                            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
+                            onClick={() => setProfileOpen(false)}
+                          >
+                            <User className="size-4 text-muted-foreground" />
+                            Minhas reservas
+                          </Link>
+                        </>
                       )}
                       <button
                         type="button"
@@ -281,6 +295,18 @@ export function SiteHeader() {
                   Rede ACIT
                 </Link>
               ) : null}
+              {!isPartner && !isOrganizer ? (
+                <Link
+                  to="/minhas-reservas"
+                  className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
+                  onClick={() => setOpen(false)}
+                >
+                  Minhas reservas
+                </Link>
+              ) : null}
+              <div className="px-3 py-2">
+                <NotificationBell userId={user.id} />
+              </div>
               <button
                 type="button"
                 className="rounded-md px-3 py-2.5 text-left text-sm font-medium text-rose-200 hover:bg-white/10"

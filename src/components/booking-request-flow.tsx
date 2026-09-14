@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Users } from "lucide-react";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { ScheduleVisitBlock } from "@/components/schedule-visit-block";
 import { SpaceAvailabilityCalendar } from "@/components/space-availability-calendar";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,8 @@ import {
   type PeriodId,
   type Space,
 } from "@/lib/mock-data";
+import { getActiveMockUser } from "@/lib/mock-session";
+import { createReservationRequest } from "@/lib/reservations";
 import { cn } from "@/lib/utils";
 
 export type BookingOrderStep = "basics" | "amenities" | "review" | "sent";
@@ -83,7 +86,30 @@ export function BookingRequestFlow({
   }
 
   function sendRequest() {
-    // Mock: pedido enviado — painel do espaço / métricas entram depois
+    const user = getActiveMockUser();
+    const clientUserId = user?.id ?? "cli-ana";
+    const clientName = user?.name ?? "Ana Ribeiro";
+    if (!eventType) return;
+
+    const created = createReservationRequest({
+      spaceSlug: space.slug,
+      clientUserId,
+      clientName,
+      date,
+      period,
+      eventType,
+      guests,
+      amenities: selectedAmenities.map((a) => a.name),
+      estimatedTotal,
+    });
+
+    if (created.status === "awaiting_payment") {
+      toast.success("Aprovada automaticamente — conclua o pagamento demo.");
+    } else if (created.status === "waitlisted") {
+      toast.message("Período em disputa — você entrou na fila de interesse.");
+    } else {
+      toast.success("Solicitação enviada — aguardando o espaço.");
+    }
     setOrderStep("sent");
   }
 
@@ -344,8 +370,10 @@ export function BookingRequestFlow({
               Solicitação enviada
             </p>
             <p className="mt-2 text-sm text-emerald-900/80">
-              Status mock: aguardando resposta do espaço. Acompanhar pedidos
-              entra nas próximas telas.
+              Acompanhe em Minhas reservas e no sino de notificações. Se o
+              espaço estiver em modo automático e os requisitos forem
+              atendidos, a aprovação pode ser imediata (ainda sem ser reserva
+              confirmada até o pagamento).
             </p>
             <Button
               type="button"

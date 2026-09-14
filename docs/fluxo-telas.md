@@ -59,6 +59,20 @@ Hero com busca rápida disponibilidade-first: Onde (cidade) | Data | Período (o
 
 No protótipo: rota `/bem-vindo`, exibida quando o usuário **não** está autenticado. Com sessão mock ativa, a home é o mapa (`/`).
 
+**CTA Ver espaços:** abre o mapa (`/`) com login mock do cliente Ana (`loginAsMock("cli-ana")`). **Entrar** leva a `/entrar` para escolher conta. Há microcopy honesta sobre o cliente demo. Seção **Como funciona** (3 passos) + amostra de cards (`#preview`) + pilares de valor.
+
+```mermaid
+flowchart LR
+  visitante["/bem-vindo"] --> verEspacos["Ver espacos"]
+  visitante --> entrar["/entrar"]
+  verEspacos --> mapa["/ mapa cliente demo"]
+  entrar --> mapa
+  entrar --> painel["/painel parceiro"]
+  mapa --> detalhe["Detalhe T03"]
+  detalhe --> pedido["Solicitacao T04-T06"]
+  pedido --> painel
+```
+
 ### T02 — Busca / resultados
 
 **Layout atual:** mapa full-bleed; **busca colapsável** (chip resumo → expandir); **filtros** dropdown limpo ao lado da lista; **lista colapsável** com cards + tags de comodidades.
@@ -73,7 +87,7 @@ No protótipo: rota `/bem-vindo`, exibida quando o usuário **não** está auten
 
 Galeria, selo ACIT, endereço, capacidade, área, tipos de evento, comodidades/atributos, regras, preço base, favoritar → **Escolher data e solicitar** → T04.
 
-No protótipo atual: painel à direita da lista em `/` (~80% do espaço restante sobre o mapa); a lista permanece aberta para trocar de espaço. Exemplos de itens no wireframe são ilustrativos; catálogo oficial em [comodidades.md](./comodidades.md).
+No protótipo atual: painel à direita da lista em `/` (~80% do espaço restante sobre o mapa); a lista permanece aberta para trocar de espaço. Galeria: clique abre lightbox fullscreen com carrossel. Exemplos de itens no wireframe são ilustrativos; catálogo oficial em [comodidades.md](./comodidades.md).
 
 ### T04 — Data, período e evento (Tela 1 do pedido)
 
@@ -190,6 +204,9 @@ Solicitação criada → Aguardando resposta
 ## Estado da implementação
 
 - T02 map-first em `/` para cliente, parceiro e organizador (login do parceiro → `/painel`; do organizador → `/painel-acit`). T01 em `/bem-vindo` para visitante.
+- T01: CTA **Ver espaços** → mapa (cliente demo); bloco Como funciona; amostra `#preview`; guia em `/ajuda` + `docs/guia-usuario.md`.
 - T03: painel de detalhe (vitrine de comodidades incluso/opcional).
 - T04–T06 no painel fullscreen (`BookingRequestFlow`): data/evento → comodidades com total → revisão/envio mock.
-- Marca **Ágora**; login real pendente. T07+ ainda não.
+- Marca **Ágora**; login real pendente.
+- **Clicável no protótipo:** ~T01–T06 (+ painéis parceiro/organizador).
+- **Ainda não:** T07+ (acompanhamento dedicado, pagamento pós-aprovação na UI, minhas reservas).

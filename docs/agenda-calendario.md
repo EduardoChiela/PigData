@@ -17,6 +17,7 @@ O espaço declara se aceita **dia/período** e/ou **por horário** (pelo menos u
 - Espaço marca: livre, ocupado, bloqueado (em dia ou faixa horária, conforme modalidade)
 - Busca usa essa agenda para filtrar o mapa
 - Meta: resposta em minutos, não em dias de WhatsApp
+- **Protótipo (E2):** calendário do parceiro mostra solicitações pendentes, hold de pagamento, confirmadas, visitas, bloqueios manuais e busy externo — ver [reservas.md](./reservas.md) e [rascunhos/planejamento-eduardo.md](./rascunhos/planejamento-eduardo.md)
 
 ## Calendário compartilhado / parceria (Fase 2)
 

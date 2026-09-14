@@ -1,6 +1,7 @@
 import {
   amenityCatalog,
   eventTypes,
+  getSpaceBySlug,
   spaceClasses,
   type EventType,
   type Space,
@@ -227,6 +228,24 @@ export function listPendingHomologacoes(): PublishedSpaceListing[] {
 
 export function listVerifiedListings(): PublishedSpaceListing[] {
   return listAllListings().filter((l) => l.status === "verificado");
+}
+
+export function getListingBySlug(slug: string) {
+  return listAllListings().find((l) => l.slug === slug) ?? null;
+}
+
+/** Nome amigável: seed mock → listing publicado → slug humanizado. */
+export function resolveSpaceDisplayName(slug: string) {
+  const seeded = getSpaceBySlug(slug);
+  if (seeded) return seeded.name;
+  const listing = getListingBySlug(slug);
+  if (listing) return listing.name;
+  return slug
+    .replace(/-[a-z0-9]{3,5}$/i, "")
+    .split("-")
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 export function updateListingStatus(

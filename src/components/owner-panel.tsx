@@ -1,33 +1,52 @@
+import { Link } from "@tanstack/react-router";
 import {
   CalendarDays,
   Check,
+  CircleHelp,
   ClipboardList,
   Home,
   Plus,
+  Settings2,
   ShieldCheck,
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { OwnerAgenda } from "@/components/owner-agenda";
 import { SpaceRegistrationWizard } from "@/components/space-registration-wizard";
 import { Button } from "@/components/ui/button";
 import { formatDateBR, brl } from "@/lib/format";
-import { getSpaceBySlug, type Space } from "@/lib/mock-data";
+import { getSpaceBySlug, periodLabel, type Space } from "@/lib/mock-data";
 import type { MockUser } from "@/lib/mock-session";
 import {
   acceptOwnerRequest,
+  confirmOwnerRequestPayment,
+  listActionableOwnerRequests,
   listPendingOwnerRequests,
   refuseOwnerRequest,
   resetOwnerRequestsSeed,
+  STATUS_LABEL_CLIENT,
   type OwnerReservationRequest,
 } from "@/lib/owner-panel-data";
 import {
+  getBookingSettings,
+  saveBookingSettings,
+  type BookingMode,
+  type SpaceBookingSettings,
+} from "@/lib/reservations";
+import {
   listOwnerListings,
+  resolveSpaceDisplayName,
   type PublishedSpaceListing,
 } from "@/lib/space-registration";
 import { cn } from "@/lib/utils";
 
-type TabId = "agenda" | "solicitacoes" | "anuncios" | "cadastrar";
+type TabId =
+  | "agenda"
+  | "solicitacoes"
+  | "anuncios"
+  | "cadastrar"
+  | "regras";
 
 export function OwnerPanel({ user }: { user: MockUser }) {
   const spaceSlugs = useMemo(
@@ -74,6 +93,7 @@ export function OwnerPanel({ user }: { user: MockUser }) {
     },
     { id: "anuncios" as const, label: "Meus anúncios", icon: Home },
     { id: "cadastrar" as const, label: "Cadastrar espaço", icon: Plus },
+    { id: "regras" as const, label: "Regras de reserva", icon: Settings2 },
   ];
 
   return (
@@ -124,6 +144,13 @@ export function OwnerPanel({ user }: { user: MockUser }) {
               );
             })}
           </nav>
+          <Link
+            to="/ajuda"
+            className="mt-2 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+          >
+            <CircleHelp className="size-4 shrink-0" />
+            Ajuda
+          </Link>
         </div>
       </aside>
 
@@ -138,7 +165,11 @@ export function OwnerPanel({ user }: { user: MockUser }) {
           />
         ) : null}
         {tab === "solicitacoes" ? (
-          <OwnerRequests spaceSlugs={spaceSlugs} onRefresh={refresh} />
+          <OwnerRequests
+            spaceSlugs={spaceSlugs}
+            ownerId={user.id}
+            onRefresh={refresh}
+          />
         ) : null}
         {tab === "anuncios" ? (
           <OwnerListings
@@ -157,6 +188,13 @@ export function OwnerPanel({ user }: { user: MockUser }) {
             }}
           />
         ) : null}
+        {tab === "regras" && activeSpace ? (
+          <BookingRulesPanel
+            space={activeSpace}
+            spaces={ownedSpaces}
+            onSelectSpace={setActiveSlug}
+          />
+        ) : null}
       </div>
     </div>
   );
@@ -164,17 +202,19 @@ export function OwnerPanel({ user }: { user: MockUser }) {
 
 function OwnerRequests({
   spaceSlugs,
+  ownerId,
   onRefresh,
 }: {
   spaceSlugs: string[];
+  ownerId: string;
   onRefresh: () => void;
 }) {
-  const [pending, setPending] = useState<OwnerReservationRequest[]>([]);
+  const [items, setItems] = useState<OwnerReservationRequest[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
   const spaceKey = spaceSlugs.join("|");
 
   function reload() {
-    setPending(listPendingOwnerRequests(spaceSlugs));
+    setItems(listActionableOwnerRequests(spaceSlugs));
   }
 
   useEffect(() => {
@@ -183,35 +223,61 @@ function OwnerRequests({
   }, [spaceKey]);
 
   function onAccept(req: OwnerReservationRequest) {
-    const updated = acceptOwnerRequest(req.id);
+    const updated = acceptOwnerRequest(req.id, ownerId);
     reload();
     onRefresh();
-    setFeedback(
-      updated
-        ? `Solicitação de ${req.clientName} aceita — data bloqueada na agenda.`
-        : "Não foi possível aceitar a solicitação.",
-    );
+    const msg = updated
+      ? `Solicitação de ${req.clientName} aprovada — aguardando pagamento (hold no calendário).`
+      : "Não foi possível aprovar a solicitação.";
+    setFeedback(msg);
+    toast.success(msg);
+  }
+
+  function onConfirmPayment(req: OwnerReservationRequest) {
+    const updated = confirmOwnerRequestPayment(req.id, ownerId);
+    reload();
+    onRefresh();
+    const msg = updated
+      ? `Reserva de ${req.clientName} confirmada. Concorrentes foram para a fila.`
+      : "Não foi possível confirmar (possível conflito).";
+    setFeedback(msg);
+    if (updated) toast.success(msg);
+    else toast.error(msg);
   }
 
   function onRefuse(req: OwnerReservationRequest) {
-    const updated = refuseOwnerRequest(req.id);
+    const updated = refuseOwnerRequest(req.id, ownerId);
     reload();
     onRefresh();
-    setFeedback(
-      updated
-        ? `Solicitação de ${req.clientName} recusada.`
-        : "Não foi possível recusar a solicitação.",
-    );
+    const msg = updated
+      ? `Solicitação de ${req.clientName} recusada.`
+      : "Não foi possível recusar a solicitação.";
+    setFeedback(msg);
+    toast.message(msg);
   }
+
+  const pending = items.filter(
+    (r) =>
+      r.reservationStatus === "pending" ||
+      r.reservationStatus === "requested" ||
+      r.status === "pendente",
+  );
+  const awaiting = items.filter(
+    (r) => r.reservationStatus === "awaiting_payment",
+  );
+  const waitlisted = items.filter(
+    (r) => r.reservationStatus === "waitlisted",
+  );
 
   return (
     <section className="space-y-4">
       <div>
         <h1 className="font-display text-xl font-semibold tracking-tight md:text-2xl">
-          Solicitações pendentes ({pending.length})
+          Solicitações ({pending.length} pendentes)
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Pedidos de reserva de evento — distintos de “Agendar visita”
+          Várias solicitações podem disputar o mesmo período. Só a confirmação
+          bloqueia de forma definitiva.
         </p>
       </div>
 
@@ -224,10 +290,10 @@ function OwnerRequests({
         </p>
       ) : null}
 
-      {pending.length === 0 ? (
+      {items.length === 0 ? (
         <div className="space-y-3 rounded-2xl border border-dashed border-border bg-white p-8 text-center">
           <p className="text-sm text-muted-foreground">
-            Nenhuma solicitação pendente.
+            Nenhuma solicitação no momento.
           </p>
           <Button
             type="button"
@@ -245,18 +311,31 @@ function OwnerRequests({
         </div>
       ) : (
         <ul className="space-y-3">
-          {pending.map((req) => {
-            const space = getSpaceBySlug(req.spaceSlug);
+          {[...pending, ...awaiting, ...waitlisted].map((req) => {
+            const spaceName =
+              getSpaceBySlug(req.spaceSlug)?.name ??
+              resolveSpaceDisplayName(req.spaceSlug);
+            const st = req.reservationStatus;
+            const label = st
+              ? STATUS_LABEL_CLIENT[st]
+              : String(req.status);
             return (
               <li
                 key={req.id}
                 className="rounded-2xl border border-border bg-white p-4 shadow-sm"
               >
-                <p className="font-semibold">
-                  {req.clientName} — {formatDateBR(req.date)} — {req.eventType}
-                </p>
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <p className="font-semibold">
+                    {req.clientName} — {formatDateBR(req.date)} —{" "}
+                    {req.eventType}
+                  </p>
+                  <span className="rounded-full bg-muted px-2.5 py-0.5 text-[0.7rem] font-semibold">
+                    {label}
+                  </span>
+                </div>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {space?.name} · {req.guests} convidados
+                  {spaceName} · {req.guests} convidados
+                  {req.period ? ` · ${periodLabel(req.period)}` : ""}
                 </p>
                 <p className="mt-2 text-sm">
                   Comodidades:{" "}
@@ -268,29 +347,188 @@ function OwnerRequests({
                   Total estimado: {brl(req.estimatedTotal)}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <Button
-                    type="button"
-                    className="font-semibold"
-                    onClick={() => onAccept(req)}
-                  >
-                    <Check className="size-4" />
-                    Aceitar
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="font-semibold"
-                    onClick={() => onRefuse(req)}
-                  >
-                    <X className="size-4" />
-                    Recusar
-                  </Button>
+                  {st === "pending" ||
+                  st === "requested" ||
+                  req.status === "pendente" ? (
+                    <>
+                      <Button
+                        type="button"
+                        className="font-semibold"
+                        onClick={() => onAccept(req)}
+                      >
+                        <Check className="size-4" />
+                        Aprovar
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="font-semibold"
+                        onClick={() => onRefuse(req)}
+                      >
+                        <X className="size-4" />
+                        Recusar
+                      </Button>
+                    </>
+                  ) : null}
+                  {st === "awaiting_payment" ? (
+                    <Button
+                      type="button"
+                      className="font-semibold"
+                      onClick={() => onConfirmPayment(req)}
+                    >
+                      Confirmar pagamento (demo)
+                    </Button>
+                  ) : null}
+                  {st === "waitlisted" ? (
+                    <p className="text-sm text-muted-foreground">
+                      Na fila — período com hold/confirmação de outro pedido.
+                    </p>
+                  ) : null}
                 </div>
               </li>
             );
           })}
         </ul>
       )}
+
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => {
+          resetOwnerRequestsSeed();
+          reload();
+          onRefresh();
+        }}
+      >
+        Restaurar seed demo
+      </Button>
+    </section>
+  );
+}
+
+function BookingRulesPanel({
+  space,
+  spaces,
+  onSelectSpace,
+}: {
+  space: Space;
+  spaces: Space[];
+  onSelectSpace: (slug: string) => void;
+}) {
+  const [settings, setSettings] = useState<SpaceBookingSettings>(() =>
+    getBookingSettings(space.slug),
+  );
+
+  useEffect(() => {
+    setSettings(getBookingSettings(space.slug));
+  }, [space.slug]);
+
+  function persist(next: SpaceBookingSettings) {
+    setSettings(saveBookingSettings(next));
+    toast.success("Regras de reserva salvas (mock).");
+  }
+
+  return (
+    <section className="space-y-4">
+      <div>
+        <h1 className="font-display text-xl font-semibold tracking-tight md:text-2xl">
+          Regras de reserva
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Modo manual ou automático (estilo Airbnb). Conflito de agenda sempre
+          tem prioridade.
+        </p>
+      </div>
+
+      {spaces.length > 1 ? (
+        <select
+          className="rounded-lg border border-border bg-white px-3 py-2 text-sm"
+          value={space.slug}
+          onChange={(e) => onSelectSpace(e.target.value)}
+        >
+          {spaces.map((s) => (
+            <option key={s.slug} value={s.slug}>
+              {s.name}
+            </option>
+          ))}
+        </select>
+      ) : null}
+
+      <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
+        <p className="text-sm font-semibold">{space.name}</p>
+        <fieldset className="mt-4 space-y-2">
+          <legend className="text-sm font-medium text-muted-foreground">
+            Modo de reserva
+          </legend>
+          {(
+            [
+              ["manual", "Aprovação manual"],
+              ["automatic", "Aprovação automática (requisitos)"],
+            ] as [BookingMode, string][]
+          ).map(([mode, label]) => (
+            <label
+              key={mode}
+              className="flex cursor-pointer items-center gap-2 text-sm"
+            >
+              <input
+                type="radio"
+                name="bookingMode"
+                checked={settings.bookingMode === mode}
+                onChange={() =>
+                  persist({ ...settings, bookingMode: mode })
+                }
+              />
+              {label}
+            </label>
+          ))}
+        </fieldset>
+
+        <label className="mt-4 block space-y-1.5 text-sm">
+          <span className="font-medium text-muted-foreground">
+            Hold de pagamento (minutos)
+          </span>
+          <input
+            type="number"
+            min={1}
+            max={120}
+            className="w-full max-w-xs rounded-lg border border-border px-3 py-2"
+            value={settings.paymentHoldMinutes}
+            onChange={(e) =>
+              persist({
+                ...settings,
+                paymentHoldMinutes: Math.max(
+                  1,
+                  Number(e.target.value) || 15,
+                ),
+              })
+            }
+          />
+        </label>
+
+        <label className="mt-4 block space-y-1.5 text-sm">
+          <span className="font-medium text-muted-foreground">
+            Antecedência mínima (horas)
+          </span>
+          <input
+            type="number"
+            min={0}
+            className="w-full max-w-xs rounded-lg border border-border px-3 py-2"
+            value={settings.minNoticeHours}
+            onChange={(e) =>
+              persist({
+                ...settings,
+                minNoticeHours: Math.max(0, Number(e.target.value) || 0),
+              })
+            }
+          />
+        </label>
+
+        <p className="mt-4 text-xs text-muted-foreground">
+          Capacidade máxima usada na autoaprovação: {space.capacity} convidados
+          · tipos permitidos: {space.eventTypes.join(", ")}.
+        </p>
+      </div>
     </section>
   );
 }
