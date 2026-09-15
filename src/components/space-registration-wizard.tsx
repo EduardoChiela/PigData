@@ -167,7 +167,7 @@ export function SpaceRegistrationWizard({
           Cadastrar espaço
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Assistido por Google ou manual · aguarda homologação ACIT ao publicar
+          Assistido por Google ou manual · aguarda homologação ao publicar
         </p>
         {step !== "entry" && step !== "done" ? (
           <div className="mt-3 flex flex-wrap gap-1.5">
@@ -708,7 +708,7 @@ export function SpaceRegistrationWizard({
                       .join(" · ") || "Nenhuma"}
                   </p>
                   <p className="mt-1">
-                    {draft.photoUrls.length} foto(s) · selo ACIT só após
+                    {draft.photoUrls.length} foto(s) · selo só após
                     homologação
                   </p>
                 </div>
@@ -740,7 +740,7 @@ export function SpaceRegistrationWizard({
                   Espaço publicado
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Status: <strong>aguardando homologação ACIT</strong>. Ele
+                  Status: <strong>aguardando homologação</strong>. Ele
                   aparece em Meus anúncios; o selo e a prioridade no mapa vêm
                   depois da rede.
                 </p>

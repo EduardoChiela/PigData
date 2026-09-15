@@ -14,7 +14,7 @@ export const Route = createFileRoute("/painel-acit")({
     }
   },
   head: () => ({
-    meta: [{ title: `Painel ACIT — ${APP_NAME}` }],
+    meta: [{ title: `Painel — ${APP_NAME}` }],
   }),
   component: PainelAcitPage,
 });

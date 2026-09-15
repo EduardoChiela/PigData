@@ -85,8 +85,8 @@ export function SpaceDetailPanel({
               : cn(
                   "absolute bottom-[42dvh] left-0 right-0 top-0 rounded-none md:top-20 md:bottom-4 md:rounded-2xl",
                   listOpen
-                    ? "md:left-[calc(26rem+1.25rem)] md:w-[calc((100%-26rem-2.25rem)*0.8)]"
-                    : "md:left-4 md:w-[calc((100%-2rem)*0.8)]",
+                    ? "md:left-[calc(62.5vw+1.25rem)] md:right-4"
+                    : "md:left-4 md:right-4",
                 ),
           )}
         >
@@ -96,7 +96,7 @@ export function SpaceDetailPanel({
                 {space.acitVerified ? (
                   <span className="inline-flex items-center gap-1 rounded-md bg-[var(--forest)] px-2 py-0.5 text-[0.7rem] font-semibold text-white">
                     <ShieldCheck className="size-3.5" />
-                    Verificado ACIT
+                    Verificado
                   </span>
                 ) : null}
                 {status && !expanded ? (

@@ -71,7 +71,7 @@ export function LoginPage() {
         </h1>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
           Três contas mock: cliente (mapa), parceiro (painel do espaço) e
-          organizador ACIT (calendário da rede e homologação).
+          organizador (calendário da rede e homologação).
         </p>
 
         <div className="mt-8 space-y-3">
@@ -171,7 +171,7 @@ export function LoginPage() {
                     onChange={() => setRole("parceiro")}
                   />
                   <ShieldCheck className="size-4 text-[var(--forest)]" />
-                  Parceiro ACIT — painel do proprietário
+                  Parceiro — painel do proprietário
                 </label>
                 <label className="flex items-center gap-2 text-sm">
                   <input
@@ -181,7 +181,7 @@ export function LoginPage() {
                     onChange={() => setRole("organizador")}
                   />
                   <Network className="size-4 text-[var(--forest)]" />
-                  Organizador ACIT — rede e homologação
+                  Organizador — rede e homologação
                 </label>
               </fieldset>
             </>

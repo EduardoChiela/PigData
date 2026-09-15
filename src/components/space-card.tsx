@@ -30,7 +30,7 @@ export function SpaceCard({
       <button
         type="button"
         onClick={() => onSelect?.(space.slug)}
-        className="group flex w-full gap-3 overflow-hidden rounded-xl border border-border/70 bg-white p-2.5 text-left shadow-sm transition hover:border-primary/40 hover:shadow-md"
+        className="group flex h-44 w-full gap-3 overflow-hidden rounded-xl border border-border/70 bg-white p-2.5 text-left shadow-sm transition hover:border-primary/40 hover:shadow-md"
       >
         <div className="relative size-[5.25rem] shrink-0 overflow-hidden rounded-lg bg-muted">
           <img
@@ -41,7 +41,7 @@ export function SpaceCard({
           />
           {space.acitVerified ? (
             <span className="absolute left-1 top-1 rounded bg-[var(--forest)] px-1 py-0.5 text-[0.6rem] font-bold text-[var(--leaf)]">
-              ACIT
+              OK
             </span>
           ) : null}
         </div>
@@ -63,7 +63,7 @@ export function SpaceCard({
           <AmenityTags
             amenities={space.amenities}
             limit={2}
-            className="mt-2"
+            className="mt-2 max-h-11 overflow-hidden"
           />
           <p className="mt-1.5 font-display text-base font-semibold text-foreground">
             {brl(space.basePrice)}
@@ -74,7 +74,7 @@ export function SpaceCard({
   }
 
   return (
-    <article className="group overflow-hidden rounded-2xl border border-border/80 bg-card shadow-[0_12px_40px_-28px_rgba(20,40,30,0.55)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_48px_-24px_rgba(20,40,30,0.55)]">
+    <article className="group h-full min-h-[36rem] overflow-hidden rounded-2xl border border-border/80 bg-card shadow-[0_12px_40px_-28px_rgba(20,40,30,0.55)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_48px_-24px_rgba(20,40,30,0.55)]">
       <Link
         to="/"
         search={{
@@ -82,10 +82,10 @@ export function SpaceCard({
           periodo: searchPeriod,
           slug: space.slug,
         }}
-        className="block"
+        className="flex h-full flex-col"
         onClick={() => loginAsMock("cli-ana")}
       >
-        <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+        <div className="relative h-56 shrink-0 overflow-hidden bg-muted">
           <img
             src={space.image}
             alt=""
@@ -97,7 +97,7 @@ export function SpaceCard({
             {space.acitVerified ? (
               <span className="inline-flex items-center gap-1 rounded-md bg-[var(--forest)] px-2 py-1 text-[0.7rem] font-semibold text-white">
                 <ShieldCheck className="size-3.5" />
-                Verificado ACIT
+                Verificado
               </span>
             ) : null}
             <span
@@ -112,7 +112,7 @@ export function SpaceCard({
             </span>
           </div>
         </div>
-        <div className="space-y-3 p-4">
+        <div className="flex min-h-0 flex-1 flex-col p-4">
           <div>
             <h3 className="font-display text-lg font-semibold tracking-tight text-foreground">
               {space.name}
@@ -122,11 +122,16 @@ export function SpaceCard({
               {space.region} · {space.city} - {space.state}
             </p>
           </div>
-          <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-3 line-clamp-2 min-h-[2.75rem] text-sm leading-relaxed text-muted-foreground">
             {space.blurb}
           </p>
-          <AmenityTags amenities={space.amenities} limit={4} size="md" />
-          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+          <AmenityTags
+            amenities={space.amenities}
+            limit={4}
+            size="md"
+            className="mt-3 min-h-[3.25rem] content-start overflow-hidden"
+          />
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1">
               <Users className="size-3.5" />
               até {space.capacity}
@@ -139,7 +144,7 @@ export function SpaceCard({
               </span>
             ) : null}
           </div>
-          <div className="flex items-end justify-between gap-3 border-t border-border/70 pt-3">
+          <div className="mt-auto flex items-end justify-between gap-3 border-t border-border/70 pt-3">
             <div>
               <p className="text-[0.7rem] uppercase tracking-[0.12em] text-muted-foreground">
                 A partir de

@@ -24,7 +24,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Ágora — encontre espaços para eventos disponíveis por data e período. Rede ACIT em Toledo - PR.",
+          "Ágora — encontre espaços para eventos disponíveis por data e período em Toledo - PR.",
       },
     ],
     links: [

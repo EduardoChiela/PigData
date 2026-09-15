@@ -12,7 +12,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { NotificationBell } from "@/components/notification-bell";
 import { Button } from "@/components/ui/button";
-import { APP_NAME, APP_TAGLINE, PILOT_CITY_LABEL } from "@/lib/mock-data";
+import { APP_NAME } from "@/lib/mock-data";
 import {
   getActiveMockUser,
   isMockAuthenticated,
@@ -58,7 +58,13 @@ export function SiteHeader() {
   const mapMode = pathname === "/" || pathname.startsWith("/buscar");
   const panelMode =
     pathname.startsWith("/painel") || pathname.startsWith("/painel-acit");
-  const homeTo = !authed ? "/bem-vindo" : "/";
+  const homeTo = "/bem-vindo";
+  const brandSubtitle =
+    isPartner && pathname.startsWith("/painel")
+      ? "Painel do parceiro"
+      : isOrganizer && pathname.startsWith("/painel-acit")
+        ? "Painel do organizador"
+        : null;
 
   return (
     <header
@@ -70,7 +76,11 @@ export function SiteHeader() {
       )}
     >
       <div className="flex h-[3.75rem] items-center justify-between gap-4 px-4 md:px-6">
-        <Link to={homeTo} className="flex items-center gap-2.5">
+        <Link
+          to={homeTo}
+          aria-label="Ir para a página inicial"
+          className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/25"
+        >
           <img
             src="/agora-logo.png"
             alt=""
@@ -82,13 +92,11 @@ export function SiteHeader() {
             <span className="block font-display text-[0.95rem] font-semibold tracking-[0.14em]">
               {APP_NAME.toUpperCase()}
             </span>
-            <span className="mt-0.5 block text-[0.65rem] font-medium tracking-wide text-white/55">
-              {isPartner && pathname.startsWith("/painel")
-                ? "Painel do parceiro"
-                : isOrganizer && pathname.startsWith("/painel-acit")
-                  ? "Painel do organizador"
-                  : `${APP_TAGLINE} · ${PILOT_CITY_LABEL}`}
-            </span>
+            {brandSubtitle ? (
+              <span className="mt-0.5 block text-[0.65rem] font-medium tracking-wide text-white/55">
+                {brandSubtitle}
+              </span>
+            ) : null}
           </span>
         </Link>
 
@@ -106,7 +114,7 @@ export function SiteHeader() {
                 search={{ acit: "1" }}
                 className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
               >
-                Verificados ACIT
+                Verificados
               </Link>
               {isPartner ? (
                 <Link
@@ -121,7 +129,7 @@ export function SiteHeader() {
                   to="/painel-acit"
                   className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
                 >
-                  Rede ACIT
+                  Rede
                 </Link>
               ) : null}
 
@@ -275,7 +283,7 @@ export function SiteHeader() {
                 className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
                 onClick={() => setOpen(false)}
               >
-                Verificados ACIT
+                Verificados
               </Link>
               {isPartner ? (
                 <Link
@@ -292,7 +300,7 @@ export function SiteHeader() {
                   className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
                   onClick={() => setOpen(false)}
                 >
-                  Rede ACIT
+                  Rede
                 </Link>
               ) : null}
               {!isPartner && !isOrganizer ? (

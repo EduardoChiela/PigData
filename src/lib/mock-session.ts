@@ -27,19 +27,19 @@ export const MOCK_ACCOUNTS: MockUser[] = [
   {
     id: "par-vila",
     name: "Marcos Oliveira",
-    email: "parceiro@acit.toledo.br",
+    email: "parceiro@agora.local",
     role: "parceiro",
-    roleLabel: "Parceiro ACIT",
+    roleLabel: "Parceiro",
     initials: "MO",
     spaceSlugs: ["vila-verde", "salao-corujas"],
     password: "demo",
   },
   {
-    id: "org-acit",
+    id: "org-rede",
     name: "Helena Costa",
-    email: "organizador@acit.toledo.br",
+    email: "organizador@agora.local",
     role: "organizador",
-    roleLabel: "Organizador ACIT",
+    roleLabel: "Organizador",
     initials: "HC",
     password: "demo",
   },
@@ -53,8 +53,8 @@ const DEFAULT_AUTHENTICATED = false;
 const DEFAULT_USER_ID = MOCK_ACCOUNTS[0]!.id;
 
 function roleLabelFor(role: MockRole) {
-  if (role === "parceiro") return "Parceiro ACIT";
-  if (role === "organizador") return "Organizador ACIT";
+  if (role === "parceiro") return "Parceiro";
+  if (role === "organizador") return "Organizador";
   return "Cliente";
 }
 

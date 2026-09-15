@@ -322,7 +322,7 @@ export function verifiedListingAsSpace(listing: PublishedSpaceListing): Space {
     phone: listing.phone,
     busyDates: [],
     partialDates: [],
-    blurb: "Espaço homologado pela rede ACIT (cadastro recente).",
+    blurb: "Espaço homologado pela rede (cadastro recente).",
   };
 }
 

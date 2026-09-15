@@ -33,7 +33,7 @@ export function SiteFooter() {
           </div>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/65">
             Plataforma de espaços para eventos com disponibilidade em tempo real.
-            Piloto em {PILOT_CITY_LABEL}, em parceria com a rede ACIT.
+            Piloto em {PILOT_CITY_LABEL}, com espaços verificados.
           </p>
         </div>
         <div>
@@ -53,7 +53,7 @@ export function SiteFooter() {
                 onClick={goToMap}
                 className="hover:text-white"
               >
-                Parceiros verificados ACIT
+                Parceiros verificados
               </Link>
             </li>
             <li>

@@ -55,11 +55,11 @@ function HelpPage() {
               solicitação
             </li>
             <li>
-              <strong>Parceiro:</strong> parceiro@acit.toledo.br — painel
+              <strong>Parceiro:</strong> parceiro@agora.local — painel
               administrativo
             </li>
             <li>
-              <strong>Organizador ACIT:</strong> organizador@acit.toledo.br —
+              <strong>Organizador:</strong> organizador@agora.local —
               painel da rede (legado; pode sair do sistema — item R2 do backlog)
             </li>
           </ul>

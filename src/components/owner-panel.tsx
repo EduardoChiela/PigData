@@ -594,7 +594,7 @@ function OwnerListings({
                 {space.acitVerified ? (
                   <span className="inline-flex items-center gap-1 rounded-md bg-[var(--forest)] px-2 py-0.5 font-semibold text-white">
                     <ShieldCheck className="size-3" />
-                    Verificado ACIT
+                    Verificado
                   </span>
                 ) : (
                   <span className="rounded-md bg-amber-100 px-2 py-0.5 font-semibold text-amber-950">
@@ -637,7 +637,7 @@ function OwnerListings({
                 {listing.status === "verificado" ? (
                   <span className="inline-flex items-center gap-1 rounded-md bg-[var(--forest)] px-2 py-0.5 font-semibold text-white">
                     <ShieldCheck className="size-3" />
-                    Verificado ACIT
+                    Verificado
                   </span>
                 ) : listing.status === "recusado" ? (
                   <span className="rounded-md bg-rose-100 px-2 py-0.5 font-semibold text-rose-900">
@@ -645,7 +645,7 @@ function OwnerListings({
                   </span>
                 ) : (
                   <span className="rounded-md bg-amber-100 px-2 py-0.5 font-semibold text-amber-950">
-                    Aguardando homologação ACIT
+                    Aguardando homologação
                   </span>
                 )}
                 <span className="text-muted-foreground">

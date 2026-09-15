@@ -109,7 +109,7 @@ export function AcitOrganizerPanel({ user }: { user: MockUser }) {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--forest)]">
-            Rede ACIT · {user.name}
+            Rede · {user.name}
           </p>
           <h1 className="mt-1 font-display text-2xl font-semibold tracking-tight md:text-3xl">
             Painel do organizador
@@ -200,7 +200,7 @@ function NetworkCalendarList({
     <section className="space-y-4">
       <div>
         <h2 className="font-display text-xl font-semibold tracking-tight">
-          Calendário compartilhado — Rede ACIT ({total} espaços)
+          Calendário compartilhado — Rede ({total} espaços)
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Visão de leitura das agendas filiadas. Selecione um espaço para abrir
@@ -406,7 +406,7 @@ function AcitReadonlyAgenda({
             </span>
           </p>
           <p className="mt-2 text-xs text-[#5f6368]">
-            Organizador ACIT só visualiza — sem bloquear datas nem gerir
+            Organizador só visualiza — sem bloquear datas nem gerir
             reservas.
           </p>
         </div>
@@ -443,7 +443,7 @@ function FiliadosPanel({
           Filiados / Parceiros
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Homologação do selo ACIT — ação exclusiva do organizador.
+          Homologação do selo — ação exclusiva do organizador.
         </p>
       </div>
 
@@ -532,7 +532,7 @@ function FiliadosPanel({
                 <p className="font-semibold">{listing.name}</p>
                 <p className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--forest)]">
                   <ShieldCheck className="size-3.5" />
-                  Verificado ACIT
+                  Verificado
                 </p>
               </div>
               <Button
@@ -558,7 +558,7 @@ function FiliadosPanel({
                 <p className="font-semibold">{space.name}</p>
                 <p className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--forest)]">
                   <ShieldCheck className="size-3.5" />
-                  Verificado ACIT
+                  Verificado
                 </p>
               </div>
               <span className="text-xs text-muted-foreground">
