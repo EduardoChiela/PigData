@@ -84,6 +84,11 @@ Layout inspirado no Google Calendar (simplificado): grade mensal com chips de ev
 
 Aciona **exatamente** o fluxo já documentado em [`formulario-cadastro-espaco.md`](./formulario-cadastro-espaco.md) — busca Google/manual → revisão dos dados → dados PigData (capacidade, classes, tipos de evento) → atributos de infraestrutura → comodidades → fotos → preço/regras → revisão final → publicar. Nenhuma tela nova é reinventada aqui — é o mesmo fluxo, só acessado a partir do painel em vez do cadastro inicial de conta.
 
+> **Atualização:** a decisão 1 abaixo segue valendo — a Agenda continua sendo
+> a tela inicial. Um Dashboard de métricas foi adicionado depois como **aba
+> separada** (+ uma faixa-resumo de 3 números no topo da Agenda), sem virar a
+> tela inicial. Detalhes em [`dashboard-parceiro.md`](./dashboard-parceiro.md).
+
 ## 7. Decisões já fechadas nesta conversa
 
 1. **Agenda é a primeira tela** que o proprietário vê ao logar (não uma lista de pedidos, não um dashboard de métricas)
@@ -100,7 +105,8 @@ Aciona **exatamente** o fluxo já documentado em [`formulario-cadastro-espaco.md
 
 ## Estado da implementação (protótipo)
 
-- `/painel`: Agenda, Solicitações, Meus anúncios, Cadastrar.
+- `/painel`: Agenda (com faixa-resumo de métricas), Solicitações, Dashboard,
+  Meus anúncios, Cadastrar.
 - **Cadastrar** abre o fluxo de `formulario-cadastro-espaco.md` (wizard completo mock).
 - **Meus anúncios** lista espaços mock da conta + publicações locais (`listOwnerListings`).
 - Parceiro acessa o **mapa** (`/`) pela topbar (Mapa / logo), além do painel.

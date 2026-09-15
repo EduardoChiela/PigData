@@ -3,12 +3,14 @@ import {
   Check,
   ClipboardList,
   Home,
+  LayoutDashboard,
   Plus,
   ShieldCheck,
   X,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { OwnerAgenda } from "@/components/owner-agenda";
+import { AgendaSummaryStrip, OwnerDashboard } from "@/components/owner-dashboard";
 import { SpaceRegistrationWizard } from "@/components/space-registration-wizard";
 import { Button } from "@/components/ui/button";
 import { formatDateBR, brl } from "@/lib/format";
@@ -26,7 +28,7 @@ import {
 } from "@/lib/space-registration";
 import { cn } from "@/lib/utils";
 
-type TabId = "agenda" | "solicitacoes" | "anuncios" | "cadastrar";
+type TabId = "agenda" | "solicitacoes" | "dashboard" | "anuncios" | "cadastrar";
 
 export function OwnerPanel({ user }: { user: MockUser }) {
   const spaceSlugs = user.spaceSlugs ?? ["vila-verde"];
@@ -64,6 +66,7 @@ export function OwnerPanel({ user }: { user: MockUser }) {
       icon: ClipboardList,
       badge: pending.length,
     },
+    { id: "dashboard" as const, label: "Dashboard", icon: LayoutDashboard },
     { id: "anuncios" as const, label: "Meus anúncios", icon: Home },
     { id: "cadastrar" as const, label: "Cadastrar espaço", icon: Plus },
   ];
@@ -121,13 +124,20 @@ export function OwnerPanel({ user }: { user: MockUser }) {
 
       <div className="min-w-0 flex-1">
         {tab === "agenda" && activeSpace ? (
-          <OwnerAgenda
-            space={activeSpace}
-            spaces={ownedSpaces}
-            onSelectSpace={setActiveSlug}
-            tick={tick}
-            onRefresh={refresh}
-          />
+          <div className="space-y-3">
+            <AgendaSummaryStrip
+              spaceSlugs={spaceSlugs}
+              tick={tick}
+              onOpenDashboard={() => setTab("dashboard")}
+            />
+            <OwnerAgenda
+              space={activeSpace}
+              spaces={ownedSpaces}
+              onSelectSpace={setActiveSlug}
+              tick={tick}
+              onRefresh={refresh}
+            />
+          </div>
         ) : null}
         {tab === "solicitacoes" ? (
           <OwnerRequests
@@ -135,6 +145,9 @@ export function OwnerPanel({ user }: { user: MockUser }) {
             tick={tick}
             onRefresh={refresh}
           />
+        ) : null}
+        {tab === "dashboard" ? (
+          <OwnerDashboard spaceSlugs={spaceSlugs} tick={tick} />
         ) : null}
         {tab === "anuncios" ? (
           <OwnerListings
