@@ -71,5 +71,6 @@ Detalhe completo em [comodidades.md](./comodidades.md). Resumo:
 ## Estado da implementação
 
 - Perfis mock em `src/lib/mock-data.ts` (22 espaços Toledo) com campos do MVP.
-- Detalhe (T03) no mapa: painel lateral em `/` (`SpaceDetailPanel`) com galeria, perfil completo e CTA de pedido.
+- Detalhe (T03) no mapa: painel lateral em `/` (`SpaceDetailPanel`) com galeria, perfil completo e CTA de pedido. Clique na foto abre **lightbox em tela cheia** com carrossel (setas, teclado ←/→, Escape, miniaturas).
 - Cadastro do espaço (protótipo): wizard em `/painel` → aba **Cadastrar** (`SpaceRegistrationWizard` + `space-registration.ts`); Google Places mock ou manual; publica em `localStorage` com status **aguardando homologação ACIT**; aparece em **Meus anúncios**.
+- Homologação: organizador em `/painel-acit` (Filiados) altera status para `verificado` / `recusado`; Meus anúncios reflete o selo; listing `verificado` entra no mapa (camada A).

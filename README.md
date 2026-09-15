@@ -29,13 +29,16 @@ Stack: [`docs/stack.md`](./docs/stack.md) · Slice MVP: [`docs/mvp.md`](./docs/m
 |------|------|
 | `/bem-vindo` | Landing (T01) — visitante |
 | `/entrar` | Login / cadastro mock (cliente ou parceiro ACIT) |
-| `/` | Mapa / busca — cliente e **parceiro** (mesmo mapa) |
-| `/painel` | Painel do **parceiro** (agenda, solicitações, anúncios, cadastro de espaço) |
+| `/` | Mapa / busca — cliente, parceiro e organizador |
+| `/painel` | Painel do **parceiro** (agenda, solicitações, anúncios, cadastro) |
+| `/painel-acit` | Painel do **organizador ACIT** (calendário da rede, filiados, mensagens) |
+| `/ajuda` | Guia rápido (contas demo, fluxos cliente/parceiro, checklist) |
+| `/minhas-reservas` | Solicitações/reservas do cliente + pagamento demo |
 | `/buscar` | Redireciona para `/` (compat) |
 
-Contas demo (senha `demo`): `ana.ribeiro@email.com` (cliente) · `parceiro@acit.toledo.br` (parceiro ACIT).
+Contas demo (senha `demo`): `ana.ribeiro@email.com` (cliente) · `parceiro@acit.toledo.br` (parceiro) · `organizador@acit.toledo.br` (organizador ACIT). Guia: [`docs/guia-usuario.md`](./docs/guia-usuario.md).
 
-Próximas (ainda não): Places API real, `/minhas-reservas`, `/favoritos`, pagamento real.
+Próximas (ainda não): Places API real, pagamento real, e-mail/WhatsApp providers.
 
 ## Mapa dos documentos
 
@@ -55,10 +58,12 @@ Próximas (ainda não): Places API real, `/minhas-reservas`, `/favoritos`, pagam
 | [parceiros-rede.md](./docs/parceiros-rede.md) | Rede ACIT |
 | [reservas.md](./docs/reservas.md) | Solicitação → confirmação |
 | [fluxo-telas.md](./docs/fluxo-telas.md) | Wireframe base |
+| [guia-usuario.md](./docs/guia-usuario.md) | Guia demo / banca (cliente + parceiro) |
 | [pagamento-demo.md](./docs/pagamento-demo.md) | Checkout simulado |
 | [pagamentos-confianca.md](./docs/pagamentos-confianca.md) | Pagamento real |
 | [metricas-impacto.md](./docs/metricas-impacto.md) | KPIs |
 | [IMPLEMENTACAO.md](./docs/IMPLEMENTACAO.md) | Histórico |
+| [rascunhos/painel-acit.md](./docs/rascunhos/painel-acit.md) | Painel do organizador ACIT |
 
 ## Pitch rápido
 

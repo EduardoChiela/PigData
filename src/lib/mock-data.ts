@@ -1073,6 +1073,10 @@ export function getSpaceBySlug(slug: string) {
   return spaces.find((s) => s.slug === slug);
 }
 
+export function periodLabel(period: PeriodId | string) {
+  return periods.find((p) => p.id === period)?.label ?? period;
+}
+
 /** Fotos extras para galeria do detalhe (mock — fotos próprias do dono no produto real). */
 const galleryPool = [
   "photo-1519167758481-83f29da8c2b4",

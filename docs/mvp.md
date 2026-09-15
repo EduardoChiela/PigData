@@ -26,8 +26,9 @@
 ## Estado da implementação
 
 - Home autenticada `/` = mapa (T02); landing `/bem-vindo` (T01) para visitante; marca **Ágora**.
+- Landing: **Ver espaços** → mapa (cliente demo); Como funciona; `/ajuda` + `docs/guia-usuario.md`.
 - Mock: 22 espaços Toledo - PR.
-- Ainda fora: detalhe/solicitação, painéis, Photorealistic 3D, camada C Places, pagamento demo.
+- Ainda fora do slice completo: T07+, Places real, Photorealistic 3D, camada C Places, pagamento demo na UI.
 
 ## Fora deste slice (ainda)
 
