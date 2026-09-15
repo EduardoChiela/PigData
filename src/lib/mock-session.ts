@@ -1,6 +1,6 @@
 /** Sessão mock — login real fica para depois. */
 
-export type MockRole = "cliente" | "parceiro" | "organizador";
+export type MockRole = "cliente" | "parceiro";
 
 export type MockUser = {
   id: string;
@@ -34,15 +34,6 @@ export const MOCK_ACCOUNTS: MockUser[] = [
     spaceSlugs: ["vila-verde", "salao-corujas"],
     password: "demo",
   },
-  {
-    id: "org-rede",
-    name: "Helena Costa",
-    email: "organizador@agora.local",
-    role: "organizador",
-    roleLabel: "Organizador",
-    initials: "HC",
-    password: "demo",
-  },
 ];
 
 const AUTH_KEY = "agora.mock.auth";
@@ -54,7 +45,6 @@ const DEFAULT_USER_ID = MOCK_ACCOUNTS[0]!.id;
 
 function roleLabelFor(role: MockRole) {
   if (role === "parceiro") return "Parceiro";
-  if (role === "organizador") return "Organizador";
   return "Cliente";
 }
 
@@ -165,9 +155,8 @@ export function getActiveMockUser(): MockUser | null {
 
 export function homePathForRole(
   role: MockRole,
-): "/" | "/painel" | "/painel-acit" {
+): "/" | "/painel" {
   if (role === "parceiro") return "/painel";
-  if (role === "organizador") return "/painel-acit";
   return "/";
 }
 

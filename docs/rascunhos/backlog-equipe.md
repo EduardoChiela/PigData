@@ -72,9 +72,9 @@ Este arquivo **não substitui** a documentação de produto (`fluxo-telas.md`, `
 | # | Ponto | Tipo | Notas | Status |
 |---|--------|------|-------|--------|
 | R1 | Pesquisa assistida por IA / pesquisa rápida | Feature | Barra de pesquisa com assistência de IA e atalho de pesquisa rápida; priorizar recomendações relevantes no topo dos resultados. | a pesquisar |
-| R2 | Remover lógica de organizador | Feature / regra de produto | A plataforma passa a ser a organizadora. No sistema restam apenas **parceiros** e **clientes**. Remover papel `organizador`, rota `/painel-acit` e fluxos associados. **Altera regra de produto** — atualizar `usuarios-papeis.md`, `README.md` e docs do painel ACIT na implementação. | a pesquisar |
+| R2 | Remover lógica de organizador | Feature / regra de produto | A plataforma passa a ser a organizadora. No sistema restam apenas **parceiros** e **clientes**. Papel `organizador`, rota `/painel-acit` e painel associado removidos. | feito |
 
-**Docs de referência sugeridos:** `busca-locacao.md`, `mapa-busca.md`, `usuarios-papeis.md`, `rascunhos/painel-acit.md`.
+**Docs de referência sugeridos:** `busca-locacao.md`, `mapa-busca.md`, `usuarios-papeis.md`.
 
 ---
 
@@ -109,7 +109,7 @@ Este arquivo **não substitui** a documentação de produto (`fluxo-telas.md`, `
 | M4 | Matheus | Marcadores unificados + estrelas | Correção / feature |
 | M5 | Matheus | Selo verificado da plataforma | Feature |
 | R1 | Rafael | Pesquisa IA / rápida + recomendar | Feature |
-| R2 | Rafael | Remover papel organizador | Feature / regra |
+| R2 | Rafael | Remover papel organizador | Feito |
 | A1 | Amabilly | Backend | Infra |
 | A2 | Amabilly | Deploy + QR code | Infra |
 | A3 | Amabilly | Revisão para banca | Revisão |

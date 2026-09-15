@@ -33,14 +33,24 @@ export function SpaceDetailPanel({
   listOpen,
   onClose,
   initialDate,
+  initialEndDate,
   initialPeriod,
+  initialStartTime,
+  initialEndTime,
+  initialEventType,
+  initialGuests,
 }: {
   space: (Space | ListedSpace) | null;
   open: boolean;
   listOpen: boolean;
   onClose: () => void;
   initialDate?: string;
+  initialEndDate?: string;
   initialPeriod?: string;
+  initialStartTime?: string;
+  initialEndTime?: string;
+  initialEventType?: string;
+  initialGuests?: number;
 }) {
   const [step, setStep] = useState<"detail" | "booking">("detail");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -150,7 +160,12 @@ export function SpaceDetailPanel({
                   <BookingRequestFlow
                     space={space}
                     initialDate={initialDate}
+                    initialEndDate={initialEndDate}
                     initialPeriod={initialPeriod}
+                    initialStartTime={initialStartTime}
+                    initialEndTime={initialEndTime}
+                    initialEventType={initialEventType}
+                    initialGuests={initialGuests}
                     onBackToProfile={() => setStep("detail")}
                     onDone={onClose}
                   />

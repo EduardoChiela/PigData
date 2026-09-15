@@ -2,6 +2,7 @@ import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { DemoPaymentDialog } from "@/components/demo-payment-dialog";
 import { formatDateBR, brl } from "@/lib/format";
 import { APP_NAME, periodLabel } from "@/lib/mock-data";
 import {
@@ -31,6 +32,8 @@ export const Route = createFileRoute("/minhas-reservas")({
 function MyReservationsPage() {
   const user = getActiveMockUser();
   const [rows, setRows] = useState<Reservation[]>([]);
+  const [paymentReservation, setPaymentReservation] =
+    useState<Reservation | null>(null);
 
   function reload() {
     if (!user) return;
@@ -104,19 +107,7 @@ function MyReservationsPage() {
                   <Button
                     type="button"
                     className="mt-3 font-semibold"
-                    onClick={() => {
-                      const result = confirmReservation(
-                        r.id,
-                        "customer",
-                        user.id,
-                      );
-                      if (result.ok) {
-                        toast.success("Reserva confirmada (pagamento demo).");
-                        reload();
-                      } else {
-                        toast.error(result.error);
-                      }
-                    }}
+                    onClick={() => setPaymentReservation(r)}
                   >
                     Continuar para pagamento
                   </Button>
@@ -126,6 +117,27 @@ function MyReservationsPage() {
           })}
         </ul>
       )}
+
+      <DemoPaymentDialog
+        open={Boolean(paymentReservation)}
+        reservation={paymentReservation}
+        onClose={() => setPaymentReservation(null)}
+        onPaid={() => {
+          if (!paymentReservation) return;
+          const result = confirmReservation(
+            paymentReservation.id,
+            "customer",
+            user.id,
+          );
+          if (result.ok) {
+            toast.success("Pagamento demo aprovado. Reserva confirmada.");
+            setPaymentReservation(null);
+            reload();
+          } else {
+            toast.error(result.error);
+          }
+        }}
+      />
     </div>
   );
 }

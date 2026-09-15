@@ -40,12 +40,16 @@ export function dayAvailability(space: Space, iso: string): Availability {
 export function SpaceAvailabilityCalendar({
   space,
   selectedDate,
+  selectedEndDate,
   onSelectDate,
+  onClearSelection,
   className,
 }: {
   space: Space;
   selectedDate?: string;
+  selectedEndDate?: string;
   onSelectDate?: (iso: string) => void;
+  onClearSelection?: () => void;
   className?: string;
 }) {
   const todayIso = useMemo(() => toIso(new Date()), []);
@@ -74,6 +78,13 @@ export function SpaceAvailabilityCalendar({
 
   function shiftMonth(delta: number) {
     setCursor(startOfMonth(year, month + delta));
+  }
+
+  function isInSelectedRange(iso: string) {
+    if (!selectedDate || !selectedEndDate) return false;
+    const start = selectedDate < selectedEndDate ? selectedDate : selectedEndDate;
+    const end = selectedDate < selectedEndDate ? selectedEndDate : selectedDate;
+    return iso > start && iso < end;
   }
 
   return (
@@ -119,6 +130,8 @@ export function SpaceAvailabilityCalendar({
             return <div key={`e-${i}`} className="aspect-square" />;
           }
           const selected = selectedDate === cell.iso;
+          const selectedEnd = selectedEndDate === cell.iso && selectedEndDate !== selectedDate;
+          const inRange = isInSelectedRange(cell.iso);
           const isToday = cell.iso === todayIso;
           const busy = cell.status === "indisponivel";
           return (
@@ -134,7 +147,8 @@ export function SpaceAvailabilityCalendar({
                 cell.status === "parcial" &&
                   "bg-amber-50 text-amber-950 hover:bg-amber-100",
                 busy && "cursor-not-allowed bg-rose-50 text-rose-300 line-through",
-                selected && "ring-2 ring-primary ring-offset-1",
+                inRange && !busy && "bg-emerald-100 text-emerald-950",
+                (selected || selectedEnd) && "ring-2 ring-primary ring-offset-1",
                 isToday && !selected && "outline outline-1 outline-offset-[-1px] outline-[var(--ink)]/35",
               )}
               aria-label={`${cell.day} de ${MONTHS[month]}, ${cell.status}`}
@@ -146,17 +160,28 @@ export function SpaceAvailabilityCalendar({
         })}
       </div>
 
-      <ul className="mt-4 flex flex-wrap gap-3 text-xs text-muted-foreground">
-        <li className="inline-flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-emerald-400" /> Livre
-        </li>
-        <li className="inline-flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-amber-400" /> Parcial
-        </li>
-        <li className="inline-flex items-center gap-1.5">
-          <span className="size-2.5 rounded-sm bg-rose-300" /> Ocupado
-        </li>
-      </ul>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <ul className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+          <li className="inline-flex items-center gap-1.5">
+            <span className="size-2.5 rounded-sm bg-emerald-400" /> Livre
+          </li>
+          <li className="inline-flex items-center gap-1.5">
+            <span className="size-2.5 rounded-sm bg-amber-400" /> Parcial
+          </li>
+          <li className="inline-flex items-center gap-1.5">
+            <span className="size-2.5 rounded-sm bg-rose-300" /> Ocupado
+          </li>
+        </ul>
+        {selectedDate && onClearSelection ? (
+          <button
+            type="button"
+            className="rounded-lg px-2 py-1 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground"
+            onClick={onClearSelection}
+          >
+            Limpar selecao
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }

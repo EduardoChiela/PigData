@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, getRouteApi } from "@tanstack/react-router";
 import {
   CalendarDays,
   Check,
@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { OwnerAgenda } from "@/components/owner-agenda";
 import { AgendaSummaryStrip, OwnerDashboard } from "@/components/owner-dashboard";
@@ -51,7 +51,10 @@ type TabId =
   | "cadastrar"
   | "regras";
 
+const painelRoute = getRouteApi("/painel");
+
 export function OwnerPanel({ user }: { user: MockUser }) {
+  const search = painelRoute.useSearch();
   const spaceSlugs = useMemo(
     () => user.spaceSlugs ?? ["vila-verde"],
     [user.spaceSlugs],
@@ -71,6 +74,12 @@ export function OwnerPanel({ user }: { user: MockUser }) {
   const [tick, setTick] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
   const refresh = () => setTick((n) => n + 1);
+
+  useEffect(() => {
+    if (search.aba === "solicitacoes") {
+      setTab("solicitacoes");
+    }
+  }, [search.aba]);
 
   const published = useMemo(
     () => listOwnerListings(user.id),
@@ -179,6 +188,7 @@ export function OwnerPanel({ user }: { user: MockUser }) {
           <OwnerRequests
             spaceSlugs={spaceSlugs}
             ownerId={user.id}
+            highlightId={search.destaque}
             onRefresh={refresh}
           />
         ) : null}
@@ -217,14 +227,20 @@ export function OwnerPanel({ user }: { user: MockUser }) {
 function OwnerRequests({
   spaceSlugs,
   ownerId,
+  highlightId,
   onRefresh,
 }: {
   spaceSlugs: string[];
   ownerId: string;
+  highlightId?: string;
   onRefresh: () => void;
 }) {
   const [items, setItems] = useState<OwnerReservationRequest[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [activeHighlightId, setActiveHighlightId] = useState<string | null>(
+    null,
+  );
+  const cardRefs = useRef<Record<string, HTMLLIElement | null>>({});
   const spaceKey = spaceSlugs.join("|");
 
   function reload() {
@@ -235,6 +251,19 @@ function OwnerRequests({
     reload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spaceKey]);
+
+  useEffect(() => {
+    if (!highlightId) return;
+    setActiveHighlightId(highlightId);
+    window.setTimeout(() => {
+      cardRefs.current[highlightId]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 80);
+    const t = window.setTimeout(() => setActiveHighlightId(null), 2600);
+    return () => window.clearTimeout(t);
+  }, [highlightId, items.length]);
 
   function onAccept(req: OwnerReservationRequest) {
     const updated = acceptOwnerRequest(req.id, ownerId);
@@ -336,7 +365,14 @@ function OwnerRequests({
             return (
               <li
                 key={req.id}
-                className="rounded-2xl border border-border bg-white p-4 shadow-sm"
+                ref={(node) => {
+                  cardRefs.current[req.id] = node;
+                }}
+                className={cn(
+                  "rounded-2xl border border-border bg-white p-4 shadow-sm transition duration-700",
+                  activeHighlightId === req.id &&
+                    "border-amber-300 bg-amber-50 shadow-[0_0_0_5px_rgba(251,191,36,0.18)]",
+                )}
               >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <p className="font-semibold">
@@ -457,7 +493,7 @@ function BookingRulesPanel({
 
       {spaces.length > 1 ? (
         <select
-          className="rounded-lg border border-border bg-white px-3 py-2 text-sm"
+          className="appearance-none rounded-lg border border-border bg-white px-3 py-2 text-sm outline-none transition hover:border-stone-300 focus:border-stone-300 focus:outline-none focus:ring-0 focus:shadow-[0_0_0_3px_rgba(120,113,108,0.22)] focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-[0_0_0_3px_rgba(120,113,108,0.22)]"
           value={space.slug}
           onChange={(e) => onSelectSpace(e.target.value)}
         >

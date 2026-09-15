@@ -1,12 +1,13 @@
 import { AnimatePresence, motion } from "motion/react";
-import { Check, Users } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Check, ChevronDown, Users } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { ScheduleVisitBlock } from "@/components/schedule-visit-block";
 import { SpaceAvailabilityCalendar } from "@/components/space-availability-calendar";
 import { Button } from "@/components/ui/button";
 import { brl, formatDateBR } from "@/lib/format";
 import {
+  eventTypes,
   periods,
   type EventType,
   type PeriodId,
@@ -20,16 +21,141 @@ export type BookingOrderStep = "basics" | "amenities" | "review" | "sent";
 
 export type BookingDraft = {
   date: string;
+  endDate?: string;
   period: PeriodId;
+  startTime?: string;
+  endTime?: string;
   eventType: EventType;
   guests: number;
   amenityIds: string[];
 };
 
+const periodTimeRanges: Record<PeriodId, { start: string; end: string }> = {
+  manha: { start: "08:00", end: "12:00" },
+  tarde: { start: "13:00", end: "18:00" },
+  noite: { start: "19:00", end: "23:00" },
+  dia_inteiro: { start: "08:00", end: "23:00" },
+};
+
+const timeStepMinutes = 30;
+const timeOptions = Array.from({ length: 48 }, (_, index) =>
+  minutesToTime(index * timeStepMinutes),
+);
+
+type BookingDropdownOption = {
+  value: string;
+  label: string;
+  disabled?: boolean;
+};
+
+function BookingDropdown({
+  value,
+  options,
+  onChange,
+}: {
+  value: string;
+  options: BookingDropdownOption[];
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const selected = options.find((o) => o.value === value) ?? options[0];
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointer(e: MouseEvent) {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointer);
+    return () => document.removeEventListener("mousedown", onPointer);
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        className="flex w-full items-center justify-between gap-2 rounded-lg border border-border bg-background px-3 py-2.5 text-left text-sm text-foreground outline-none transition hover:border-stone-300 focus:border-stone-300 focus:shadow-[0_0_0_3px_rgba(120,113,108,0.22)]"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className="min-w-0 truncate">{selected?.label}</span>
+        <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
+      </button>
+      {open ? (
+        <div
+          className="absolute left-0 top-[calc(100%+0.25rem)] z-[220] max-h-64 min-w-full overflow-auto rounded-lg border border-stone-300 bg-white py-1 text-sm text-foreground shadow-xl"
+          role="listbox"
+        >
+          {options.map((option) => {
+            const active = option.value === value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                role="option"
+                aria-selected={active}
+                disabled={option.disabled}
+                className={cn(
+                  "block w-full whitespace-nowrap px-3 py-2 text-left hover:bg-gray-200 disabled:cursor-not-allowed disabled:text-muted-foreground/45 disabled:hover:bg-transparent",
+                  active && "bg-gray-200 font-semibold",
+                )}
+                onClick={() => {
+                  if (option.disabled) return;
+                  onChange(option.value);
+                  setOpen(false);
+                }}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function timeToMinutes(time: string) {
+  const [hours, minutes] = time.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+function minutesToTime(minutes: number) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+}
+
+function timeLabel(time: string) {
+  return time.replace(":", "h");
+}
+
+function periodFromTimes(start: string, end: string): PeriodId {
+  const startMinutes = timeToMinutes(start);
+  const endMinutes = timeToMinutes(end);
+
+  if (startMinutes <= 8 * 60 && endMinutes >= 22 * 60) return "dia_inteiro";
+  if (startMinutes >= 6 * 60 && endMinutes <= 12 * 60) return "manha";
+  if (startMinutes >= 12 * 60 && endMinutes <= 18 * 60) return "tarde";
+  if (startMinutes >= 18 * 60 || endMinutes <= 6 * 60) return "noite";
+  return "dia_inteiro";
+}
+
+function formatDateRange(start: string, end?: string) {
+  if (!end || end === start) return formatDateBR(start);
+  return `${formatDateBR(start)} - ${formatDateBR(end)}`;
+}
+
 type Props = {
   space: Space;
   initialDate?: string;
+  initialEndDate?: string;
   initialPeriod?: string;
+  initialStartTime?: string;
+  initialEndTime?: string;
+  initialEventType?: string;
+  initialGuests?: number;
   onBackToProfile: () => void;
   /** Fecha o painel (ex.: após enviar) */
   onDone?: () => void;
@@ -38,7 +164,12 @@ type Props = {
 export function BookingRequestFlow({
   space,
   initialDate,
+  initialEndDate,
   initialPeriod,
+  initialStartTime,
+  initialEndTime,
+  initialEventType,
+  initialGuests,
   onBackToProfile,
   onDone,
 }: Props) {
@@ -54,12 +185,22 @@ export function BookingRequestFlow({
 
   const [orderStep, setOrderStep] = useState<BookingOrderStep>("basics");
   const [date, setDate] = useState(initialDate ?? "");
-  const [period, setPeriod] = useState<PeriodId>(defaultPeriod);
-  const [eventType, setEventType] = useState<EventType | "">(
-    space.eventTypes[0] ?? "",
+  const [endDate, setEndDate] = useState(initialEndDate ?? "");
+  const initialTimeRange = periodTimeRanges[defaultPeriod];
+  const [startTime, setStartTime] = useState(
+    initialStartTime ?? initialTimeRange.start,
   );
-  const [guests, setGuests] = useState(
-    Math.min(50, space.capacity) || space.capacity,
+  const [endTime, setEndTime] = useState(initialEndTime ?? initialTimeRange.end);
+  const period = periodFromTimes(startTime, endTime);
+  const [eventType, setEventType] = useState<EventType | "">(
+    eventTypes.includes(initialEventType as EventType)
+      ? (initialEventType as EventType)
+      : eventTypes[0] ?? "",
+  );
+  const [guests, setGuests] = useState<number | "">(
+    initialGuests
+      ? Math.min(space.capacity, Math.max(1, initialGuests))
+      : Math.min(50, space.capacity) || space.capacity,
   );
   const [amenityIds, setAmenityIds] = useState<string[]>([]);
 
@@ -74,8 +215,9 @@ export function BookingRequestFlow({
   const amenitiesTotal = selectedAmenities.reduce((sum, a) => sum + a.price, 0);
   const estimatedTotal = space.basePrice + amenitiesTotal;
 
+  const validGuests = typeof guests === "number" && guests > 0;
   const basicsReady =
-    Boolean(date) && Boolean(period) && Boolean(eventType) && guests > 0;
+    Boolean(date) && Boolean(period) && Boolean(eventType) && validGuests;
 
   function toggleAmenity(itemId: string) {
     setAmenityIds((prev) =>
@@ -85,11 +227,25 @@ export function BookingRequestFlow({
     );
   }
 
+  function selectDateRange(iso: string) {
+    if (!date || endDate) {
+      setDate(iso);
+      setEndDate("");
+      return;
+    }
+    if (iso < date) {
+      setEndDate(date);
+      setDate(iso);
+      return;
+    }
+    setEndDate(iso);
+  }
+
   function sendRequest() {
     const user = getActiveMockUser();
     const clientUserId = user?.id ?? "cli-ana";
     const clientName = user?.name ?? "Ana Ribeiro";
-    if (!eventType) return;
+    if (!eventType || !validGuests) return;
 
     const created = createReservationRequest({
       spaceSlug: space.slug,
@@ -145,7 +301,12 @@ export function BookingRequestFlow({
             <SpaceAvailabilityCalendar
               space={space}
               selectedDate={date || undefined}
-              onSelectDate={setDate}
+              selectedEndDate={endDate || undefined}
+              onSelectDate={selectDateRange}
+              onClearSelection={() => {
+                setDate("");
+                setEndDate("");
+              }}
             />
 
             <ScheduleVisitBlock space={space} />
@@ -155,38 +316,82 @@ export function BookingRequestFlow({
                 Dados do evento
               </h3>
 
-              <label className="block space-y-1.5 text-sm">
+              {date ? (
+                <div className="rounded-xl border border-border bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
+                  Data selecionada:{" "}
+                  <span className="font-semibold text-foreground">
+                    {formatDateRange(date, endDate)}
+                  </span>
+                </div>
+              ) : null}
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="block space-y-1.5 text-sm">
+                  <span className="font-medium text-muted-foreground">
+                    Horario inicio
+                  </span>
+                  <BookingDropdown
+                    value={startTime}
+                    options={timeOptions.map((time) => ({
+                      value: time,
+                      label: timeLabel(time),
+                      disabled: timeToMinutes(time) >= timeToMinutes(endTime),
+                    }))}
+                    onChange={(next) => {
+                      setStartTime(next);
+                      if (timeToMinutes(next) >= timeToMinutes(endTime)) {
+                        setEndTime(
+                          minutesToTime(
+                            Math.min(
+                              23 * 60 + 30,
+                              timeToMinutes(next) + timeStepMinutes,
+                            ),
+                          ),
+                        );
+                      }
+                    }}
+                  />
+                </label>
+
+                <label className="block space-y-1.5 text-sm">
+                  <span className="font-medium text-muted-foreground">
+                    Horario fim
+                  </span>
+                  <BookingDropdown
+                    value={endTime}
+                    options={timeOptions.map((time) => ({
+                      value: time,
+                      label: timeLabel(time),
+                      disabled: timeToMinutes(time) <= timeToMinutes(startTime),
+                    }))}
+                    onChange={setEndTime}
+                  />
+                </label>
+              </div>
+
+              <label className="hidden space-y-1.5 text-sm">
                 <span className="font-medium text-muted-foreground">
                   Período
                 </span>
-                <select
-                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5"
+                <BookingDropdown
                   value={period}
-                  onChange={(e) => setPeriod(e.target.value as PeriodId)}
-                >
-                  {allowedPeriods.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.label}
-                    </option>
-                  ))}
-                </select>
+                  options={allowedPeriods.map((p) => ({
+                    value: p.id,
+                    label: p.label,
+                  }))}
+                  onChange={() => undefined}
+                />
               </label>
 
               <label className="block space-y-1.5 text-sm">
                 <span className="font-medium text-muted-foreground">
                   Tipo de evento
                 </span>
-                <select
-                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5"
+                <BookingDropdown
                   value={eventType}
-                  onChange={(e) => setEventType(e.target.value as EventType)}
-                >
-                  {space.eventTypes.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
+                  options={eventTypes.map((t) => ({ value: t, label: t }))}
+                  onChange={(value) => setEventType(value as EventType)}
+                />
               </label>
 
               <label className="block space-y-1.5 text-sm">
@@ -200,6 +405,10 @@ export function BookingRequestFlow({
                   max={space.capacity}
                   value={guests}
                   onChange={(e) => {
+                    if (e.target.value === "") {
+                      setGuests("");
+                      return;
+                    }
                     const n = Number(e.target.value);
                     if (Number.isNaN(n)) return;
                     setGuests(Math.min(space.capacity, Math.max(1, n)));
@@ -220,8 +429,8 @@ export function BookingRequestFlow({
             className="space-y-5"
           >
             <p className="text-sm text-muted-foreground">
-              {formatDateBR(date)} ·{" "}
-              {periods.find((p) => p.id === period)?.label} · {eventType} ·{" "}
+              {formatDateRange(date, endDate)} · {timeLabel(startTime)} -{" "}
+              {timeLabel(endTime)} · {eventType} ·{" "}
               {guests} convidados
             </p>
 
@@ -315,12 +524,12 @@ export function BookingRequestFlow({
                 </div>
                 <div className="flex justify-between gap-4">
                   <dt className="text-muted-foreground">Data</dt>
-                  <dd className="font-medium">{formatDateBR(date)}</dd>
+                  <dd className="font-medium">{formatDateRange(date, endDate)}</dd>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <dt className="text-muted-foreground">Período</dt>
+                  <dt className="text-muted-foreground">Horario</dt>
                   <dd className="font-medium">
-                    {periods.find((p) => p.id === period)?.label}
+                    {timeLabel(startTime)} - {timeLabel(endTime)}
                   </dd>
                 </div>
                 <div className="flex justify-between gap-4">

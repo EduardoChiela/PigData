@@ -16,7 +16,6 @@ import { Route as BuscarRouteImport } from './routes/buscar'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as MinhasReservasRouteImport } from './routes/minhas-reservas'
 import { Route as PainelRouteImport } from './routes/painel'
-import { Route as PainelAcitRouteImport } from './routes/painel-acit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,11 +52,6 @@ const PainelRoute = PainelRouteImport.update({
   path: '/painel',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PainelAcitRoute = PainelAcitRouteImport.update({
-  id: '/painel-acit',
-  path: '/painel-acit',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,7 +61,6 @@ export interface FileRoutesByFullPath {
   '/entrar': typeof EntrarRoute
   '/minhas-reservas': typeof MinhasReservasRoute
   '/painel': typeof PainelRoute
-  '/painel-acit': typeof PainelAcitRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -77,7 +70,6 @@ export interface FileRoutesByTo {
   '/entrar': typeof EntrarRoute
   '/minhas-reservas': typeof MinhasReservasRoute
   '/painel': typeof PainelRoute
-  '/painel-acit': typeof PainelAcitRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -88,7 +80,6 @@ export interface FileRoutesById {
   '/entrar': typeof EntrarRoute
   '/minhas-reservas': typeof MinhasReservasRoute
   '/painel': typeof PainelRoute
-  '/painel-acit': typeof PainelAcitRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -100,7 +91,6 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/minhas-reservas'
     | '/painel'
-    | '/painel-acit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -110,7 +100,6 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/minhas-reservas'
     | '/painel'
-    | '/painel-acit'
   id:
     | '__root__'
     | '/'
@@ -120,7 +109,6 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/minhas-reservas'
     | '/painel'
-    | '/painel-acit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -131,7 +119,6 @@ export interface RootRouteChildren {
   EntrarRoute: typeof EntrarRoute
   MinhasReservasRoute: typeof MinhasReservasRoute
   PainelRoute: typeof PainelRoute
-  PainelAcitRoute: typeof PainelAcitRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -185,13 +172,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PainelRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/painel-acit': {
-      id: '/painel-acit'
-      path: '/painel-acit'
-      fullPath: '/painel-acit'
-      preLoaderRoute: typeof PainelAcitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -203,7 +183,6 @@ const rootRouteChildren: RootRouteChildren = {
   EntrarRoute: EntrarRoute,
   MinhasReservasRoute: MinhasReservasRoute,
   PainelRoute: PainelRoute,
-  PainelAcitRoute: PainelAcitRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

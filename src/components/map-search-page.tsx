@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   List,
   Search,
   X,
@@ -35,6 +36,79 @@ const routeApi = getRouteApi("/");
 
 const floatBtn =
   "border border-stone-300 bg-white text-[#1a2e22] shadow-[0_8px_28px_-8px_rgba(0,0,0,0.45)] hover:bg-stone-50";
+
+type FilterDropdownOption = {
+  value: string;
+  label: string;
+};
+
+function FilterDropdown({
+  value,
+  options,
+  onChange,
+  className,
+}: {
+  value: string;
+  options: FilterDropdownOption[];
+  onChange: (value: string) => void;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const selected = options.find((o) => o.value === value) ?? options[0];
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointer(e: MouseEvent) {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointer);
+    return () => document.removeEventListener("mousedown", onPointer);
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className={cn("relative", className)}>
+      <button
+        type="button"
+        className="flex h-8 w-full items-center justify-between gap-2 rounded-full border border-stone-200 bg-white px-3 text-left text-xs font-medium text-foreground outline-none transition hover:border-stone-300 focus:border-stone-300 focus:shadow-[0_0_0_3px_rgba(120,113,108,0.22)]"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className="min-w-0 truncate">{selected?.label}</span>
+        <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" />
+      </button>
+      {open ? (
+        <div
+          className="absolute left-0 top-[calc(100%+0.25rem)] z-[200] max-h-64 min-w-full overflow-auto rounded-lg border border-stone-300 bg-white py-1 text-xs text-foreground shadow-xl"
+          role="listbox"
+        >
+          {options.map((option) => {
+            const active = option.value === value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                role="option"
+                aria-selected={active}
+                className={cn(
+                  "block w-full whitespace-nowrap px-3 py-1.5 text-left hover:bg-gray-200",
+                  active && "bg-gray-200 font-semibold",
+                )}
+                onClick={() => {
+                  onChange(option.value);
+                  setOpen(false);
+                }}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 export function MapSearchPage() {
   const search = routeApi.useSearch();
@@ -211,8 +285,6 @@ export function MapSearchPage() {
     return () => document.removeEventListener("mousedown", onPointer);
   }, [searchOpen]);
 
-  const filterSelectClass =
-    "h-8 w-full rounded-full border border-stone-200 bg-white px-3 text-xs font-medium text-foreground outline-none transition hover:border-stone-300 focus:border-[var(--forest)] focus:ring-2 focus:ring-[var(--leaf)]/35";
   const filterLabelClass =
     "min-w-[6.75rem] shrink-0 space-y-1 text-xs font-semibold text-muted-foreground";
   const filterCheckClass =
@@ -223,52 +295,42 @@ export function MapSearchPage() {
     "self-center whitespace-nowrap px-1 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-muted-foreground";
 
   const filterControls = (
-    <div className="flex w-full min-w-0 items-center gap-2 overflow-x-auto rounded-2xl border border-stone-200/80 bg-white/95 px-2.5 py-1.5 text-foreground shadow-[0_12px_36px_-18px_rgba(15,23,42,0.45)] backdrop-blur">
+    <div className="flex w-full min-w-0 items-center gap-2 overflow-visible rounded-2xl border border-stone-200/80 bg-white/95 px-2.5 py-1.5 text-foreground shadow-[0_12px_36px_-18px_rgba(15,23,42,0.45)] backdrop-blur">
       <div className={filterGroupClass}>
         <span className={filterGroupTitleClass}>Uso</span>
         <label className="min-w-[7.5rem] shrink-0 space-y-1 text-xs font-semibold text-muted-foreground">
           <span className="block px-1">Modalidade</span>
-          <select
-            className={filterSelectClass}
+          <FilterDropdown
             value={search.modalidade ?? ""}
-            onChange={(e) =>
-              patchSearch({ modalidade: e.target.value || undefined })
-            }
-          >
-            <option value="">Todas</option>
-            <option value="dia">Dia/periodo</option>
-            <option value="hora">Horario</option>
-          </select>
+            options={[
+              { value: "", label: "Todas" },
+              { value: "dia", label: "Dia/periodo" },
+              { value: "hora", label: "Horario" },
+            ]}
+            onChange={(value) => patchSearch({ modalidade: value || undefined })}
+          />
         </label>
         <label className="min-w-[9rem] shrink-0 space-y-1 text-xs font-semibold text-muted-foreground">
           <span className="block px-1">Evento</span>
-          <select
-            className={filterSelectClass}
+          <FilterDropdown
             value={search.evento ?? ""}
-            onChange={(e) => patchSearch({ evento: e.target.value || undefined })}
-          >
-            <option value="">Todos</option>
-            {eventTypes.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
+            options={[
+              { value: "", label: "Todos" },
+              ...eventTypes.map((t) => ({ value: t, label: t })),
+            ]}
+            onChange={(value) => patchSearch({ evento: value || undefined })}
+          />
         </label>
         <label className="min-w-[8rem] shrink-0 space-y-1 text-xs font-semibold text-muted-foreground">
           <span className="block px-1">Classe</span>
-          <select
-            className={filterSelectClass}
+          <FilterDropdown
             value={search.classe ?? ""}
-            onChange={(e) => patchSearch({ classe: e.target.value || undefined })}
-          >
-            <option value="">Todas</option>
-            {spaceClasses.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
+            options={[
+              { value: "", label: "Todas" },
+              ...spaceClasses.map((c) => ({ value: c, label: c })),
+            ]}
+            onChange={(value) => patchSearch({ classe: value || undefined })}
+          />
         </label>
       </div>
 
@@ -276,58 +338,56 @@ export function MapSearchPage() {
         <span className={filterGroupTitleClass}>Porte</span>
         <label className={filterLabelClass}>
           <span className="block px-1">Capacidade</span>
-          <select
-            className={filterSelectClass}
+          <FilterDropdown
             value={search.capacidade ?? ""}
-            onChange={(e) =>
-              patchSearch({ capacidade: e.target.value || undefined })
-            }
-          >
-            <option value="">Qualquer</option>
-            <option value="50">50+</option>
-            <option value="100">100+</option>
-            <option value="200">200+</option>
-            <option value="300">300+</option>
-          </select>
+            options={[
+              { value: "", label: "Qualquer" },
+              { value: "50", label: "50+" },
+              { value: "100", label: "100+" },
+              { value: "200", label: "200+" },
+              { value: "300", label: "300+" },
+            ]}
+            onChange={(value) => patchSearch({ capacidade: value || undefined })}
+          />
         </label>
         <label className={filterLabelClass}>
           <span className="block px-1">Preco max.</span>
-          <select
-            className={filterSelectClass}
+          <FilterDropdown
             value={search.precoMax ?? ""}
-            onChange={(e) => patchSearch({ precoMax: e.target.value || undefined })}
-          >
-            <option value="">Qualquer</option>
-            <option value="2500">R$ 2.500</option>
-            <option value="4000">R$ 4.000</option>
-            <option value="6000">R$ 6.000</option>
-          </select>
+            options={[
+              { value: "", label: "Qualquer" },
+              { value: "2500", label: "R$ 2.500" },
+              { value: "4000", label: "R$ 4.000" },
+              { value: "6000", label: "R$ 6.000" },
+            ]}
+            onChange={(value) => patchSearch({ precoMax: value || undefined })}
+          />
         </label>
         <label className="min-w-[6.5rem] shrink-0 space-y-1 text-xs font-semibold text-muted-foreground">
           <span className="block px-1">Area min.</span>
-          <select
-            className={filterSelectClass}
+          <FilterDropdown
             value={search.areaMin ?? ""}
-            onChange={(e) => patchSearch({ areaMin: e.target.value || undefined })}
-          >
-            <option value="">Qualquer</option>
-            <option value="100">100 m2+</option>
-            <option value="200">200 m2+</option>
-            <option value="500">500 m2+</option>
-          </select>
+            options={[
+              { value: "", label: "Qualquer" },
+              { value: "100", label: "100 m2+" },
+              { value: "200", label: "200 m2+" },
+              { value: "500", label: "500 m2+" },
+            ]}
+            onChange={(value) => patchSearch({ areaMin: value || undefined })}
+          />
         </label>
         <label className="min-w-[6.5rem] shrink-0 space-y-1 text-xs font-semibold text-muted-foreground">
           <span className="block px-1">Area max.</span>
-          <select
-            className={filterSelectClass}
+          <FilterDropdown
             value={search.areaMax ?? ""}
-            onChange={(e) => patchSearch({ areaMax: e.target.value || undefined })}
-          >
-            <option value="">Qualquer</option>
-            <option value="150">150 m2</option>
-            <option value="300">300 m2</option>
-            <option value="600">600 m2</option>
-          </select>
+            options={[
+              { value: "", label: "Qualquer" },
+              { value: "150", label: "150 m2" },
+              { value: "300", label: "300 m2" },
+              { value: "600", label: "600 m2" },
+            ]}
+            onChange={(value) => patchSearch({ areaMax: value || undefined })}
+          />
         </label>
       </div>
 
@@ -335,32 +395,29 @@ export function MapSearchPage() {
         <span className={filterGroupTitleClass}>Estrutura</span>
         <label className="min-w-[11rem] shrink-0 space-y-1 text-xs font-semibold text-muted-foreground">
           <span className="block px-1">Comodidade</span>
-          <select
-            className={filterSelectClass}
+          <FilterDropdown
             value={search.comodidade ?? ""}
-            onChange={(e) =>
-              patchSearch({ comodidade: e.target.value || undefined })
-            }
-          >
-            <option value="">Todas</option>
-            {amenityCatalog.map((a) => (
-              <option key={a.itemId} value={a.itemId}>
-                {a.name}
-              </option>
-            ))}
-          </select>
+            options={[
+              { value: "", label: "Todas" },
+              ...amenityCatalog.map((a) => ({
+                value: a.itemId,
+                label: a.name,
+              })),
+            ]}
+            onChange={(value) => patchSearch({ comodidade: value || undefined })}
+          />
         </label>
         <label className="min-w-[6rem] shrink-0 space-y-1 text-xs font-semibold text-muted-foreground">
           <span className="block px-1">Tensao</span>
-          <select
-            className={filterSelectClass}
+          <FilterDropdown
             value={search.tensao ?? ""}
-            onChange={(e) => patchSearch({ tensao: e.target.value || undefined })}
-          >
-            <option value="">Todas</option>
-            <option value="127">127 V</option>
-            <option value="220">220 V</option>
-          </select>
+            options={[
+              { value: "", label: "Todas" },
+              { value: "127", label: "127 V" },
+              { value: "220", label: "220 V" },
+            ]}
+            onChange={(value) => patchSearch({ tensao: value || undefined })}
+          />
         </label>
         <label className={filterCheckClass}>
           <input
@@ -435,7 +492,7 @@ export function MapSearchPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ type: "spring", stiffness: 360, damping: 30 }}
-            className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden h-20 p-3 md:block md:px-4 md:py-0"
+            className="pointer-events-none absolute inset-x-0 top-0 z-[80] hidden h-20 p-3 md:block md:px-4 md:py-0"
           >
             <div className="pointer-events-auto flex h-full min-w-0 items-center">
               {filterControls}
@@ -637,7 +694,14 @@ export function MapSearchPage() {
         listOpen={listOpen}
         onClose={closeDetail}
         initialDate={date}
+        initialEndDate={endDate}
         initialPeriod={period}
+        initialStartTime={startTime}
+        initialEndTime={endTime}
+        initialEventType={search.evento}
+        initialGuests={
+          minCapacity && !Number.isNaN(minCapacity) ? minCapacity : undefined
+        }
       />
 
       <AnimatePresence>

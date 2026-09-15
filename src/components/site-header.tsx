@@ -5,7 +5,6 @@ import {
   LogOut,
   Map,
   Menu,
-  Network,
   User,
   X,
 } from "lucide-react";
@@ -54,22 +53,18 @@ export function SiteHeader() {
 
   const authed = Boolean(user);
   const isPartner = user?.role === "parceiro";
-  const isOrganizer = user?.role === "organizador";
   const mapMode = pathname === "/" || pathname.startsWith("/buscar");
-  const panelMode =
-    pathname.startsWith("/painel") || pathname.startsWith("/painel-acit");
+  const panelMode = pathname.startsWith("/painel");
   const homeTo = "/bem-vindo";
   const brandSubtitle =
     isPartner && pathname.startsWith("/painel")
       ? "Painel do parceiro"
-      : isOrganizer && pathname.startsWith("/painel-acit")
-        ? "Painel do organizador"
-        : null;
+      : null;
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b text-white backdrop-blur",
+        "sticky top-0 z-[300] border-b text-white backdrop-blur",
         mapMode || panelMode
           ? "border-white/8 bg-[color-mix(in_oklab,var(--ink)_94%,black)]"
           : "border-white/10 bg-[color-mix(in_oklab,var(--ink)_92%,black)]",
@@ -124,16 +119,7 @@ export function SiteHeader() {
                   Painel
                 </Link>
               ) : null}
-              {isOrganizer ? (
-                <Link
-                  to="/painel-acit"
-                  className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
-                >
-                  Rede
-                </Link>
-              ) : null}
-
-              {!isPartner && !isOrganizer ? (
+              {!isPartner ? (
                 <Link
                   to="/minhas-reservas"
                   className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
@@ -166,7 +152,7 @@ export function SiteHeader() {
                 </button>
 
                 {profileOpen ? (
-                  <div className="absolute right-0 top-[calc(100%+0.4rem)] z-50 w-64 overflow-hidden rounded-xl border border-border bg-white text-foreground shadow-xl">
+                  <div className="absolute right-0 top-[calc(100%+0.4rem)] z-[320] w-64 overflow-hidden rounded-xl border border-border bg-white text-foreground shadow-xl">
                     <div className="border-b border-border/70 px-3 py-3">
                       <p className="text-sm font-semibold">{user.name}</p>
                       <p className="truncate text-xs text-muted-foreground">
@@ -174,7 +160,7 @@ export function SiteHeader() {
                       </p>
                     </div>
                     <div className="p-1.5">
-                      {isPartner || isOrganizer ? (
+                      {isPartner ? (
                         <>
                           <Link
                             to="/"
@@ -184,25 +170,14 @@ export function SiteHeader() {
                             <Map className="size-4 text-muted-foreground" />
                             Ver mapa
                           </Link>
-                          {isPartner ? (
-                            <Link
-                              to="/painel"
-                              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
-                              onClick={() => setProfileOpen(false)}
-                            >
-                              <LayoutDashboard className="size-4 text-muted-foreground" />
-                              Abrir painel
-                            </Link>
-                          ) : (
-                            <Link
-                              to="/painel-acit"
-                              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
-                              onClick={() => setProfileOpen(false)}
-                            >
-                              <Network className="size-4 text-muted-foreground" />
-                              Painel da rede
-                            </Link>
-                          )}
+                          <Link
+                            to="/painel"
+                            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
+                            onClick={() => setProfileOpen(false)}
+                          >
+                            <LayoutDashboard className="size-4 text-muted-foreground" />
+                            Abrir painel
+                          </Link>
                         </>
                       ) : (
                         <>
@@ -294,16 +269,7 @@ export function SiteHeader() {
                   Painel
                 </Link>
               ) : null}
-              {isOrganizer ? (
-                <Link
-                  to="/painel-acit"
-                  className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
-                  onClick={() => setOpen(false)}
-                >
-                  Rede
-                </Link>
-              ) : null}
-              {!isPartner && !isOrganizer ? (
+              {!isPartner ? (
                 <Link
                   to="/minhas-reservas"
                   className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"

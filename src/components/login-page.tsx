@@ -4,7 +4,6 @@ import {
   CalendarDays,
   ClipboardList,
   LogIn,
-  Network,
   Plus,
   ShieldCheck,
 } from "lucide-react";
@@ -40,7 +39,7 @@ export function LoginPage() {
     if (mode === "login") {
       const user = loginMock(email, password);
       if (!user) {
-        setError("E-mail ou senha inválidos. Use as contas demo abaixo.");
+        setError("E-mail ou senha invalidos. Use as contas demo abaixo.");
         return;
       }
       goHome(user.role);
@@ -70,8 +69,7 @@ export function LoginPage() {
           Entrar no {APP_NAME}
         </h1>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Três contas mock: cliente (mapa), parceiro (painel do espaço) e
-          organizador (calendário da rede e homologação).
+          Duas contas mock: cliente (mapa) e parceiro (painel do espaco).
         </p>
 
         <div className="mt-8 space-y-3">
@@ -90,11 +88,9 @@ export function LoginPage() {
               <span
                 className={cn(
                   "grid size-11 place-items-center rounded-full text-sm font-bold",
-                  account.role === "organizador"
-                    ? "bg-[var(--forest)] text-white"
-                    : account.role === "parceiro"
-                      ? "bg-[var(--leaf)] text-[var(--ink)]"
-                      : "bg-[var(--ink)] text-white",
+                  account.role === "parceiro"
+                    ? "bg-[var(--leaf)] text-[var(--ink)]"
+                    : "bg-[var(--ink)] text-white",
                 )}
               >
                 {account.initials}
@@ -102,7 +98,7 @@ export function LoginPage() {
               <span className="min-w-0 flex-1">
                 <span className="block font-semibold">{account.name}</span>
                 <span className="block truncate text-xs text-muted-foreground">
-                  {account.roleLabel} · {account.email} · senha demo
+                  {account.roleLabel} - {account.email} - senha demo
                 </span>
               </span>
               <LogIn className="size-4 shrink-0 text-muted-foreground" />
@@ -161,7 +157,7 @@ export function LoginPage() {
                     onChange={() => setRole("cliente")}
                   />
                   <Building2 className="size-4 text-muted-foreground" />
-                  Cliente — buscar e solicitar espaços
+                  Cliente - buscar e solicitar espacos
                 </label>
                 <label className="flex items-center gap-2 text-sm">
                   <input
@@ -171,17 +167,7 @@ export function LoginPage() {
                     onChange={() => setRole("parceiro")}
                   />
                   <ShieldCheck className="size-4 text-[var(--forest)]" />
-                  Parceiro — painel do proprietário
-                </label>
-                <label className="flex items-center gap-2 text-sm">
-                  <input
-                    type="radio"
-                    name="role"
-                    checked={role === "organizador"}
-                    onChange={() => setRole("organizador")}
-                  />
-                  <Network className="size-4 text-[var(--forest)]" />
-                  Organizador — rede e homologação
+                  Parceiro - painel do proprietario
                 </label>
               </fieldset>
             </>
@@ -226,22 +212,22 @@ export function LoginPage() {
 
         <p className="mt-4 text-center text-xs text-muted-foreground">
           <Link to="/bem-vindo" className="underline-offset-2 hover:underline">
-            Voltar à apresentação
+            Voltar a apresentacao
           </Link>
         </p>
 
         <ul className="mt-5 space-y-2 border-t border-border pt-4 text-xs text-muted-foreground">
           <li className="flex items-center gap-2">
             <CalendarDays className="size-3.5" />
-            Parceiro abre na Agenda; organizador no calendário da rede
+            Parceiro abre na Agenda
           </li>
           <li className="flex items-center gap-2">
             <ClipboardList className="size-3.5" />
-            Organizador homologa cadastros e só visualiza agendas
+            Parceiro acompanha solicitacoes e reservas
           </li>
           <li className="flex items-center gap-2">
             <Plus className="size-3.5" />
-            Cadastro de espaço = fluxo mock do parceiro
+            Cadastro de espaco = fluxo mock do parceiro
           </li>
         </ul>
       </div>

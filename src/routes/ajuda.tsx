@@ -5,7 +5,7 @@ import { APP_NAME } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/ajuda")({
   head: () => ({
-    meta: [{ title: `Ajuda — ${APP_NAME}` }],
+    meta: [{ title: `Ajuda - ${APP_NAME}` }],
   }),
   component: HelpPage,
 });
@@ -17,7 +17,7 @@ function HelpPage() {
         <Button asChild variant="outline" size="sm">
           <Link to="/bem-vindo">
             <ArrowLeft className="size-4" />
-            Apresentação
+            Apresentacao
           </Link>
         </Button>
         <Button asChild variant="ghost" size="sm">
@@ -35,10 +35,10 @@ function HelpPage() {
           </span>
           <div>
             <h1 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">
-              Ajuda — {APP_NAME}
+              Ajuda - {APP_NAME}
             </h1>
             <p className="text-sm text-muted-foreground">
-              Guia rápido para demo e banca. Documento completo em{" "}
+              Guia rapido para demo e banca. Documento completo em{" "}
               <code className="text-xs">docs/guia-usuario.md</code>.
             </p>
           </div>
@@ -51,16 +51,12 @@ function HelpPage() {
           </p>
           <ul className="space-y-2 text-sm">
             <li>
-              <strong>Cliente:</strong> ana.ribeiro@email.com — mapa e
-              solicitação
+              <strong>Cliente:</strong> ana.ribeiro@email.com - mapa e
+              solicitacao
             </li>
             <li>
-              <strong>Parceiro:</strong> parceiro@agora.local — painel
+              <strong>Parceiro:</strong> parceiro@agora.local - painel
               administrativo
-            </li>
-            <li>
-              <strong>Organizador:</strong> organizador@agora.local —
-              painel da rede (legado; pode sair do sistema — item R2 do backlog)
             </li>
           </ul>
           <Button asChild className="mt-2">
@@ -75,45 +71,45 @@ function HelpPage() {
           <ol className="list-decimal space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
             <li>
               Em <strong className="text-foreground">/bem-vindo</strong>, use{" "}
-              <strong className="text-foreground">Ver espaços</strong> (entra
-              como Ana) ou a barra de busca.
+              <strong className="text-foreground">Ver espacos</strong> ou a
+              barra de busca.
             </li>
-            <li>No mapa, abra um espaço → Escolher data e solicitar.</li>
+            <li>No mapa, abra um espaco e escolha data para solicitar.</li>
             <li>
-              Complete data → comodidades → revisão → enviar.{" "}
+              Complete data, comodidades e revisao.{" "}
               <strong className="text-foreground">
-                Solicitação ≠ reserva
+                Solicitacao nao e reserva
               </strong>
               . Acompanhe em Minhas reservas e no sino; se aprovada, use
-              Continuar para pagamento (demo).
+              Continuar para pagamento demo.
             </li>
           </ol>
         </section>
 
         <section className="mt-6 space-y-3 rounded-2xl border border-border bg-white p-5 shadow-sm">
           <h2 className="font-display text-lg font-semibold">
-            Caminho do parceiro (admin)
+            Caminho do parceiro
           </h2>
           <ol className="list-decimal space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">
             <li>
-              Entre com a conta parceiro → abre{" "}
+              Entre com a conta parceiro e abra{" "}
               <strong className="text-foreground">/painel</strong>.
             </li>
             <li>
-              <strong className="text-foreground">Agenda</strong> — vê
-              solicitações, hold e confirmadas no calendário.
+              <strong className="text-foreground">Agenda</strong> - veja
+              solicitacoes, hold e reservas confirmadas.
             </li>
             <li>
-              <strong className="text-foreground">Solicitações</strong> —
-              aprovar, recusar ou confirmar pagamento demo.
+              <strong className="text-foreground">Solicitacoes</strong> -
+              aprove, recuse ou confirme pagamento demo.
             </li>
             <li>
-              <strong className="text-foreground">Regras de reserva</strong> —
-              modo manual ou automático.
+              <strong className="text-foreground">Regras de reserva</strong> -
+              modo manual ou automatico.
             </li>
             <li>
-              <strong className="text-foreground">Meus anúncios</strong> e{" "}
-              <strong className="text-foreground">Cadastrar espaço</strong> —
+              <strong className="text-foreground">Meus anuncios</strong> e{" "}
+              <strong className="text-foreground">Cadastrar espaco</strong> -
               listings e wizard de cadastro.
             </li>
           </ol>
@@ -129,21 +125,21 @@ function HelpPage() {
           <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
             <li>Pagamento real / gateway</li>
             <li>Google Places API real</li>
-            <li>E-mail / WhatsApp providers (só in-app no mock)</li>
-            <li>Auth real (hoje é mock em localStorage)</li>
+            <li>E-mail / WhatsApp providers (so in-app no mock)</li>
+            <li>Auth real (hoje e mock em localStorage)</li>
           </ul>
         </section>
 
         <section className="mt-6 space-y-3 rounded-2xl border border-border bg-white p-5 shadow-sm">
           <h2 className="font-display text-lg font-semibold">
-            Checklist — usar sem explicação oral
+            Checklist de demo
           </h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>☐ Da landing chegar ao mapa e ver espaços</li>
-            <li>☐ Entender solicitação ≠ reserva pela própria UI</li>
-            <li>☐ Enviar uma solicitação mock</li>
-            <li>☐ No parceiro, achar e aceitar/recusar solicitação</li>
-            <li>☐ Saber qual conta demo usar (tabela acima)</li>
+            <li>Da landing chegar ao mapa e ver espacos</li>
+            <li>Entender que solicitacao nao e reserva</li>
+            <li>Enviar uma solicitacao mock</li>
+            <li>No parceiro, achar e aceitar/recusar solicitacao</li>
+            <li>Saber qual conta demo usar</li>
           </ul>
         </section>
       </div>
