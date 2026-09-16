@@ -1,6 +1,6 @@
 /** Sessão mock — login real fica para depois. */
 
-export type MockRole = "cliente" | "parceiro" | "organizador";
+export type MockRole = "cliente" | "parceiro";
 
 export type MockUser = {
   id: string;
@@ -27,20 +27,11 @@ export const MOCK_ACCOUNTS: MockUser[] = [
   {
     id: "par-vila",
     name: "Marcos Oliveira",
-    email: "parceiro@acit.toledo.br",
+    email: "parceiro@agora.local",
     role: "parceiro",
-    roleLabel: "Parceiro ACIT",
+    roleLabel: "Parceiro",
     initials: "MO",
     spaceSlugs: ["vila-verde", "salao-corujas"],
-    password: "demo",
-  },
-  {
-    id: "org-acit",
-    name: "Helena Costa",
-    email: "organizador@acit.toledo.br",
-    role: "organizador",
-    roleLabel: "Organizador ACIT",
-    initials: "HC",
     password: "demo",
   },
 ];
@@ -53,8 +44,7 @@ const DEFAULT_AUTHENTICATED = false;
 const DEFAULT_USER_ID = MOCK_ACCOUNTS[0]!.id;
 
 function roleLabelFor(role: MockRole) {
-  if (role === "parceiro") return "Parceiro ACIT";
-  if (role === "organizador") return "Organizador ACIT";
+  if (role === "parceiro") return "Parceiro";
   return "Cliente";
 }
 
@@ -165,9 +155,8 @@ export function getActiveMockUser(): MockUser | null {
 
 export function homePathForRole(
   role: MockRole,
-): "/" | "/painel" | "/painel-acit" {
+): "/" | "/painel" {
   if (role === "parceiro") return "/painel";
-  if (role === "organizador") return "/painel-acit";
   return "/";
 }
 

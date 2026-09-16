@@ -1,44 +1,39 @@
-# Usuários e papéis
+# Usuarios e papeis
 
-## Papéis
+## Papeis ativos
 
-| Papel | Descrição | Necessidade principal |
+| Papel | Descricao | Necessidade principal |
 |-------|-----------|------------------------|
-| **Cliente final** | Quem precisa do espaço para o evento | Achar local livre rápido |
-| **Espaço / núcleo** | Estabelecimento ou núcleo ACIT que oferece o local | Menos consulta inútil, mais reserva |
-| **Organizador parceiro** | Profissional que monta eventos para clientes | Ver vários espaços e encaminhar opções |
-| **ACIT (rede)** | Entidade que ancora e governa a rede | Visibilidade setorial e eficiência |
+| **Cliente final** | Quem precisa de um espaco para evento | Achar local livre rapido, solicitar e acompanhar reserva |
+| **Parceiro** | Dono/gestor do espaco anunciado | Gerenciar agenda, solicitacoes, anuncios e regras de reserva |
 
-## Responsabilidades (produto)
+## Responsabilidades
 
 ### Cliente final
-- Buscar por cidade, data/período/horário, filtros
-- Favoritar espaços
-- Enviar solicitação (com cotação de comodidades) e acompanhar status
-- Pagar somente após aprovação, para confirmar a reserva
-- Receber alternativas da rede se o preferido estiver ocupado
 
-### Espaço / núcleo
-- Cadastrar o local (assistido via Google Places ou manual) — [cadastro-assistido-google.md](./cadastro-assistido-google.md)
-- Completar dados de locação: área, modalidades dia/hora, janelas, tomadas, pets, comodidades, fotos
-- Manter agenda confiável
-- Analisar solicitações (aprovar/recusar) dentro do prazo
-- Confirmar reservas após pagamento do cliente
+- Buscar por cidade, data, periodo/horario e filtros.
+- Ver detalhes do espaco.
+- Enviar solicitacao com cotacao de comodidades.
+- Acompanhar status em `Minhas reservas`.
+- Pagar somente apos aprovacao, no modo demo.
 
-### Organizador parceiro
-- Vincular-se a espaços da rede
-- Montar listas de opções por data
-- Encaminhar propostas ao cliente final
+### Parceiro
 
-### ACIT
-- Homologar parceiros / selo da rede
-- Definir padrões mínimos de cadastro e atualização de agenda
-- Acompanhar métricas de impacto
-- Painel próprio (`/painel-acit`): calendários compartilhados da rede (leitura), filiados e comunicação com parceiros — [rascunhos/painel-acit.md](./rascunhos/painel-acit.md)
+- Cadastrar o espaco, via fluxo manual ou assistido por Google mock.
+- Completar dados comerciais: capacidade, area, fotos, preco, regras, comodidades e modalidades.
+- Manter agenda confiavel.
+- Analisar solicitacoes.
+- Aprovar, recusar ou confirmar pagamento demo.
+- Definir regras de reserva manual ou automatica.
 
-## Estado da implementação
+## Decisao atual
 
-- Contas mock em `src/lib/mock-session.ts`: **cliente** (Ana), **parceiro ACIT** (Marcos — Vila Verde + Salão das Corujas) e **organizador ACIT** (Helena).
-- Login/cadastro mock em `/entrar`; após login: cliente → mapa; parceiro → `/painel` (também acessa mapa); organizador → `/painel-acit`.
-- Painel do organizador: calendário compartilhado (só leitura), filiados/homologação, mensagens — ver [rascunhos/painel-acit.md](./rascunhos/painel-acit.md).
-- **Organizador parceiro** (profissional de eventos, papel intermediário distinto da ACIT) ainda não.
+O papel de organizador foi removido do sistema. A plataforma assume a organizacao da rede; no produto ficam apenas cliente e parceiro.
+
+## Estado da implementacao
+
+- Contas mock em `src/lib/mock-session.ts`: cliente Ana e parceiro Marcos.
+- Login/cadastro mock em `/entrar`.
+- Cliente vai para o mapa (`/`).
+- Parceiro vai para `/painel` e tambem pode acessar o mapa.
+- A rota `/painel-acit` e o painel de organizador foram removidos.

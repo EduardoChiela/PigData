@@ -1,8 +1,9 @@
 import { Bell } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { DemoPaymentDialog } from "@/components/demo-payment-dialog";
 import {
   countUnread,
   listNotifications,
@@ -10,15 +11,25 @@ import {
   markNotificationRead,
   type AppNotification,
 } from "@/lib/notifications";
-import { confirmReservation } from "@/lib/reservations";
+import {
+  confirmReservation,
+  getReservation,
+  type Reservation,
+} from "@/lib/reservations";
+import { resolveMockUser } from "@/lib/mock-session";
 import { cn } from "@/lib/utils";
 
 export function NotificationBell({ userId }: { userId: string }) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<AppNotification[]>([]);
   const [unread, setUnread] = useState(0);
+  const [paymentReservation, setPaymentReservation] =
+    useState<Reservation | null>(null);
   const seenIds = useRef<Set<string>>(new Set());
   const rootRef = useRef<HTMLDivElement>(null);
+  const user = resolveMockUser(userId);
+  const isPartner = user?.role === "parceiro";
 
   function reload(announceNew: boolean) {
     const list = listNotifications(userId);
@@ -69,17 +80,33 @@ export function NotificationBell({ userId }: { userId: string }) {
 
   function onPayDemo(reservationId?: string) {
     if (!reservationId) return;
-    const result = confirmReservation(reservationId, "customer", userId);
-    if (result.ok) {
-      toast.success("Pagamento demo ok — reserva confirmada.");
-      reload(false);
-    } else {
-      toast.error(result.error);
+    const reservation = getReservation(reservationId);
+    if (!reservation) {
+      toast.error("Reserva nao encontrada.");
+      return;
+    }
+    setOpen(false);
+    setPaymentReservation(reservation);
+  }
+
+  function onNotificationClick(n: AppNotification) {
+    markNotificationRead(n.id);
+    reload(false);
+    if (isPartner) {
+      setOpen(false);
+      void navigate({
+        to: "/painel",
+        search: {
+          aba: "solicitacoes",
+          destaque: n.reservationId,
+        },
+      });
     }
   }
 
   return (
-    <div className="relative" ref={rootRef}>
+    <>
+      <div className="relative" ref={rootRef}>
       <button
         type="button"
         className="relative grid size-9 place-items-center rounded-full border border-white/15 bg-white/8 text-white hover:bg-white/12"
@@ -130,10 +157,7 @@ export function NotificationBell({ userId }: { userId: string }) {
                   <button
                     type="button"
                     className="w-full text-left"
-                    onClick={() => {
-                      markNotificationRead(n.id);
-                      reload(false);
-                    }}
+                    onClick={() => onNotificationClick(n)}
                   >
                     <p className="text-sm font-semibold">{n.title}</p>
                     <p className="mt-0.5 text-xs text-muted-foreground">
@@ -158,15 +182,37 @@ export function NotificationBell({ userId }: { userId: string }) {
           )}
           <div className="border-t border-border p-2">
             <Link
-              to="/minhas-reservas"
+              to={isPartner ? "/painel" : "/minhas-reservas"}
+              search={isPartner ? { aba: "solicitacoes" } : undefined}
               className="block rounded-lg px-2 py-2 text-center text-sm font-medium hover:bg-muted"
               onClick={() => setOpen(false)}
             >
-              Ver minhas reservas
+              {isPartner ? "Ver solicitações" : "Ver minhas reservas"}
             </Link>
           </div>
         </div>
       ) : null}
     </div>
+      <DemoPaymentDialog
+        open={Boolean(paymentReservation)}
+        reservation={paymentReservation}
+        onClose={() => setPaymentReservation(null)}
+        onPaid={() => {
+          if (!paymentReservation) return;
+          const result = confirmReservation(
+            paymentReservation.id,
+            "customer",
+            userId,
+          );
+          if (result.ok) {
+            toast.success("Pagamento demo aprovado. Reserva confirmada.");
+            setPaymentReservation(null);
+            reload(false);
+          } else {
+            toast.error(result.error);
+          }
+        }}
+      />
+    </>
   );
 }

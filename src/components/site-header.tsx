@@ -5,14 +5,13 @@ import {
   LogOut,
   Map,
   Menu,
-  Network,
   User,
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { NotificationBell } from "@/components/notification-bell";
 import { Button } from "@/components/ui/button";
-import { APP_NAME, APP_TAGLINE, PILOT_CITY_LABEL } from "@/lib/mock-data";
+import { APP_NAME } from "@/lib/mock-data";
 import {
   getActiveMockUser,
   isMockAuthenticated,
@@ -54,23 +53,29 @@ export function SiteHeader() {
 
   const authed = Boolean(user);
   const isPartner = user?.role === "parceiro";
-  const isOrganizer = user?.role === "organizador";
   const mapMode = pathname === "/" || pathname.startsWith("/buscar");
-  const panelMode =
-    pathname.startsWith("/painel") || pathname.startsWith("/painel-acit");
-  const homeTo = !authed ? "/bem-vindo" : "/";
+  const panelMode = pathname.startsWith("/painel");
+  const homeTo = "/bem-vindo";
+  const brandSubtitle =
+    isPartner && pathname.startsWith("/painel")
+      ? "Painel do parceiro"
+      : null;
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b text-white backdrop-blur",
+        "sticky top-0 z-[300] border-b text-white backdrop-blur",
         mapMode || panelMode
           ? "border-white/8 bg-[color-mix(in_oklab,var(--ink)_94%,black)]"
           : "border-white/10 bg-[color-mix(in_oklab,var(--ink)_92%,black)]",
       )}
     >
       <div className="flex h-[3.75rem] items-center justify-between gap-4 px-4 md:px-6">
-        <Link to={homeTo} className="flex items-center gap-2.5">
+        <Link
+          to={homeTo}
+          aria-label="Ir para a página inicial"
+          className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/25"
+        >
           <img
             src="/agora-logo.png"
             alt=""
@@ -82,13 +87,11 @@ export function SiteHeader() {
             <span className="block font-display text-[0.95rem] font-semibold tracking-[0.14em]">
               {APP_NAME.toUpperCase()}
             </span>
-            <span className="mt-0.5 block text-[0.65rem] font-medium tracking-wide text-white/55">
-              {isPartner && pathname.startsWith("/painel")
-                ? "Painel do parceiro"
-                : isOrganizer && pathname.startsWith("/painel-acit")
-                  ? "Painel do organizador"
-                  : `${APP_TAGLINE} · ${PILOT_CITY_LABEL}`}
-            </span>
+            {brandSubtitle ? (
+              <span className="mt-0.5 block text-[0.65rem] font-medium tracking-wide text-white/55">
+                {brandSubtitle}
+              </span>
+            ) : null}
           </span>
         </Link>
 
@@ -106,7 +109,7 @@ export function SiteHeader() {
                 search={{ acit: "1" }}
                 className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
               >
-                Verificados ACIT
+                Verificados
               </Link>
               {isPartner ? (
                 <Link
@@ -116,16 +119,7 @@ export function SiteHeader() {
                   Painel
                 </Link>
               ) : null}
-              {isOrganizer ? (
-                <Link
-                  to="/painel-acit"
-                  className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
-                >
-                  Rede ACIT
-                </Link>
-              ) : null}
-
-              {!isPartner && !isOrganizer ? (
+              {!isPartner ? (
                 <Link
                   to="/minhas-reservas"
                   className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
@@ -158,7 +152,7 @@ export function SiteHeader() {
                 </button>
 
                 {profileOpen ? (
-                  <div className="absolute right-0 top-[calc(100%+0.4rem)] z-50 w-64 overflow-hidden rounded-xl border border-border bg-white text-foreground shadow-xl">
+                  <div className="absolute right-0 top-[calc(100%+0.4rem)] z-[320] w-64 overflow-hidden rounded-xl border border-border bg-white text-foreground shadow-xl">
                     <div className="border-b border-border/70 px-3 py-3">
                       <p className="text-sm font-semibold">{user.name}</p>
                       <p className="truncate text-xs text-muted-foreground">
@@ -166,7 +160,7 @@ export function SiteHeader() {
                       </p>
                     </div>
                     <div className="p-1.5">
-                      {isPartner || isOrganizer ? (
+                      {isPartner ? (
                         <>
                           <Link
                             to="/"
@@ -176,25 +170,14 @@ export function SiteHeader() {
                             <Map className="size-4 text-muted-foreground" />
                             Ver mapa
                           </Link>
-                          {isPartner ? (
-                            <Link
-                              to="/painel"
-                              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
-                              onClick={() => setProfileOpen(false)}
-                            >
-                              <LayoutDashboard className="size-4 text-muted-foreground" />
-                              Abrir painel
-                            </Link>
-                          ) : (
-                            <Link
-                              to="/painel-acit"
-                              className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
-                              onClick={() => setProfileOpen(false)}
-                            >
-                              <Network className="size-4 text-muted-foreground" />
-                              Painel da rede
-                            </Link>
-                          )}
+                          <Link
+                            to="/painel"
+                            className="flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-sm hover:bg-muted"
+                            onClick={() => setProfileOpen(false)}
+                          >
+                            <LayoutDashboard className="size-4 text-muted-foreground" />
+                            Abrir painel
+                          </Link>
                         </>
                       ) : (
                         <>
@@ -275,7 +258,7 @@ export function SiteHeader() {
                 className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
                 onClick={() => setOpen(false)}
               >
-                Verificados ACIT
+                Verificados
               </Link>
               {isPartner ? (
                 <Link
@@ -286,16 +269,7 @@ export function SiteHeader() {
                   Painel
                 </Link>
               ) : null}
-              {isOrganizer ? (
-                <Link
-                  to="/painel-acit"
-                  className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
-                  onClick={() => setOpen(false)}
-                >
-                  Rede ACIT
-                </Link>
-              ) : null}
-              {!isPartner && !isOrganizer ? (
+              {!isPartner ? (
                 <Link
                   to="/minhas-reservas"
                   className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"

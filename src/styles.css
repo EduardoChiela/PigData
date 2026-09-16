@@ -50,6 +50,26 @@
       var(--color-background);
   }
 
+  select option {
+    background-color: #ffffff;
+    color: var(--color-foreground);
+  }
+
+  select option:hover,
+  select option:focus,
+  select option:checked {
+    background-color: #e5e7eb;
+    box-shadow: 0 0 0 9999px #e5e7eb inset;
+    color: var(--color-foreground);
+  }
+
+  select option:checked:hover,
+  select option:checked:focus {
+    background-color: #e5e7eb;
+    box-shadow: 0 0 0 9999px #e5e7eb inset;
+    color: var(--color-foreground);
+  }
+
   #app {
     min-height: 100dvh;
     display: flex;

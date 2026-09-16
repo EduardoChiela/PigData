@@ -4,6 +4,11 @@ import { APP_NAME } from "@/lib/mock-data";
 import { getActiveMockUser, isMockAuthenticated } from "@/lib/mock-session";
 
 export const Route = createFileRoute("/painel")({
+  validateSearch: (raw: Record<string, unknown>) => ({
+    aba: typeof raw["aba"] === "string" ? raw["aba"] : undefined,
+    destaque:
+      typeof raw["destaque"] === "string" ? raw["destaque"] : undefined,
+  }),
   beforeLoad: () => {
     if (!isMockAuthenticated()) {
       throw redirect({ to: "/entrar" });

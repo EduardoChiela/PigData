@@ -1,57 +1,33 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   CalendarSearch,
   Handshake,
   Package,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import { SearchBar } from "@/components/search-bar";
 import { SpaceCard } from "@/components/space-card";
 import { Button } from "@/components/ui/button";
 import {
   APP_NAME,
-  APP_TAGLINE,
-  PILOT_CITY_LABEL,
   defaultSearchDate,
   filterSpaces,
-  spaces,
 } from "@/lib/mock-data";
-import {
-  getActiveMockUser,
-  homePathForRole,
-  isMockAuthenticated,
-  loginAsMock,
-} from "@/lib/mock-session";
+import { loginAsMock } from "@/lib/mock-session";
 
 export const Route = createFileRoute("/bem-vindo")({
-  beforeLoad: () => {
-    if (isMockAuthenticated()) {
-      const user = getActiveMockUser();
-      throw redirect({
-        to: user ? homePathForRole(user.role) : "/",
-      });
-    }
-  },
   head: () => ({
-    meta: [
-      { title: `${APP_NAME} — disponibilidade em ${PILOT_CITY_LABEL}` },
-      {
-        name: "description",
-        content: `Busque espaços livres por cidade, data e período em ${PILOT_CITY_LABEL}.`,
-      },
-    ],
+    meta: [{ title: APP_NAME }],
   }),
   component: WelcomePage,
 });
 
 function WelcomePage() {
   const preview = filterSpaces({ date: defaultSearchDate }).slice(0, 6);
-  const acitCount = spaces.filter((s) => s.acitVerified).length;
 
   return (
     <>
-      <section className="relative isolate min-h-[min(92dvh,820px)] overflow-hidden">
+      <section className="relative z-20 isolate min-h-[min(92dvh,820px)] overflow-visible">
         <div
           className="absolute inset-0 -z-20 bg-cover bg-center"
           style={{
@@ -75,10 +51,6 @@ function WelcomePage() {
 
         <div className="page-shell flex min-h-[min(92dvh,820px)] flex-col justify-end gap-10 pb-14 pt-24 md:justify-center md:pb-20">
           <div className="max-w-3xl animate-rise text-white">
-            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--leaf)] backdrop-blur">
-              <Sparkles className="size-3.5" />
-              {APP_TAGLINE} · {PILOT_CITY_LABEL}
-            </p>
             <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-[0.08em] sm:text-5xl md:text-6xl">
               {APP_NAME.toUpperCase()}
             </h1>
@@ -108,10 +80,6 @@ function WelcomePage() {
                 <Link to="/entrar">Entrar</Link>
               </Button>
             </div>
-            <p className="mt-3 text-sm text-white/60">
-              “Ver espaços” abre o mapa como cliente demo (Ana). Para parceiro
-              ou outra conta, use Entrar.
-            </p>
           </div>
 
           <div className="animate-rise-delay w-full max-w-4xl">
@@ -119,16 +87,6 @@ function WelcomePage() {
               layout="stacked"
               className="rounded-2xl bg-white/95 p-3 shadow-lg"
             />
-            <p className="mt-3 text-sm text-white/70">
-              Busca disponibilidade-first: cidade + data + período.{" "}
-              {spaces.length} espaços no mock · {acitCount} verificados ACIT.{" "}
-              <a
-                href="#preview"
-                className="underline decoration-white/40 underline-offset-2 hover:text-white"
-              >
-                Ver amostra abaixo
-              </a>
-            </p>
           </div>
         </div>
       </section>
@@ -195,7 +153,7 @@ function WelcomePage() {
             Livres em {defaultSearchDate.split("-").reverse().join("/")}
           </h2>
           <p className="mt-2 max-w-xl text-muted-foreground">
-            Amostra mock com parceiros ACIT primeiro. Só entram espaços
+            Amostra mock com parceiros verificados primeiro. Só entram espaços
             disponíveis no período.{" "}
             <Link
               to="/"
@@ -207,7 +165,7 @@ function WelcomePage() {
           </p>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {preview.map((space) => (
             <SpaceCard
               key={space.slug}
@@ -228,7 +186,7 @@ function WelcomePage() {
               icon: Package,
             },
             {
-              title: "Destaque ACIT",
+              title: "Destaque verificado",
               body: "Parceiros verificados aparecem primeiro na lista e no mapa da rede.",
               icon: ShieldCheck,
             },

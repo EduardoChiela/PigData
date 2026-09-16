@@ -1,13 +1,13 @@
 /**
  * Mock piloto Toledo - PR.
  * Espelha campos de docs/espacos.md, busca-locacao.md, comodidades.md, mapa-busca.md.
- * Camada A = ACIT verificado; B = cadastrado sem selo forte.
+ * Camada A = verificado; B = cadastrado sem selo forte.
  */
 
 /** Nome visível na UI — comercial a definir (docs/nomenclatura.md). Codinome do repo: PigData. */
 export const APP_NAME = "Ágora";
-/** Marca completa quando precisar do contexto ACIT */
-export const APP_TAGLINE = "Espaços ACIT";
+/** Marca completa quando precisar do contexto dos espaços */
+export const APP_TAGLINE = "Espaços";
 
 export const PILOT_CITY = "Toledo";
 export const PILOT_STATE = "PR";
@@ -200,7 +200,7 @@ export const spaces: Space[] = [
     image: img("photo-1519167758481-83f29da8c2b4", "vila"),
     busyDates: [D.busy1, D.busy2],
     partialDates: [D.partial1],
-    blurb: "Jardim interno e salão climatizado — referência ACIT para casamentos.",
+    blurb: "Jardim interno e salão climatizado — referência para casamentos.",
   },
   {
     slug: "salao-corujas",
@@ -309,7 +309,7 @@ export const spaces: Space[] = [
     image: img("photo-1497366216548-37526070297c", "hub"),
     busyDates: [D.busy2, D.busy3],
     partialDates: [D.partial1],
-    blurb: "Salas modulares e café liberado — ponto ACIT para eventos corporativos.",
+    blurb: "Salas modulares e café liberado — ponto para eventos corporativos.",
   },
   {
     slug: "chacara-panorama",
@@ -595,11 +595,11 @@ export const spaces: Space[] = [
       am("guarda-volumes", false, 180),
       am("streaming", false, 900),
     ],
-    rules: "Sócios têm prioridade de agenda — datas ACIT validadas na plataforma.",
+    rules: "Sócios têm prioridade de agenda — datas validadas na plataforma.",
     image: img("photo-1511795409834-ef04bbd61622", "clube"),
     busyDates: [D.busy1],
     partialDates: [D.partial2],
-    blurb: "Salão clássico com pista e cozinha industrial — selo ACIT.",
+    blurb: "Salão clássico com pista e cozinha industrial — selo verificado.",
   },
   {
     slug: "galeria-nova",
@@ -746,7 +746,7 @@ export const spaces: Space[] = [
   },
   {
     slug: "teatro-comunitario",
-    name: "Teatro Comunitário ACIT",
+    name: "Teatro Comunitário",
     city: PILOT_CITY,
     state: PILOT_STATE,
     region: "Centro",
@@ -779,7 +779,7 @@ export const spaces: Space[] = [
     image: img("photo-1503095396549-807759245b35", "teatro"),
     busyDates: [D.busy2, D.busy3],
     partialDates: [D.partial1],
-    blurb: "Plateia inclinada e camarins — eventos culturais da rede ACIT.",
+    blurb: "Plateia inclinada e camarins — eventos culturais da rede.",
   },
   {
     slug: "loft-coopagro",
@@ -956,7 +956,7 @@ export const spaces: Space[] = [
     image: img("photo-1475721027785-f74eccf877e2", "auditorio"),
     busyDates: [D.busy2],
     partialDates: [],
-    blurb: "Auditório com projeção 4K e cabine de tradução — rede ACIT.",
+    blurb: "Auditório com projeção 4K e cabine de tradução — rede verificada.",
   },
 ];
 
@@ -998,7 +998,7 @@ export type ListedSpace = Space & { status: Availability };
  * Busca mock alinhada às regras:
  * - cidade piloto (uma por vez)
  * - só disponíveis por padrão (livre + parcial)
- * - ACIT (camada A) antes dos demais
+ * - Verificados (camada A) antes dos demais
  * - horário: espaços sem allowsHourlyRental ficam de fora se period for horário futuro
  */
 export function filterSpaces(filters: SearchFilters = {}): ListedSpace[] {

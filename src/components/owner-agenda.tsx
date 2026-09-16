@@ -192,7 +192,7 @@ export function OwnerAgenda({
         </h1>
         {spaces.length > 1 ? (
           <select
-            className="rounded-lg border border-[#dadce0] bg-white px-2.5 py-1.5 text-sm text-[#3c4043]"
+            className="appearance-none rounded-lg border border-[#dadce0] bg-white px-2.5 py-1.5 text-sm text-[#3c4043] outline-none transition hover:border-stone-300 focus:border-stone-300 focus:outline-none focus:ring-0 focus:shadow-[0_0_0_3px_rgba(120,113,108,0.22)] focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-[0_0_0_3px_rgba(120,113,108,0.22)]"
             value={space.slug}
             onChange={(e) => onSelectSpace(e.target.value)}
           >
