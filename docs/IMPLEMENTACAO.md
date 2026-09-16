@@ -16,6 +16,55 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-16 — Hero da landing só com busca
+- **Contexto:** Simplificar a primeira viewport: sem título/CTAs, só a barra centralizada sobre foto de casamento ao ar livre.
+- **Áreas:** `fluxo-telas.md`, `mvp.md`
+- **O que mudou:** `bem-vindo.tsx` (hero limpo, `max-w-6xl`); `hero-search-bar.tsx` (campos maiores).
+- **Como funciona agora:** visitante vê só a busca no centro; ao buscar, vai para `/` (mapa) com atividade/cidade/data.
+- **Status:** feito
+
+### 2026-09-16 — Visitante: busca Peerspace na landing + mapa sem login
+- **Contexto:** Usuário sem conta precisava navegar como no Peerspace (atividade → cidade → data) sem ser forçado a login mock.
+- **Áreas:** `fluxo-telas.md`, `mvp.md`, `mapa-busca.md`, `README.md`
+- **O que mudou:** `hero-search-bar.tsx`; `/` e detalhe públicos; removido `loginAsMock` automático da busca/landing; pedido exige `/entrar`.
+- **Como funciona agora:** em `/bem-vindo`, “O que está planejando?” com sugestões, depois cidade e data; Buscar abre o mapa; conta só na hora de solicitar.
+- **Status:** feito (protótipo)
+
+### 2026-09-16 — Fotos dos cards em 280×280 fixo
+- **Contexto:** Limite de 650px ainda deixava as fotos dominando a lista (~meia tela).
+- **Áreas:** `mapa-busca.md`
+- **O que mudou:** `SpaceCard` compact com tamanho inline fixo 280×280; grade da lista 2/3 colunas.
+- **Como funciona agora:** foto do card na busca tem 280px de lado (landing 320px), independente da largura do painel.
+- **Status:** feito
+
+### 2026-09-16 — Fix nova aba do espaço + tamanho real das fotos
+- **Contexto:** Nova aba caía em `/bem-vindo` (auth no SSR sem `localStorage`); `max-h` sozinho não limitava a largura das fotos.
+- **Áreas:** `mapa-busca.md`, `espacos.md`
+- **O que mudou:** removido gate de auth no `beforeLoad` de `/espaco/$slug`; cards com `w-[min(100%,650px)]` + `maxWidth/maxHeight: 650` no carrossel.
+- **Como funciona agora:** `/espaco/$slug` abre de fato na nova aba; fotos da lista não passam de 650×650.
+- **Status:** feito
+
+### 2026-09-16 — Detalhe em nova aba + fotos ~650×650
+- **Contexto:** Abrir o espaço em nova aba do navegador; fotos dos cards estavam grandes demais.
+- **Áreas:** `mapa-busca.md`
+- **O que mudou:** `space-links.ts` (`openSpaceInNewTab`); cards/mapa usam nova aba; carrossel `aspect-square` com `max-w/max-h` 650px.
+- **Como funciona agora:** clique no card ou pin mantém o mapa aberto e carrega `/espaco/$slug` em outra aba; fotos da lista ficam no máximo ~650×650.
+- **Status:** feito (protótipo)
+
+### 2026-09-16 — Cards verticais, filtros sem borda e detalhe fullscreen
+- **Contexto:** Fotos precisam ser o destaque na lista; filtros ainda tinham bordas desnecessárias; detalhe lateral limitava a visualização.
+- **Áreas:** `mapa-busca.md`, `espacos.md`, `fluxo-telas.md`, `README.md`
+- **O que mudou:** `space-card.tsx` (carrossel vertical), `search-filters-bar.tsx` (triggers sem borda, chips `rounded-full`), `space-detail-page.tsx` + rota `/espaco/$slug`, `map-search-page.tsx` navega para a página em vez do painel.
+- **Como funciona agora:** cards foto-first com setas no hover; clique abre `/espaco/$slug` em tela cheia; `/?slug=` redireciona para a mesma rota.
+- **Status:** feito (protótipo)
+
+### 2026-09-16 — Filtros da busca estilo Peerspace
+- **Contexto:** A tabela de filtros acima do mapa estava visualmente carregada (muitos parâmetros e containers arredondados); alinhar à UX simplificada do Peerspace.
+- **Áreas:** `mapa-busca.md`, `busca-locacao.md`
+- **O que mudou:** `search-filters-bar.tsx`, `recommended-amenities.ts`, `map-search-page.tsx`, `search-params.ts` (`comodidades` CSV).
+- **Como funciona agora:** na coluna da lista: Quando, Preço, Participantes e Filtros abrem painéis; chips de Pets + comodidades recomendadas conforme o evento; lista de espaços abaixo. Removida a faixa complexa de dropdowns agrupados.
+- **Status:** feito (protótipo)
+
 ### 2026-09-14 — Explorar espaços / busca / mapa (entrega A–C)
 - **Contexto:** Implementar planejamento de descoberta estilo Peerspace adaptado à Ágora (atividades, layout lista+mapa, price markers, viewport).
 - **Áreas:** `mapa-busca.md`, `busca-locacao.md`, `fluxo-telas.md`, `README.md`, `rascunhos/planejamento-explorar-busca-mapa.md`

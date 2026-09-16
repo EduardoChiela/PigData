@@ -49,7 +49,7 @@ O papel de organizador foi removido. A verificacao passa a ser atributo da plata
 ## Estado da implementacao
 
 - Perfis mock em `src/lib/mock-data.ts`.
-- Detalhe do espaco no mapa em `SpaceDetailPanel`.
+- Detalhe do espaco em tela cheia: rota `/espaco/$slug` (`SpaceDetailPage`), aberta em **nova aba** a partir do mapa/lista.
 - Galeria com lightbox.
 - Cadastro do espaco no painel do parceiro em `SpaceRegistrationWizard`.
 - Publicacoes locais em `src/lib/space-registration.ts`.

@@ -25,8 +25,8 @@
 
 ## Estado da implementação
 
-- Home autenticada `/` = mapa (T02); landing `/bem-vindo` (T01) para visitante; marca **Ágora**.
-- Landing: **Ver espaços** → mapa (cliente demo); Como funciona; `/ajuda` + `docs/guia-usuario.md`.
+- Home autenticada `/` = mapa (T02) **também aberto a visitantes**; landing `/bem-vindo` (T01) com `HeroSearchBar` (atividade → cidade → data).
+- Landing `/bem-vindo` (T01): hero só com busca (atividade → cidade → data); mapa `/` aberto a visitantes; conta só na solicitação.
 - Mock: 22 espaços Toledo - PR.
 - Ainda fora do slice completo: T07+, Places real, Photorealistic 3D, camada C Places, pagamento demo na UI.
 

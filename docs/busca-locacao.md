@@ -175,4 +175,4 @@ Busca → cidade → período (dia ou horário) → filtros (área, capacidade, 
 
 ## Estado da implementação
 
-- Mock + filtros na home `/` + mapa oblíquo com pins. Favoritos e locação por horário fino ainda pendentes.
+- Mock em `/` com filtros estilo Peerspace: dropdowns Quando / Preço / Participantes / Filtros + chips de comodidades recomendadas por evento (`comodidades` AND). Mapa oblíquo com pins. Favoritos e locação por horário fino ainda pendentes.

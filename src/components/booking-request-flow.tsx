@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, ChevronDown, Users } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -173,6 +174,7 @@ export function BookingRequestFlow({
   onBackToProfile,
   onDone,
 }: Props) {
+  const navigate = useNavigate();
   const allowedPeriods = periods.filter((p) => {
     if (p.id === "dia_inteiro") return space.allowsFullDayRental;
     return space.allowsFullDayRental || space.allowsHourlyRental;
@@ -243,14 +245,17 @@ export function BookingRequestFlow({
 
   function sendRequest() {
     const user = getActiveMockUser();
-    const clientUserId = user?.id ?? "cli-ana";
-    const clientName = user?.name ?? "Ana Ribeiro";
+    if (!user) {
+      toast.message("Entre na conta para enviar a solicitação.");
+      void navigate({ to: "/entrar" });
+      return;
+    }
     if (!eventType || !validGuests) return;
 
     const created = createReservationRequest({
       spaceSlug: space.slug,
-      clientUserId,
-      clientName,
+      clientUserId: user.id,
+      clientName: user.name,
       date,
       period,
       eventType,
