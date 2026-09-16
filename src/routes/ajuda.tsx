@@ -38,16 +38,16 @@ function HelpPage() {
               Ajuda - {APP_NAME}
             </h1>
             <p className="text-sm text-muted-foreground">
-              Guia rapido para demo e banca. Documento completo em{" "}
+              Guia rapido de uso. Documento completo em{" "}
               <code className="text-xs">docs/guia-usuario.md</code>.
             </p>
           </div>
         </div>
 
         <section className="space-y-3 rounded-2xl border border-border bg-white p-5 shadow-sm">
-          <h2 className="font-display text-lg font-semibold">Contas demo</h2>
+          <h2 className="font-display text-lg font-semibold">Contas de acesso</h2>
           <p className="text-sm text-muted-foreground">
-            Senha de todas: <strong className="text-foreground">demo</strong>
+            Use as contas abaixo para acessar rapidamente.
           </p>
           <ul className="space-y-2 text-sm">
             <li>
@@ -81,7 +81,7 @@ function HelpPage() {
                 Solicitacao nao e reserva
               </strong>
               . Acompanhe em Minhas reservas e no sino; se aprovada, use
-              Continuar para pagamento demo.
+              Continuar para pagamento.
             </li>
           </ol>
         </section>
@@ -101,7 +101,7 @@ function HelpPage() {
             </li>
             <li>
               <strong className="text-foreground">Solicitacoes</strong> -
-              aprove, recuse ou confirme pagamento demo.
+              aprove, recuse ou confirme pagamento.
             </li>
             <li>
               <strong className="text-foreground">Regras de reserva</strong> -
@@ -120,26 +120,26 @@ function HelpPage() {
 
         <section className="mt-6 space-y-3 rounded-2xl border border-border bg-[var(--sand)]/50 p-5">
           <h2 className="font-display text-lg font-semibold">
-            Fora desta demo
+            Recursos externos
           </h2>
           <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
             <li>Pagamento real / gateway</li>
             <li>Google Places API real</li>
-            <li>E-mail / WhatsApp providers (so in-app no mock)</li>
-            <li>Auth real (hoje e mock em localStorage)</li>
+            <li>E-mail / WhatsApp</li>
+            <li>Autenticacao integrada</li>
           </ul>
         </section>
 
         <section className="mt-6 space-y-3 rounded-2xl border border-border bg-white p-5 shadow-sm">
           <h2 className="font-display text-lg font-semibold">
-            Checklist de demo
+            Checklist de uso
           </h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>Da landing chegar ao mapa e ver espacos</li>
             <li>Entender que solicitacao nao e reserva</li>
-            <li>Enviar uma solicitacao mock</li>
+            <li>Enviar uma solicitacao</li>
             <li>No parceiro, achar e aceitar/recusar solicitacao</li>
-            <li>Saber qual conta demo usar</li>
+            <li>Saber qual conta usar</li>
           </ul>
         </section>
       </div>

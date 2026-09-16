@@ -6,7 +6,7 @@
 import { getSpaceBySlug, periodLabel, type EventType, type PeriodId } from "@/lib/mock-data";
 import { pushNotification } from "@/lib/notifications";
 import { getMockUserById } from "@/lib/mock-session";
-import { resolveSpaceDisplayName } from "@/lib/space-registration";
+import { getListingBySlug, resolveSpaceDisplayName } from "@/lib/space-registration";
 
 export type ReservationStatus =
   | "requested"
@@ -40,6 +40,7 @@ export type Reservation = {
   clientUserId: string;
   clientName: string;
   date: string;
+  endDate?: string;
   period: PeriodId;
   eventType: EventType;
   guests: number;
@@ -366,18 +367,27 @@ function evaluateAutoRules(
 }
 
 function notifyOwnerNewRequest(reservation: Reservation) {
-  // Parceiro demo do Vila Verde / Corujas
-  const ownerId =
-    reservation.spaceSlug === "salao-corujas" ||
-    reservation.spaceSlug === "vila-verde"
-      ? "par-vila"
-      : "par-vila";
+  const ownerId = ownerIdForReservation(reservation);
   pushNotification({
     userId: ownerId,
     reservationId: reservation.id,
     type: "reservation_requested",
     title: "Nova solicitação",
     body: `${reservation.clientName} pediu ${reservation.date} (${reservation.period}) em ${reservation.spaceSlug}.`,
+  });
+}
+
+function ownerIdForReservation(reservation: Reservation) {
+  return getListingBySlug(reservation.spaceSlug)?.ownerId ?? "par-vila";
+}
+
+function notifyOwnerReservationCancelled(reservation: Reservation) {
+  pushNotification({
+    userId: ownerIdForReservation(reservation),
+    reservationId: reservation.id,
+    type: "reservation_cancelled",
+    title: "Reserva cancelada",
+    body: `${reservation.clientName} cancelou ${reservation.date} (${reservation.period}) em ${reservationSpaceLabel(reservation)}.`,
   });
 }
 
@@ -401,6 +411,7 @@ export function createReservationRequest(input: {
   clientUserId: string;
   clientName: string;
   date: string;
+  endDate?: string;
   period: PeriodId;
   eventType: EventType;
   guests: number;
@@ -461,7 +472,7 @@ export function createReservationRequest(input: {
       reservation,
       "reservation_auto_approved",
       "Aprovada automaticamente",
-      `Sua solicitação em ${input.date} foi aprovada. Conclua o pagamento demo para confirmar.`,
+      `Sua solicitação em ${input.date} foi aprovada. Conclua o pagamento para confirmar.`,
     );
   } else if (status === "waitlisted") {
     notifyClient(
@@ -540,7 +551,7 @@ export function approveReservation(
     updated,
     "reservation_approved",
     "Solicitação aceita",
-    `Sua solicitação para ${updated.date} foi aceita. Continue para o pagamento demo.`,
+    `Sua solicitação para ${updated.date} foi aceita. Continue para o pagamento.`,
   );
   return updated;
 }
@@ -686,12 +697,23 @@ export function confirmReservation(
 export function cancelConfirmed(
   id: string,
   actorId: string,
+  actorType: "customer" | "owner" | "system" = "owner",
 ): Reservation | null {
   const list = readList();
   const idx = list.findIndex((r) => r.id === id);
   if (idx < 0) return null;
   const current = list[idx]!;
-  if (current.status !== "confirmed" && current.status !== "awaiting_payment") {
+  if (
+    ![
+      "requested",
+      "pending",
+      "approved",
+      "auto_approved",
+      "awaiting_payment",
+      "confirmed",
+      "waitlisted",
+    ].includes(current.status)
+  ) {
     return current;
   }
   const updated: Reservation = {
@@ -727,9 +749,12 @@ export function cancelConfirmed(
     reservationId: id,
     fromStatus: current.status,
     toStatus: "cancelled",
-    actorType: "owner",
+    actorType,
     actorId,
   });
+  if (actorType === "customer") {
+    notifyOwnerReservationCancelled(updated);
+  }
   return updated;
 }
 

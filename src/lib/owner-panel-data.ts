@@ -26,6 +26,7 @@ export type OwnerReservationRequest = {
   spaceSlug: string;
   clientName: string;
   date: string;
+  endDate?: string;
   eventType: EventType;
   guests: number;
   amenities: string[];
@@ -114,6 +115,7 @@ function toOwnerRequest(r: Reservation): OwnerReservationRequest {
     spaceSlug: r.spaceSlug,
     clientName: r.clientName,
     date: r.date,
+    endDate: r.endDate,
     eventType: r.eventType,
     guests: r.guests,
     amenities: r.amenities,

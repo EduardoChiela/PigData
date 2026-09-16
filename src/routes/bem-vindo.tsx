@@ -108,7 +108,7 @@ function WelcomePage() {
             Livres em {defaultSearchDate.split("-").reverse().join("/")}
           </h2>
           <p className="mt-2 max-w-xl text-muted-foreground">
-            Amostra mock com parceiros verificados primeiro. Só entram espaços
+            Espaços disponíveis com parceiros verificados primeiro. Só entram espaços
             disponíveis no período.{" "}
             <Link
               to="/"

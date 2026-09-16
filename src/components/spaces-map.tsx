@@ -57,10 +57,10 @@ function PriceMarker({
   return (
     <div
       className={cn(
-        "relative z-30 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-bold shadow-[0_8px_18px_rgba(0,0,0,0.32)] transition",
+        "relative z-30 whitespace-nowrap rounded-full border px-2.5 py-1 text-[0.72rem] font-semibold shadow-[0_6px_14px_rgba(0,0,0,0.22)] transition",
         selected
-          ? "border-white bg-[var(--leaf)] text-[var(--ink)] ring-2 ring-white/80"
-          : "border-white bg-white text-[var(--ink)]",
+          ? "border-white bg-[var(--leaf)] text-[var(--ink)] ring-2 ring-white/70"
+          : "border-white/80 bg-white/82 text-[var(--ink)] backdrop-blur-sm",
       )}
     >
       {priceLabel(price)}

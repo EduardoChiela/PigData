@@ -222,8 +222,8 @@ export function OwnerAgenda({
 
       {gcalConnected ? (
         <p className="border-b border-[#dadce0] bg-[#e8f0fe] px-4 py-2 text-xs text-[#1967d2]">
-          Mock: a agenda da plataforma continua como fonte; o Google Calendar
-          entra só como espelho opcional (OAuth real depois).
+          A agenda da plataforma continua como fonte principal; o Google
+          Calendar entra como espelho opcional.
         </p>
       ) : null}
 

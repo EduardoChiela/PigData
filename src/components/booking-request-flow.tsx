@@ -10,6 +10,7 @@ import { brl, formatDateBR } from "@/lib/format";
 import {
   eventTypes,
   periods,
+  defaultSearchDate,
   type EventType,
   type PeriodId,
   type Space,
@@ -186,7 +187,7 @@ export function BookingRequestFlow({
     "dia_inteiro";
 
   const [orderStep, setOrderStep] = useState<BookingOrderStep>("basics");
-  const [date, setDate] = useState(initialDate ?? "");
+  const [date, setDate] = useState(initialDate ?? defaultSearchDate);
   const [endDate, setEndDate] = useState(initialEndDate ?? "");
   const initialTimeRange = periodTimeRanges[defaultPeriod];
   const [startTime, setStartTime] = useState(
@@ -257,6 +258,7 @@ export function BookingRequestFlow({
       clientUserId: user.id,
       clientName: user.name,
       date,
+      endDate: endDate || undefined,
       period,
       eventType,
       guests,
@@ -265,7 +267,7 @@ export function BookingRequestFlow({
     });
 
     if (created.status === "awaiting_payment") {
-      toast.success("Aprovada automaticamente — conclua o pagamento demo.");
+      toast.success("Aprovada automaticamente — conclua o pagamento.");
     } else if (created.status === "waitlisted") {
       toast.message("Período em disputa — você entrou na fila de interesse.");
     } else {

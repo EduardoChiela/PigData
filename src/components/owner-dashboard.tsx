@@ -129,8 +129,8 @@ export function OwnerDashboard({
           <p className="text-sm font-semibold">Faturamento — últimos 6 meses</p>
           <TrendChart points={metrics.trend} />
           <p className="mt-1 text-xs text-muted-foreground">
-            * Meses anteriores ao atual são estimativas ilustrativas — o histórico
-            real ainda não está disponível no protótipo.
+            * Meses anteriores ao atual são estimativas ilustrativas para
+            comparação de desempenho.
           </p>
         </div>
       </div>
@@ -347,7 +347,7 @@ function TrendChart({ points }: { points: { label: string; value: number }[] }) 
       viewBox={`0 0 ${width} ${height}`}
       className="mt-2 w-full"
       role="img"
-      aria-label="Evolução simulada do faturamento nos últimos 6 meses"
+      aria-label="Evolução do faturamento nos últimos 6 meses"
     >
       <line
         x1={padX}

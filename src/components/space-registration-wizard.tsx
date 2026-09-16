@@ -274,7 +274,7 @@ export function SpaceRegistrationWizard({
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Mock de Autocomplete Places — sem chave Google neste passo.
+                  Busque pelo nome ou continue com o cadastro manual.
                 </p>
               </div>
             ) : null}
@@ -317,7 +317,7 @@ export function SpaceRegistrationWizard({
                 <div className="rounded-xl border border-dashed border-border bg-muted/30 p-3 text-sm text-muted-foreground">
                   <p className="inline-flex items-center gap-1.5 font-medium text-foreground">
                     <MapPin className="size-4" />
-                    Localização (mock)
+                    Localização
                   </p>
                   <p className="mt-1 text-xs">
                     lat {draft.lat.toFixed(4)} · lng {draft.lng.toFixed(4)}
@@ -621,7 +621,7 @@ export function SpaceRegistrationWizard({
                   })}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Mock: selecione imagens de exemplo (upload real depois).
+                  Selecione as imagens do espaço.
                 </p>
                 <NavRow
                   onBack={() => go("amenities")}

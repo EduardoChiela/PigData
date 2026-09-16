@@ -39,7 +39,7 @@ export function LoginPage() {
     if (mode === "login") {
       const user = loginMock(email, password);
       if (!user) {
-        setError("E-mail ou senha invalidos. Use as contas demo abaixo.");
+        setError("E-mail ou senha invalidos. Use as contas sugeridas abaixo.");
         return;
       }
       goHome(user.role);
@@ -69,7 +69,7 @@ export function LoginPage() {
           Entrar no {APP_NAME}
         </h1>
         <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Duas contas mock: cliente (mapa) e parceiro (painel do espaco).
+          Acesse como cliente ou parceiro para navegar pelos fluxos.
         </p>
 
         <div className="mt-8 space-y-3">
@@ -98,7 +98,7 @@ export function LoginPage() {
               <span className="min-w-0 flex-1">
                 <span className="block font-semibold">{account.name}</span>
                 <span className="block truncate text-xs text-muted-foreground">
-                  {account.roleLabel} - {account.email} - senha demo
+                  {account.roleLabel} - {account.email}
                 </span>
               </span>
               <LogIn className="size-4 shrink-0 text-muted-foreground" />
@@ -129,7 +129,7 @@ export function LoginPage() {
             )}
             onClick={() => setMode("register")}
           >
-            Cadastro (mock)
+            Cadastro
           </button>
         </div>
 
@@ -193,7 +193,7 @@ export function LoginPage() {
                 className="w-full rounded-lg border border-border px-3 py-2.5"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="demo"
+                placeholder="Senha"
                 required
               />
             </label>
@@ -206,7 +206,7 @@ export function LoginPage() {
           ) : null}
 
           <Button type="submit" className="w-full font-semibold" size="lg">
-            {mode === "login" ? "Entrar" : "Criar conta mock"}
+            {mode === "login" ? "Entrar" : "Criar conta"}
           </Button>
         </form>
 
@@ -227,7 +227,7 @@ export function LoginPage() {
           </li>
           <li className="flex items-center gap-2">
             <Plus className="size-3.5" />
-            Cadastro de espaco = fluxo mock do parceiro
+            Cadastro de espaco pelo painel do parceiro
           </li>
         </ul>
       </div>

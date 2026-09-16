@@ -1,21 +1,16 @@
-import { Bell } from "lucide-react";
+import { Bell, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { DemoPaymentDialog } from "@/components/demo-payment-dialog";
 import {
   countUnread,
+  clearNotifications,
   listNotifications,
   markAllNotificationsRead,
   markNotificationRead,
   type AppNotification,
 } from "@/lib/notifications";
-import {
-  confirmReservation,
-  getReservation,
-  type Reservation,
-} from "@/lib/reservations";
 import { resolveMockUser } from "@/lib/mock-session";
 import { cn } from "@/lib/utils";
 
@@ -24,8 +19,6 @@ export function NotificationBell({ userId }: { userId: string }) {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<AppNotification[]>([]);
   const [unread, setUnread] = useState(0);
-  const [paymentReservation, setPaymentReservation] =
-    useState<Reservation | null>(null);
   const seenIds = useRef<Set<string>>(new Set());
   const rootRef = useRef<HTMLDivElement>(null);
   const user = resolveMockUser(userId);
@@ -78,15 +71,12 @@ export function NotificationBell({ userId }: { userId: string }) {
     return () => document.removeEventListener("mousedown", onPointer);
   }, [open]);
 
-  function onPayDemo(reservationId?: string) {
-    if (!reservationId) return;
-    const reservation = getReservation(reservationId);
-    if (!reservation) {
-      toast.error("Reserva nao encontrada.");
-      return;
-    }
+  function onViewReservations() {
     setOpen(false);
-    setPaymentReservation(reservation);
+    void navigate({
+      to: "/minhas-reservas",
+      search: {},
+    });
   }
 
   function onNotificationClick(n: AppNotification) {
@@ -129,16 +119,29 @@ export function NotificationBell({ userId }: { userId: string }) {
         <div className="absolute right-0 top-[calc(100%+0.4rem)] z-50 w-[22rem] overflow-hidden rounded-xl border border-border bg-white text-foreground shadow-xl">
           <div className="flex items-center justify-between border-b border-border px-3 py-2.5">
             <p className="text-sm font-semibold">Notificações</p>
-            <button
-              type="button"
-              className="text-xs font-medium text-muted-foreground hover:text-foreground"
-              onClick={() => {
-                markAllNotificationsRead(userId);
-                reload(false);
-              }}
-            >
-              Marcar lidas
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                className="text-xs font-medium text-muted-foreground hover:text-foreground"
+                onClick={() => {
+                  markAllNotificationsRead(userId);
+                  reload(false);
+                }}
+              >
+                Marcar lidas
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                onClick={() => {
+                  clearNotifications(userId);
+                  reload(false);
+                }}
+              >
+                <Trash2 className="size-3.5" />
+                Limpar
+              </button>
+            </div>
           </div>
           {items.length === 0 ? (
             <p className="px-3 py-6 text-center text-sm text-muted-foreground">
@@ -171,9 +174,9 @@ export function NotificationBell({ userId }: { userId: string }) {
                       type="button"
                       size="sm"
                       className="mt-2 h-8 font-semibold"
-                      onClick={() => onPayDemo(n.reservationId)}
+                      onClick={onViewReservations}
                     >
-                      Continuar para pagamento
+                      Ver minhas reservas
                     </Button>
                   ) : null}
                 </li>
@@ -193,26 +196,6 @@ export function NotificationBell({ userId }: { userId: string }) {
         </div>
       ) : null}
     </div>
-      <DemoPaymentDialog
-        open={Boolean(paymentReservation)}
-        reservation={paymentReservation}
-        onClose={() => setPaymentReservation(null)}
-        onPaid={() => {
-          if (!paymentReservation) return;
-          const result = confirmReservation(
-            paymentReservation.id,
-            "customer",
-            userId,
-          );
-          if (result.ok) {
-            toast.success("Pagamento demo aprovado. Reserva confirmada.");
-            setPaymentReservation(null);
-            reload(false);
-          } else {
-            toast.error(result.error);
-          }
-        }}
-      />
     </>
   );
 }

@@ -72,7 +72,7 @@ export function SiteFooter() {
           <span>
             {APP_NAME} · rede {APP_TAGLINE} · codinome PigData
           </span>
-          <span>Mock piloto — sem pagamento real</span>
+          <span>Reservas sob solicitação e aprovação do estabelecimento</span>
         </div>
       </div>
     </footer>

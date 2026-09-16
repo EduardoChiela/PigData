@@ -91,3 +91,23 @@ export function markAllNotificationsRead(userId: string) {
   );
   writeAll(list);
 }
+
+export function clearNotifications(userId: string) {
+  writeAll(readAll().filter((n) => n.userId !== userId));
+}
+
+export function removePaymentNotifications(userId: string, reservationId: string) {
+  const paymentTypes: NotificationType[] = [
+    "reservation_approved",
+    "reservation_auto_approved",
+    "payment_required",
+  ];
+  writeAll(
+    readAll().filter(
+      (n) =>
+        n.userId !== userId ||
+        n.reservationId !== reservationId ||
+        !paymentTypes.includes(n.type),
+    ),
+  );
+}

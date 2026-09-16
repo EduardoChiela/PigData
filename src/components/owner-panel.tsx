@@ -18,7 +18,12 @@ import { AgendaSummaryStrip, OwnerDashboard } from "@/components/owner-dashboard
 import { SpaceRegistrationWizard } from "@/components/space-registration-wizard";
 import { Button } from "@/components/ui/button";
 import { formatDateBR, brl } from "@/lib/format";
-import { getSpaceBySlug, periodLabel, type Space } from "@/lib/mock-data";
+import {
+  getSpaceBySlug,
+  periodLabel,
+  spaces as catalogSpaces,
+  type Space,
+} from "@/lib/mock-data";
 import type { MockUser } from "@/lib/mock-session";
 import {
   acceptOwnerRequest,
@@ -39,6 +44,7 @@ import {
 import {
   listOwnerListings,
   resolveSpaceDisplayName,
+  verifiedListingAsSpace,
   type PublishedSpaceListing,
 } from "@/lib/space-registration";
 import { cn } from "@/lib/utils";
@@ -55,23 +61,49 @@ const painelRoute = getRouteApi("/painel");
 
 export function OwnerPanel({ user }: { user: MockUser }) {
   const search = painelRoute.useSearch();
-  const spaceSlugs = useMemo(
-    () => user.spaceSlugs ?? ["vila-verde"],
+  const baseSpaceSlugs = useMemo(
+    () =>
+      Array.from(
+        new Set([
+          ...catalogSpaces.map((space) => space.slug),
+          ...(user.spaceSlugs ?? []),
+        ]),
+      ),
     [user.spaceSlugs],
   );
-  const ownedSpaces = useMemo(
+  const [tick, setTick] = useState(0);
+  const published = useMemo(
+    () => listOwnerListings(user.id),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user.id, tick],
+  );
+  const spaceSlugs = useMemo(
     () =>
-      spaceSlugs
+      Array.from(
+        new Set([...baseSpaceSlugs, ...published.map((space) => space.slug)]),
+      ),
+    [baseSpaceSlugs, published],
+  );
+  const spaceKey = spaceSlugs.join("|");
+  const ownedSpaces = useMemo(() => {
+    const seen = new Set<string>();
+    const spaces = [
+      ...baseSpaceSlugs
         .map((s) => getSpaceBySlug(s))
         .filter((s): s is Space => Boolean(s)),
-    [spaceSlugs],
-  );
+      ...published.map(verifiedListingAsSpace),
+    ];
+    return spaces.filter((space) => {
+      if (seen.has(space.slug)) return false;
+      seen.add(space.slug);
+      return true;
+    });
+  }, [baseSpaceSlugs, published]);
 
   const [tab, setTab] = useState<TabId>("agenda");
   const [activeSlug, setActiveSlug] = useState(
     () => ownedSpaces[0]?.slug ?? spaceSlugs[0]!,
   );
-  const [tick, setTick] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
   const refresh = () => setTick((n) => n + 1);
 
@@ -81,16 +113,19 @@ export function OwnerPanel({ user }: { user: MockUser }) {
     }
   }, [search.aba]);
 
-  const published = useMemo(
-    () => listOwnerListings(user.id),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [user.id, tick],
-  );
-
   // Ler localStorage só no cliente (evita badge vazio por SSR / storage stale).
   useEffect(() => {
-    setPendingCount(listPendingOwnerRequests(spaceSlugs).length);
-  }, [spaceSlugs, tick]);
+    const syncPendingCount = () => {
+      setPendingCount(listPendingOwnerRequests(spaceSlugs).length);
+    };
+    syncPendingCount();
+    window.addEventListener("agora:reservations", syncPendingCount);
+    window.addEventListener("storage", syncPendingCount);
+    return () => {
+      window.removeEventListener("agora:reservations", syncPendingCount);
+      window.removeEventListener("storage", syncPendingCount);
+    };
+  }, [spaceKey, tick]);
 
   const activeSpace =
     ownedSpaces.find((s) => s.slug === activeSlug) ?? ownedSpaces[0];
@@ -249,6 +284,12 @@ function OwnerRequests({
 
   useEffect(() => {
     reload();
+    window.addEventListener("agora:reservations", reload);
+    window.addEventListener("storage", reload);
+    return () => {
+      window.removeEventListener("agora:reservations", reload);
+      window.removeEventListener("storage", reload);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spaceKey]);
 
@@ -312,6 +353,11 @@ function OwnerRequests({
     (r) => r.reservationStatus === "waitlisted",
   );
 
+  function requestDateLabel(req: OwnerReservationRequest) {
+    if (!req.endDate || req.endDate === req.date) return formatDateBR(req.date);
+    return `${formatDateBR(req.date)} - ${formatDateBR(req.endDate)}`;
+  }
+
   return (
     <section className="space-y-4">
       <div>
@@ -346,10 +392,10 @@ function OwnerRequests({
               resetOwnerRequestsSeed();
               reload();
               onRefresh();
-              setFeedback("Solicitações demo restauradas.");
+              setFeedback("Solicitações restauradas.");
             }}
           >
-            Restaurar solicitações demo
+            Restaurar solicitações
           </Button>
         </div>
       ) : (
@@ -376,7 +422,7 @@ function OwnerRequests({
               >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <p className="font-semibold">
-                    {req.clientName} — {formatDateBR(req.date)} —{" "}
+                    {req.clientName} — {requestDateLabel(req)} —{" "}
                     {req.eventType}
                   </p>
                   <span className="rounded-full bg-muted px-2.5 py-0.5 text-[0.7rem] font-semibold">
@@ -426,7 +472,7 @@ function OwnerRequests({
                       className="font-semibold"
                       onClick={() => onConfirmPayment(req)}
                     >
-                      Confirmar pagamento (demo)
+                      Confirmar pagamento
                     </Button>
                   ) : null}
                   {st === "waitlisted" ? (
@@ -451,7 +497,7 @@ function OwnerRequests({
           onRefresh();
         }}
       >
-        Restaurar seed demo
+        Restaurar solicitações
       </Button>
     </section>
   );
@@ -476,7 +522,7 @@ function BookingRulesPanel({
 
   function persist(next: SpaceBookingSettings) {
     setSettings(saveBookingSettings(next));
-    toast.success("Regras de reserva salvas (mock).");
+    toast.success("Regras de reserva salvas.");
   }
 
   return (

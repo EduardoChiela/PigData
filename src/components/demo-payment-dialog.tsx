@@ -27,7 +27,7 @@ export function DemoPaymentDialog({
 
   const pixCode = useMemo(() => {
     if (!reservation) return "";
-    return `PIX-DEMO-${reservation.id}-${reservation.estimatedTotal}`;
+    return `PIX-${reservation.id}-${reservation.estimatedTotal}`;
   }, [reservation]);
 
   if (!open || !reservation) return null;
@@ -57,13 +57,13 @@ export function DemoPaymentDialog({
           <div>
             <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-800">
               <ShieldCheck className="size-3.5" />
-              Pagamento demo
+              Pagamento
             </div>
             <h2 id="demo-payment-title" className="text-xl font-semibold">
               Finalizar reserva
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Nenhum pagamento real sera processado nesta apresentacao.
+              Confirme os dados para finalizar a reserva.
             </p>
           </div>
           <button
@@ -85,7 +85,7 @@ export function DemoPaymentDialog({
             </p>
             <div className="mt-3 flex items-end justify-between gap-3 border-t border-border pt-3">
               <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                Total demo
+                Total
               </span>
               <span className="text-2xl font-bold">{brl(reservation.estimatedTotal)}</span>
             </div>
@@ -101,7 +101,7 @@ export function DemoPaymentDialog({
               onClick={() => setMethod("card")}
             >
               <CreditCard className="size-4" />
-              Cartao demo
+              Cartao
             </button>
             <button
               type="button"
@@ -112,14 +112,14 @@ export function DemoPaymentDialog({
               onClick={() => setMethod("pix")}
             >
               <QrCode className="size-4" />
-              PIX demo
+              PIX
             </button>
           </div>
 
           {method === "card" ? (
             <div className="grid gap-3">
               <div className="grid gap-3 sm:grid-cols-2">
-                <DemoField label="Nome no cartao" value="Cliente Demo" />
+                <DemoField label="Nome no cartao" value="Cliente" />
                 <DemoField label="Numero" value="4242 4242 4242 4242" />
                 <DemoField label="Validade" value="12/30" />
                 <DemoField label="CVV" value="123" />
@@ -146,7 +146,7 @@ export function DemoPaymentDialog({
                 </div>
               </div>
               <div className="min-w-0 rounded-xl border border-border bg-muted/25 p-3">
-                <p className="text-sm font-semibold">Copia e cola demo</p>
+                <p className="text-sm font-semibold">Copia e cola</p>
                 <p className="mt-2 break-all rounded-lg bg-white p-2 text-xs text-muted-foreground">
                   {pixCode}
                 </p>
@@ -156,7 +156,7 @@ export function DemoPaymentDialog({
 
           {state === "failed" ? (
             <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">
-              Pagamento recusado no cenario demo. A reserva continua aguardando pagamento.
+              Pagamento recusado. A reserva continua aguardando pagamento.
             </p>
           ) : null}
         </div>
@@ -168,7 +168,7 @@ export function DemoPaymentDialog({
             disabled={state === "processing"}
             onClick={() => setState("failed")}
           >
-            Simular recusa
+            Recusar pagamento
           </Button>
           <Button
             type="button"
@@ -176,7 +176,7 @@ export function DemoPaymentDialog({
             disabled={state === "processing"}
             onClick={approveDemoPayment}
           >
-            {state === "processing" ? "Processando..." : "Aprovar pagamento demo"}
+            {state === "processing" ? "Processando..." : "Aprovar pagamento"}
           </Button>
         </div>
       </div>
