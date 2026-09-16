@@ -5,15 +5,13 @@ import {
   Package,
   ShieldCheck,
 } from "lucide-react";
-import { SearchBar } from "@/components/search-bar";
+import { HeroSearchBar } from "@/components/hero-search-bar";
 import { SpaceCard } from "@/components/space-card";
-import { Button } from "@/components/ui/button";
 import {
   APP_NAME,
   defaultSearchDate,
   filterSpaces,
 } from "@/lib/mock-data";
-import { loginAsMock } from "@/lib/mock-session";
 
 export const Route = createFileRoute("/bem-vindo")({
   head: () => ({
@@ -27,66 +25,23 @@ function WelcomePage() {
 
   return (
     <>
-      <section className="relative z-20 isolate min-h-[min(92dvh,820px)] overflow-visible">
+      <section className="relative z-20 isolate flex min-h-[min(88dvh,900px)] items-center overflow-visible">
         <div
           className="absolute inset-0 -z-20 bg-cover bg-center"
           style={{
             backgroundImage:
-              "url(https://images.unsplash.com/photo-1519167758481-83f29da8c2b4?auto=format&fit=crop&w=2000&q=80)",
+              "url(https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2400&q=80)",
           }}
           aria-hidden
         />
         <div
-          className="absolute inset-0 -z-10 bg-gradient-to-br from-[color-mix(in_oklab,var(--ink)_90%,transparent)] via-[color-mix(in_oklab,var(--ink-soft)_82%,transparent)] to-[color-mix(in_oklab,#1a2e22_45%,transparent)]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 opacity-40"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 20%, rgba(184,224,122,0.22), transparent 40%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08), transparent 35%)",
-          }}
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-black/45 via-black/30 to-black/50"
           aria-hidden
         />
 
-        <div className="page-shell flex min-h-[min(92dvh,820px)] flex-col justify-end gap-10 pb-14 pt-24 md:justify-center md:pb-20">
-          <div className="max-w-3xl animate-rise text-white">
-            <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-[0.08em] sm:text-5xl md:text-6xl">
-              {APP_NAME.toUpperCase()}
-            </h1>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
-              Veja o que está livre na data — solicite sem pagar. A reserva só
-              confirma depois da aprovação do espaço.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="bg-[var(--leaf)] font-semibold text-[var(--ink)] hover:bg-[var(--leaf-bright)]"
-              >
-                <Link
-                  to="/"
-                  onClick={() => loginAsMock("cli-ana")}
-                >
-                  Ver espaços
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-white/30 bg-white/10 text-white hover:bg-white/20"
-              >
-                <Link to="/entrar">Entrar</Link>
-              </Button>
-            </div>
-          </div>
-
-          <div className="animate-rise-delay w-full max-w-4xl">
-            <SearchBar
-              layout="stacked"
-              className="rounded-2xl bg-white/95 p-3 shadow-lg"
-            />
+        <div className="page-shell flex w-full justify-center py-16 md:py-20">
+          <div className="animate-rise w-full max-w-6xl">
+            <HeroSearchBar />
           </div>
         </div>
       </section>
@@ -100,14 +55,14 @@ function WelcomePage() {
             Como funciona
           </h2>
           <p className="mt-2 max-w-2xl text-muted-foreground">
-            Três passos até a contratação — sem pagar na solicitação.
+            Explore sem conta. Só precisa entrar na hora de enviar o pedido.
           </p>
           <div className="mt-10 grid gap-8 md:grid-cols-3">
             {[
               {
                 step: "1",
-                title: "Busque a data",
-                body: "Informe cidade, data e período. Só aparecem espaços livres naquele momento.",
+                title: "Diga o plano",
+                body: "Atividade, cidade e data. A busca mostra só o que está livre naquele momento.",
                 icon: CalendarSearch,
               },
               {
@@ -157,7 +112,6 @@ function WelcomePage() {
             disponíveis no período.{" "}
             <Link
               to="/"
-              onClick={() => loginAsMock("cli-ana")}
               className="font-medium text-foreground underline underline-offset-2"
             >
               Abrir mapa completo

@@ -14,7 +14,6 @@ import {
   defaultSearchDate,
   type PeriodId,
 } from "@/lib/mock-data";
-import { loginAsMock } from "@/lib/mock-session";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -204,7 +203,6 @@ export function SearchBar({
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     const period = periodFromTimes(startTime, endTime);
-    loginAsMock("cli-ana");
     void navigate({
       to: "/",
       search: {

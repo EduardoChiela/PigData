@@ -1,15 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { APP_NAME, APP_TAGLINE, PILOT_CITY_LABEL } from "@/lib/mock-data";
-import {
-  isMockAuthenticated,
-  loginAsMock,
-} from "@/lib/mock-session";
-
-function goToMap() {
-  if (!isMockAuthenticated()) {
-    loginAsMock("cli-ana");
-  }
-}
 
 export function SiteFooter() {
   return (
@@ -42,7 +32,7 @@ export function SiteFooter() {
           </p>
           <ul className="mt-3 space-y-2 text-sm">
             <li>
-              <Link to="/" onClick={goToMap} className="hover:text-white">
+              <Link to="/" className="hover:text-white">
                 Buscar espaços livres
               </Link>
             </li>
@@ -50,7 +40,6 @@ export function SiteFooter() {
               <Link
                 to="/"
                 search={{ acit: "1" }}
-                onClick={goToMap}
                 className="hover:text-white"
               >
                 Parceiros verificados

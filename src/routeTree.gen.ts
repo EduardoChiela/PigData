@@ -16,6 +16,7 @@ import { Route as BuscarRouteImport } from './routes/buscar'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as MinhasReservasRouteImport } from './routes/minhas-reservas'
 import { Route as PainelRouteImport } from './routes/painel'
+import { Route as EspacoSlugRouteImport } from './routes/espaco.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const PainelRoute = PainelRouteImport.update({
   path: '/painel',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EspacoSlugRoute = EspacoSlugRouteImport.update({
+  id: '/espaco/$slug',
+  path: '/espaco/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/entrar': typeof EntrarRoute
   '/minhas-reservas': typeof MinhasReservasRoute
   '/painel': typeof PainelRoute
+  '/espaco/$slug': typeof EspacoSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/entrar': typeof EntrarRoute
   '/minhas-reservas': typeof MinhasReservasRoute
   '/painel': typeof PainelRoute
+  '/espaco/$slug': typeof EspacoSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/entrar': typeof EntrarRoute
   '/minhas-reservas': typeof MinhasReservasRoute
   '/painel': typeof PainelRoute
+  '/espaco/$slug': typeof EspacoSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/minhas-reservas'
     | '/painel'
+    | '/espaco/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/minhas-reservas'
     | '/painel'
+    | '/espaco/$slug'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/minhas-reservas'
     | '/painel'
+    | '/espaco/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +131,7 @@ export interface RootRouteChildren {
   EntrarRoute: typeof EntrarRoute
   MinhasReservasRoute: typeof MinhasReservasRoute
   PainelRoute: typeof PainelRoute
+  EspacoSlugRoute: typeof EspacoSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PainelRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/espaco/$slug': {
+      id: '/espaco/$slug'
+      path: '/espaco/$slug'
+      fullPath: '/espaco/$slug'
+      preLoaderRoute: typeof EspacoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   EntrarRoute: EntrarRoute,
   MinhasReservasRoute: MinhasReservasRoute,
   PainelRoute: PainelRoute,
+  EspacoSlugRoute: EspacoSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

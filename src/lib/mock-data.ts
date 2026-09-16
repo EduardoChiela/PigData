@@ -1002,12 +1002,15 @@ export type ListedSpace = Space & { status: Availability };
  * - horário: espaços sem allowsHourlyRental ficam de fora se period for horário futuro
  */
 export function filterSpaces(filters: SearchFilters = {}): ListedSpace[] {
-  const city = (filters.city ?? PILOT_CITY).toLowerCase();
+  const cityNorm = (filters.city ?? PILOT_CITY)
+    .toLowerCase()
+    .replace(/\s*-\s*pr\b/g, "")
+    .trim();
   const date = filters.date;
   const includeUnavailable = filters.includeUnavailable === true;
 
   let list = spaces
-    .filter((s) => s.city.toLowerCase() === city || s.city.toLowerCase() === "toledo")
+    .filter((s) => s.city.toLowerCase().replace(/\s*-\s*pr\b/g, "").trim() === cityNorm)
     .map((s) => withAvailability(s, date));
 
   if (!includeUnavailable) {

@@ -15,10 +15,18 @@ export type MapSearchParams = {
   modalidade?: string;
   janelas?: string;
   tensao?: string;
+  /** Compat: uma comodidade. Preferir `comodidades` (AND, CSV). */
   comodidade?: string;
+  /** Várias comodidades (AND), separadas por vírgula. */
+  comodidades?: string;
   evento?: string;
   classe?: string;
   slug?: string;
+};
+
+/** Permite limpar params na URL com `undefined` (exactOptionalPropertyTypes). */
+export type MapSearchPatch = {
+  [K in keyof MapSearchParams]?: MapSearchParams[K] | undefined;
 };
 
 export function validateMapSearch(
@@ -42,6 +50,8 @@ export function validateMapSearch(
   if (typeof raw["janelas"] === "string") out.janelas = raw["janelas"];
   if (typeof raw["tensao"] === "string") out.tensao = raw["tensao"];
   if (typeof raw["comodidade"] === "string") out.comodidade = raw["comodidade"];
+  if (typeof raw["comodidades"] === "string")
+    out.comodidades = raw["comodidades"];
   if (typeof raw["evento"] === "string") out.evento = raw["evento"];
   if (typeof raw["classe"] === "string") out.classe = raw["classe"];
   if (typeof raw["slug"] === "string") out.slug = raw["slug"];

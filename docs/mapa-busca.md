@@ -109,9 +109,12 @@ Nome, endereço, localização, avaliação geral, fotos (com regras), tipos de 
 
 ## Estado da implementação
 
-- `/`: layout **lista ampla (~60%) | mapa (~40%)** no desktop; mobile com abas Lista/Mapa. Busca no topo (atividade, cidade, quando, modalidade dia/horário).
-- Menu **Explorar espaços** + `/atividades` + seção na landing.
-- Marcadores de **preço** (base ou /h); selo ACIT no pin; hover card↔pin; lista filtra pelo viewport (idle + debounce).
-- Chips rápidos (ACIT, pets, horário, atividades) + mais filtros (classe, comodidade AND, preço).
-- Listings homologados persistem área, horário, pets, comodidades etc. e entram na busca com dados reais.
-- `/buscar` redireciona para `/`. Painel de detalhe + lightbox da galeria mantidos.
+- `/`: layout **lista ampla (~62%) | mapa (~38%)** no desktop; mobile com lista inferior + mapa. **Acesso público** (visitante sem conta).
+- Landing `/bem-vindo`: hero só com `HeroSearchBar` centralizada (largura ampla); fundo fotográfico de evento/casamento. Buscar → `/`.
+- Clique no card ou pin abre **`/espaco/$slug`** em **nova aba** (rota pública para leitura; pedido continua exigindo sessão).
+- Cards da lista com foto **fixa 280×280px** e carrossel; grade 2–3 colunas; nome/preço compactos.
+- Barra de filtros **simplificada** na coluna da lista:
+  - dropdowns sem borda: **Quando**, **Preço**, **Participantes**, **Filtros**;
+  - chips de comodidades recomendadas (Pets + 5–6 do catálogo) com **bordas arredondadas**; `comodidades=` AND.
+- Marcadores de **preço**; selo ACIT no pin.
+- `/buscar` redireciona para `/`. Galeria com lightbox na página do espaço.

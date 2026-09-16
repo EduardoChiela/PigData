@@ -26,9 +26,10 @@ Stack: [`docs/stack.md`](./docs/stack.md) · Slice MVP: [`docs/mvp.md`](./docs/m
 
 | Rota | Tela |
 |------|------|
-| `/bem-vindo` | Landing para visitante |
+| `/bem-vindo` | Landing para visitante (busca atividade / cidade / data) |
 | `/entrar` | Login / cadastro mock (cliente ou parceiro) |
-| `/` | Mapa / busca para cliente e parceiro |
+| `/` | Mapa / busca (público; conta só para solicitar) |
+| `/espaco/$slug` | Detalhe do espaço (tela cheia) |
 | `/painel` | Painel do parceiro (agenda, solicitacoes, anuncios, cadastro) |
 | `/ajuda` | Guia rapido da demo |
 | `/minhas-reservas` | Solicitacoes/reservas do cliente + pagamento demo |
