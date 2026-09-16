@@ -96,13 +96,20 @@ export function SiteHeader() {
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
+          <Link
+            to="/"
+            className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
+          >
+            Mapa
+          </Link>
           {authed && user ? (
             <>
               <Link
                 to="/"
+                search={{ acit: "1" }}
                 className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/10 hover:text-white"
               >
-                Mapa
+                Verificados
               </Link>
               {isPartner ? (
                 <Link
@@ -227,6 +234,13 @@ export function SiteHeader() {
         )}
       >
         <div className="flex flex-col gap-1 px-4 py-3">
+          <Link
+            to="/"
+            className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
+            onClick={() => setOpen(false)}
+          >
+            Mapa
+          </Link>
           {authed && user ? (
             <>
               <div className="mb-2 flex items-center gap-3 rounded-xl bg-white/8 px-3 py-2.5">
@@ -240,10 +254,11 @@ export function SiteHeader() {
               </div>
               <Link
                 to="/"
+                search={{ acit: "1" }}
                 className="rounded-md px-3 py-2.5 text-sm font-medium text-white/90 hover:bg-white/10"
                 onClick={() => setOpen(false)}
               >
-                Mapa
+                Verificados
               </Link>
               {isPartner ? (
                 <Link
