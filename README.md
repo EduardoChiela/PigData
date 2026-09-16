@@ -33,6 +33,7 @@ Stack: [`docs/stack.md`](./docs/stack.md) · Slice MVP: [`docs/mvp.md`](./docs/m
 | `/painel` | Painel do **parceiro** (agenda, solicitações, anúncios, cadastro) |
 | `/painel-acit` | Painel do **organizador ACIT** (calendário da rede, filiados, mensagens) |
 | `/ajuda` | Guia rápido (contas demo, fluxos cliente/parceiro, checklist) |
+| `/atividades` | Catálogo de atividades → busca filtrada |
 | `/minhas-reservas` | Solicitações/reservas do cliente + pagamento demo |
 | `/buscar` | Redireciona para `/` (compat) |
 

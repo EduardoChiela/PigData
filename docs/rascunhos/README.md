@@ -14,3 +14,4 @@ Arquivos de discussão **antes** de entrar nos docs oficiais.
 | [backlog-equipe.md](./backlog-equipe.md) | Planejamento da equipe (correções, features, revisões); formalizar por área nos docs oficiais após pesquisa |
 | [planejamento-gabriel.md](./planejamento-gabriel.md) | Plano G1–G5 (UX/home/fluxo/guia) — **implementado** |
 | [planejamento-eduardo.md](./planejamento-eduardo.md) | Spec E1–E5 — **implementada no mock** (e-mail/WhatsApp/GCal pendentes) |
+| [planejamento-explorar-busca-mapa.md](./planejamento-explorar-busca-mapa.md) | Explorar / atividades / busca / mapa — **em implementação** |

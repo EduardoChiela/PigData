@@ -16,6 +16,13 @@ Toda mudança relevante deve gerar uma entrada nova no topo da seção **Registr
 
 ## Registros
 
+### 2026-09-14 — Explorar espaços / busca / mapa (entrega A–C)
+- **Contexto:** Implementar planejamento de descoberta estilo Peerspace adaptado à Ágora (atividades, layout lista+mapa, price markers, viewport).
+- **Áreas:** `mapa-busca.md`, `busca-locacao.md`, `fluxo-telas.md`, `README.md`, `rascunhos/planejamento-explorar-busca-mapa.md`
+- **O que mudou:** `discovery-catalog`, menu Explorar, `/atividades`, seção na home; listing completo no cadastro; SearchBar com atividade/cidade/modalidade; split lista|mapa; marcadores de preço; filtro por bounds; chips rápidos.
+- **Como funciona agora:** header Explorar → filtros na busca; home com atividades; resultados em lista ampla + mapa com preços; pan/zoom atualiza lista (debounce idle).
+- **Status:** feito (protótipo parcial) — data início/fim multi-dia e startsAt no motor E1 ainda simplificados (período + horário na URL)
+
 ### 2026-09-14 — Lightbox da galeria do espaço
 - **Contexto:** Permitir abrir fotos do detalhe em tela cheia e navegar como carrossel.
 - **Áreas:** `espacos.md`, `fluxo-telas.md`
